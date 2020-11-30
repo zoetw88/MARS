@@ -1,137 +1,134 @@
 require('dotenv').config();
 const validator = require('validator');
 const User = require('../models/user_model');
-const expire = process.env.TOKEN_EXPIRE; // 30 days by seconds
+const {
+    TOKEN_EXPIRE,
+    ACCESS_TOKEN_SECRET
+} = process.env; // 30 days by seconds
+const jwt = require('jsonwebtoken')
 
 const signUp = async (req, res) => {
-    let {name} = req.body;
-    const {email, password} = req.body;
-
-    if(!name || !email || !password) {
-        res.status(400).send({error:'Request Error: name, email and password are required.'});
-        return;
-    }
+    let {
+        name,
+        nickname
+    } = req.body;
+    const {
+        email,
+        password
+    } = req.body;
 
     if (!validator.isEmail(email)) {
-        res.status(400).send({error:'Request Error: Invalid email format'});
+        res.status(400).send({
+            error: 'Request Error: Invalid email format'
+        });
         return;
     }
-
     name = validator.escape(name);
-
-    const result = await User.signUp(name, email, password, expire);
+    const result = await User.signUp(name, nickname, email, password);
+    console.log(result)
     if (result.error) {
-        res.status(403).send({error: result.error});
+        res.status(403).send({
+            error: result.error
+        });
         return;
     }
 
-    const {accessToken, loginAt, user} = result;
-    if (!user) {
-        res.status(500).send({error: 'Database Query Error'});
+    const {
+        username,
+        accessExpired,
+        accessToken,
+        useremail
+    } = result;
+    if (!username) {
+        res.status(500).send({
+            error: 'Database Query Error'
+        });
         return;
     }
-
     res.status(200).send({
         data: {
             access_token: accessToken,
-            access_expired: expire,
-            login_at: loginAt,
-            user: {
-                id: user.id,
-                provider: user.provider,
-                name: user.name,
-                email: user.email,
-                picture: user.picture
-            }
+            access_expired: accessExpired,
+            nickname: username,
+            email: useremail
         }
     });
 };
-
-const nativeSignIn = async (email, password) => {
-    if(!email || !password){
-        return {error: 'Request Error: email and password are required.', status: 400};
-    }
-    try {
-        return await User.nativeSignIn(email, password, expire);
-    } catch (error) {
-        return {error};
-    }
+const verifyToken = async (req, res, next) => {
+    const bearerHeader = req.header('authorization')
+    
+    if (typeof bearerHeader !== 'undefined') {
+        const bearerToken = bearerHeader.split(' ')[1]
+        jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (err,data) => {
+            console.log(bearerToken)
+            if (err) return console.log(err)
+            res.json('ok')
+            // req.data = data;
+            // req.authenticated = true;
+            // console.log(req.decoded)
+            // next();
+        })
+    } else {
+        res.sendStatus(401);
+    };
 };
 
 const facebookSignIn = async (accessToken) => {
     if (!accessToken) {
-        return {error: 'Request Error: access token is required.', status: 400};
+        return {
+            error: 'Request Error: access token is required.',
+            status: 400
+        };
     }
     try {
         const profile = await User.getFacebookProfile(accessToken);
-        console.log(profile)
-        const {id, name, email} = profile;
-
-        if(!id || !name || !email){
-            return {error: 'Permissions Error: facebook access token can not get user id, name or email'};
+        const {
+            id,
+            name,
+            email
+        } = profile;
+        if (!id || !name || !email) {
+            return {
+                error: 'Permissions Error: facebook access token can not get user id, name or email'
+            };
         }
 
-        return await User.facebookSignIn(id, name, email, accessToken, expire);
+        return await User.facebookSignIn(id, name, email, accessToken);
     } catch (error) {
-        return {error: error};
+        return {
+            error: error
+        };
     }
 };
-
 const signIn = async (req, res) => {
-    const data = req.body;
-    let result;
-    switch (data.provider) {
-        case 'native':
-            result = await nativeSignIn(data.email, data.password);
-            break;
-        case 'facebook':
-            console.log('facebook')
-            console.log(data.access_token)
-            result = await facebookSignIn(data.access_token);
-            break;
-        default:
-            result = {error: 'Wrong Request'};
-    }
-    if (result.error) {
-        const status_code = result.status ? result.status : 403;
-        res.status(status_code).send({error: result.error});
-        return;
-    }
+    try {
+        const data = req.body;
+        let result;
+        switch (data.provider) {
+            case 'native':
+                result = await User.nativeSignIn(data.email, data.password);
+                res.status(200).send(result);
+                break;
 
-    const {accessToken, loginAt, user} = result;
-    if (!user) {
-        res.status(500).send({error: 'Database Query Error'});
-        return;
-    }
-
-    res.status(200).send({
-        data: {
-            access_token: accessToken,
-            access_expired: expire,
-            login_at: loginAt,
-            user: {
-                id: user.id,
-                provider: user.provider,
-                name: user.name,
-                email: user.email,
-                picture: user.picture
-            }
+            case 'facebook':
+                result = await facebookSignIn(data.access_token);
+                res.status(200).send(result);
+                break;
         }
-    });
-};
-
-const getUserProfile = async (req, res) => {
-    let accessToken = req.get('Authorization');
-	if (accessToken) {
-		accessToken = accessToken.replace('Bearer ', '');
-	} else {
-		res.status(400).send({error: 'Wrong Request: authorization is required.'});
-		return;
+    } catch (error) {
+        res.status(400).json({
+            error
+        });
     }
-    const profile = await User.getUserProfile(accessToken);
+}
+const getUserProfile = async (req, res) => {
+    const token = req.header('Authorization')
+    console.log(token)
+    const profile = await User.getUserProfile(req.decoded);
     if (profile.error) {
-        res.status(403).send({error: profile.error});
-        return;
+        res.status(403).send({
+            error: profile.error
+        });
     } else {
         res.status(200).send(profile);
     }
@@ -139,10 +136,10 @@ const getUserProfile = async (req, res) => {
 
 
 
-
-
 module.exports = {
     signUp,
     signIn,
     getUserProfile,
+    verifyToken,
+    facebookSignIn
 };

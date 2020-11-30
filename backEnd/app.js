@@ -5,6 +5,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const morgan=require('morgan')
 
 
 app.set('trust proxy', 'loopback');
@@ -12,6 +13,8 @@ app.set('json spaces', 2);
 
 app.use(express.static('public'));
 app.use(bodyparser.urlencoded({extended:true}));
+app.use(bodyparser.json());
+app.use(morgan('dev'));
 // CORS allow all
 app.use(cors());
 

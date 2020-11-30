@@ -36,7 +36,10 @@ const promiseCommit = promisify(mysqlCon.commit).bind(mysqlCon);
 const promiseRollback = promisify(mysqlCon.rollback).bind(mysqlCon);
 const promiseEnd = promisify(mysqlCon.end).bind(mysqlCon);
 
-
+mysqlCon.connect((err) => {
+    if (err) throw err;
+    console.log('MySql Connected!');
+});
 
 
 module.exports={

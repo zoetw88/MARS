@@ -1,0 +1,26 @@
+###
+POST http://localhost:5000/api/1.0/user/signup HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "email": "zoe7787tw@gmail.com",
+    "password":"dsafds",
+    "nickname":"fdsafd"
+}
+
+###
+post http://localhost:5000/api/1.0/user/signin HTTP/1.1
+ser-Agent: rest-client
+Content-Type: application/json
+token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMwMCwiZW1haWwiOiJ6b2V0dzg4QGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoiZmRzYWZkIiwiaWF0IjoxNjA2NzI4NDEwfQ.xlHkqtOuLL0l_gN8Yt7TPtw2gKmS7WLXq9ZSxv9xxO0
+
+{
+    "provider": "native",
+    "email": "zoe7787tw@gmail.com",
+    "password":"dsafds"
+}
+###
+
+GET http://localhost:5000/api/1.0/user/profile HTTP/1.1
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDY3MzM0NDMsImVtYWlsIjoiem9lNzc4N3R3QGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoiZmRzYWZkIiwiaWF0IjoxNjA2NzMzMTQzfQ.rGDFO9lYYnSLtgHQQXgJmntF9mwcMYoPZ6mWIVEZ1RU

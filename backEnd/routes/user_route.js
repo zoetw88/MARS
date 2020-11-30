@@ -5,6 +5,7 @@ const {
     signUp,
     signIn,
     getUserProfile,
+    verifyToken
 } = require('../controllers/user_controller');
 
 router.route('/user/signup')
@@ -14,7 +15,7 @@ router.route('/user/signin')
     .post(wrapAsync(signIn));
 
 router.route('/user/profile')
-    .get(wrapAsync(getUserProfile));
+    .get(verifyToken,wrapAsync(getUserProfile));
 
 
 module.exports = router;
