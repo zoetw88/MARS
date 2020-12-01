@@ -12,8 +12,6 @@ import {ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirro
 import './Editor.css';
 import { CodeBlockView, arrowHandler } from './code_block';
 
-
-
      function myCursorBuilder(user){
         const cursor = document.createElement('span')
         cursor.classList.add('ProseMirror-yjs-cursor')

@@ -20,7 +20,8 @@ app.use(morgan('dev'));
 // CORS allow all
 app.use(cors());
 
-
+var server = app.listen(5000);
+    
 // API routes
 app.use('/api/' + API_VERSION,
     [
@@ -42,18 +43,16 @@ app.use(function(err, req, res, next) {
     res.status(500).send('Internal Server Error');
 });
 
-if (NODE_ENV != 'production'){
-    app.listen(port, () => {console.log(`Listening on port: ${port}`);});
-}
-var http = require('http')
-var server = http.createServer(function (req, res) {   // 2 - 建立server
- 
-    // 在此處理 客戶端向 http server 發送過來的 req。
- 
-});
-const io = require('socket.io')(http)
 
-io.on('connection', socket => {
+
+const io = require('socket.io')(server,{cors: {
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST"],
+  credentials: true}
+})
+
+io.on('connection', (socket) => {
+  console.log('socket connected')
     const id = socket.handshake.query.id
     socket.join(id)
     socket.on('send-message', ({ recipients, text }) => {
@@ -66,9 +65,9 @@ io.on('connection', socket => {
       })
     })
   })
-  if (NODE_ENV != 'production'){
-   server.listen(3001, () => {console.log(`Listening on port: ${3001}`);});
-}
+//   if (NODE_ENV != 'production'){
+//    server.listen(5000, () => {console.log(`Listening on port: ${5000}`);});
+// }
 
 
 module.exports = app;

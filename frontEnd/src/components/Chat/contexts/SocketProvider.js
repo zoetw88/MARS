@@ -12,11 +12,10 @@ export function SocketProvider({ id, children }) {
 
   useEffect(() => {
     const newSocket = io(
-      'http://localhost:3001',
-      { query: { id } }
+      'http://localhost:5000',
+       { query: { id } }
     )
     setSocket(newSocket)
-    console.log('success connect!')
     return () => newSocket.close()
   }, [id])
 

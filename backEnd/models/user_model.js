@@ -52,7 +52,7 @@ const nativeSignIn = async (email, password) => {
         const result = await query('SELECT * FROM user WHERE email = ?', [email]);
         if (result.length > 0) {
             await commit();
-           console.trace(result)
+         
             const auth = await bcrypt.compare(password, result[0].password);
             if (auth) {
                 console.log('ok')
