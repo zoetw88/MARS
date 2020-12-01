@@ -8,6 +8,8 @@ const app = express();
 const morgan=require('morgan')
 
 
+
+
 app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
 
@@ -43,8 +45,30 @@ app.use(function(err, req, res, next) {
 if (NODE_ENV != 'production'){
     app.listen(port, () => {console.log(`Listening on port: ${port}`);});
 }
+var http = require('http')
+var server = http.createServer(function (req, res) {   // 2 - 建立server
+ 
+    // 在此處理 客戶端向 http server 發送過來的 req。
+ 
+});
+const io = require('socket.io')(http)
 
-
+io.on('connection', socket => {
+    const id = socket.handshake.query.id
+    socket.join(id)
+    socket.on('send-message', ({ recipients, text }) => {
+      recipients.forEach(recipient => {
+        const newRecipients = recipients.filter(r => r !== recipient)
+        newRecipients.push(id)
+        socket.broadcast.to(recipient).emit('receive-message', {
+          recipients: newRecipients, sender: id, text
+        })
+      })
+    })
+  })
+  if (NODE_ENV != 'production'){
+   server.listen(3001, () => {console.log(`Listening on port: ${3001}`);});
+}
 
 
 module.exports = app;

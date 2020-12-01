@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#title {
+  font-size: 10em;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+  line-height: 1;
+  margin: 1px;
+  padding: 0 10px 0 5px;
+  min-width: 20px;
+  text-align: center;
+
+}

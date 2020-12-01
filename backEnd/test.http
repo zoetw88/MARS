@@ -4,9 +4,9 @@ content-type: application/json
 
 {
     "name": "sample",
-    "email": "zoe7787tw@gmail.com",
-    "password":"dsafds",
-    "nickname":"fdsafd"
+    "email": "123@gmail.com",
+    "password":"dsafddfs",
+    "nickname":"fdsrtafd"
 }
 
 ###
@@ -17,8 +17,8 @@ token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMwMCwiZW1haWwiOiJ6b2V0dzg4Q
 
 {
     "provider": "native",
-    "email": "zoe7787tw@gmail.com",
-    "password":"dsafds"
+    "email": "zoe77@gmail.com",
+    "password":"dsafddfs"
 }
 ###
 

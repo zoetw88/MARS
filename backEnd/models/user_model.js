@@ -33,12 +33,12 @@ const signUp = async (name,nickname, email, password) => {
                 username: nickname,
                 accessExpired: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
                 accessToken: access_token,
-                email:email
+                useremail:email
               };
-              console.log(data)
+              
         
         result = await query('INSERT INTO user Set?', users);
-        console.log(result)
+      
         await commit();  
         return {data};
     } catch (error) {
@@ -51,8 +51,11 @@ const nativeSignIn = async (email, password) => {
         await transaction();
         const result = await query('SELECT * FROM user WHERE email = ?', [email]);
         if (result.length > 0) {
+            await commit();
+           console.trace(result)
             const auth = await bcrypt.compare(password, result[0].password);
             if (auth) {
+                console.log('ok')
                 access_token = jwt.sign({
                     exp:Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
                     email:email,
@@ -64,9 +67,13 @@ const nativeSignIn = async (email, password) => {
                     access_token: access_token,
                     email:email
                 };
+                return {data};
             }
+        }else{
+            return {error: 'email is wrong'};
         }
-        return {data};
+       
+    
     } catch (error) {
         await rollback();
         return {error};

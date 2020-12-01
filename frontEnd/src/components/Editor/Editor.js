@@ -9,7 +9,7 @@ import {rule} from "./index"
 import {baseKeymap} from"prosemirror-commands"
 import {keymap } from 'prosemirror-keymap'
 import {ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
-import './App.css';
+import './Editor.css';
 import { CodeBlockView, arrowHandler } from './code_block';
 
 
@@ -23,7 +23,7 @@ import { CodeBlockView, arrowHandler } from './code_block';
         return cursor
       }
 
-function App() {
+function Editor() {
     useEffect(() => {
         const user=myCursorBuilder()
         const ydoc = new Y.Doc()
@@ -55,8 +55,8 @@ function App() {
         <div id="editor" />
         <div id="content" />
     </div>
-        
+    
   );
 }
 
-export default App;
+export default Editor;

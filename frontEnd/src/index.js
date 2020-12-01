@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './components/App/App';
-
+import App from './App';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 ReactDOM.render(
   <React.StrictMode>
+    <div id="title" >文昌宇宙</div>
     <App />
   </React.StrictMode>,
   document.getElementById('root')

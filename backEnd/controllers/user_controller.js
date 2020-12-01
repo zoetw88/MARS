@@ -6,7 +6,6 @@ const {
     ACCESS_TOKEN_SECRET
 } = process.env; // 30 days by seconds
 const jwt = require('jsonwebtoken')
-
 const signUp = async (req, res) => {
     let {
         name,
@@ -25,7 +24,6 @@ const signUp = async (req, res) => {
     }
     name = validator.escape(name);
     const result = await User.signUp(name, nickname, email, password);
-    console.log(result)
     if (result.error) {
         res.status(403).send({
             error: result.error
@@ -33,33 +31,16 @@ const signUp = async (req, res) => {
         return;
     }
 
-    const {
-        username,
-        accessExpired,
-        accessToken,
-        useremail
-    } = result;
-    if (!username) {
-        res.status(500).send({
-            error: 'Database Query Error'
-        });
-        return;
-    }
-    res.status(200).send({
-        data: {
-            access_token: accessToken,
-            access_expired: accessExpired,
-            nickname: username,
-            email: useremail
-        }
-    });
+    res.status(200).send(
+        result
+    );
 };
 const verifyToken = async (req, res, next) => {
     const bearerHeader = req.header('authorization')
-    
+
     if (typeof bearerHeader !== 'undefined') {
         const bearerToken = bearerHeader.split(' ')[1]
-        jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (err,data) => {
+        jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (err, data) => {
             console.log(bearerToken)
             if (err) return console.log(err)
             res.json('ok')
@@ -102,19 +83,27 @@ const facebookSignIn = async (accessToken) => {
 };
 const signIn = async (req, res) => {
     try {
-        const data = req.body;
+        let data = req.body;
         let result;
         switch (data.provider) {
             case 'native':
                 result = await User.nativeSignIn(data.email, data.password);
-                res.status(200).send(result);
                 break;
 
             case 'facebook':
                 result = await facebookSignIn(data.access_token);
-                res.status(200).send(result);
+                
                 break;
         }
+        if (result.error) {
+            res.status(403).send({
+                error: result.error
+            });
+            return;
+        }
+        res.status(200).send(
+            result
+        );
     } catch (error) {
         res.status(400).json({
             error
