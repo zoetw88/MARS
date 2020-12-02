@@ -1,8 +1,6 @@
-import {schema} from './schema';
-import { exitCode } from 'prosemirror-commands';
-import { Selection, TextSelection } from 'prosemirror-state';
-import CodeMirror from 'codemirror';
-
+import{ schema} from'../Editor/schema';
+import{ Selection, TextSelection } from 'prosemirror-state';
+import CodeMirror from  'codemirror';
 import { undo, redo } from 'prosemirror-history';
 import 'codemirror/mode/css/css';
 import 'codemirror/mode/dockerfile/dockerfile';

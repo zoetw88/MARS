@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
+
 import {EditorState} from "prosemirror-state"
-import {DOMParser} from "prosemirror-model"
+import {DOMParser} from"prosemirror-model"
 import {EditorView} from "prosemirror-view"
 import * as Y from 'yjs'
 import { schema } from './schema.js'
@@ -9,7 +9,7 @@ import {rule} from "./index"
 import {baseKeymap} from"prosemirror-commands"
 import {keymap } from 'prosemirror-keymap'
 import {ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
-import './Editor.css';
+
 import { CodeBlockView, arrowHandler } from './code_block';
 
      function myCursorBuilder(user){
@@ -20,16 +20,13 @@ import { CodeBlockView, arrowHandler } from './code_block';
         cursor.insertBefore(userDiv, null)
         return cursor
       }
-
-function Editor() {
-    useEffect(() => {
         const user=myCursorBuilder()
         const ydoc = new Y.Doc()
-        const provider = new WebsocketProvider('ws://localhost:3000/','prosemirror', ydoc)
+        const provider = new WebsocketProvider('ws://localhost:1234','prosemirror', ydoc)
         const type = ydoc.getXmlFragment('prosemirror')
         window.view = new EditorView(document.querySelector("#editor"), {
             state: EditorState.create({
-              doc: DOMParser.fromSchema(schema).parse(document.querySelector("#content")),
+             
              schema,
                 plugins: [
                     ySyncPlugin(type),
@@ -45,16 +42,6 @@ function Editor() {
            , nodeViews: { code_block(node, view, getPos) {return new CodeBlockView(node, view, getPos)}}
         })
         
-    });
+ 
 
-  return (
-
-    <div className="App">
-        <div id="editor" />
-        <div id="content" />
-    </div>
-    
-  );
-}
-
-export default Editor;
+  r

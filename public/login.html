@@ -1,0 +1,14 @@
+<link rel="shortcut icon" href="#" />
+<Container className="align-items-center d-flex" style={{ height: '100vh' }}>
+    <Form onSubmit={signIN} className="w-100">
+      <Form.Group>
+      <Form.Label ref={resultRef}>Hello</Form.Label>
+      <br></br>
+        <Form.Label>Enter Your email</Form.Label>
+        <Form.Control type="email" ref={idRef} required />
+        <Form.Label>Enter Your password</Form.Label>
+        <Form.Control type="password"ref={passwordRef} required />
+      </Form.Group>   
+      <Button type="submit" className="mr-2">Login</Button>
+    </Form>
+  </Container>
