@@ -2,5 +2,6 @@
     "eslint.workingDirectories": [
         "./frontend",  "./backtend"
       ],
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "python.pythonPath": "C:\\Users\\zoetw\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
 }

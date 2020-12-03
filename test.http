@@ -1,12 +1,10 @@
 ###
-POST http://localhost:5000/api/1.0/user/signup HTTP/1.1
+POST https://api.goodjob.life/graphql HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "email": "321@gmail.com",
-    "password":"dsafddfs",
-    "nickname":"fdsrtafd"
+    "companyname": "廣達",
+    
 }
 
 ###
