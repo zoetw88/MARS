@@ -32,93 +32,94 @@ if(mydb):
 else:
     print("Oops, connect to mysql unsuccessfully.")
 cursor = mydb.cursor()
-for i in range(1, 15):
-    company = urllib.parse.quote('廣達電腦股份有限公司')
-    converted_num = str(i)
-    url = 'https://www.goodjob.life/companies/' + \
-        company+'/interview-experiences?p='+str(i)
+for x in['台灣積體電路製造股份有限公司','廣達電腦股份有限公司',]:
+    for i in range(1, 15):
+        company = urllib.parse.quote(x)
+        converted_num = str(i)
+        url = 'https://www.goodjob.life/companies/' + \
+            company+'/interview-experiences?p='+str(i)
 
-    print(url)
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
-    data = urllib.request.Request(url, headers=headers)
-    data = urllib.request.urlopen(data).read()
-    soup = BeautifulSoup(data, "html.parser")
-    divTag = soup.find_all("div", {
-                           "class": "src-components-CompanyAndJobTitle-InterviewExperiences-__InterviewExperiences-module___container"})
-
-    for tag in divTag:
-        tdTags = tag.find("a").get('href')
-
-        urls = 'https://www.goodjob.life'+tdTags
-        print(urls)
+        print(url)
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
-        data = urllib.request.Request(urls, headers=headers)
+        data = urllib.request.Request(url, headers=headers)
         data = urllib.request.urlopen(data).read()
         soup = BeautifulSoup(data, "html.parser")
-        divTags = soup.find_all("div", {
-                                 "class": "src-components-common-base-__P-module___m src-components-ExperienceDetail-Article-__InfoBlock-module___content"})
-        divTagss = soup.find_all("div", {
-                                 "class": "src-components-common-base-__P-module___l src-components-ExperienceDetail-Article-__SectionBlock-module___content"})
-        compound = []
+        divTag = soup.find_all("div", {
+                            "class": "src-components-CompanyAndJobTitle-InterviewExperiences-__InterviewExperiences-module___container"})
 
-        for tag in divTags:
+        for tag in divTag:
+            tdTags = tag.find("a").get('href')
 
-            if tag.string is None:
-                tag.string = 'wrong'
-                compound.append(str(tag.string))
+            urls = 'https://www.goodjob.life'+tdTags
+            print(urls)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
+            data = urllib.request.Request(urls, headers=headers)
+            data = urllib.request.urlopen(data).read()
+            soup = BeautifulSoup(data, "html.parser")
+            divTags = soup.find_all("div", {
+                                    "class": "src-components-common-base-__P-module___m src-components-ExperienceDetail-Article-__InfoBlock-module___content"})
+            divTagss = soup.find_all("div", {
+                                    "class": "src-components-common-base-__P-module___l src-components-ExperienceDetail-Article-__SectionBlock-module___content"})
+            compound = []
 
-            else:
-                compound.append(str(tag.string))
+            for tag in divTags:
 
-        # sql_insert_query = "INSERT INTO comment(company, address) VALUES (%s, %s)"
+                if tag.string is None:
+                    tag.string = 'wrong'
+                    compound.append(str(tag.string))
 
-        # cursor.execute(sql_insert_query, [compound[0], compound[1]])
-        # mydb.commit()
-        for tag2 in divTagss:
-            if tag2.string is not None:
+                else:
+                    compound.append(str(tag.string))
 
-                compound.append(str(tag2.string))
+            # sql_insert_query = "INSERT INTO comment(company, address) VALUES (%s, %s)"
 
-                # print(compound)
+            # cursor.execute(sql_insert_query, [compound[0], compound[1]])
+            # mydb.commit()
+            for tag2 in divTagss:
+                if tag2.string is not None:
 
-        print(len(compound))
-        if len(compound)>8:
-            sql_insert_query = "INSERT INTO comment(company, address,title,length,comment_date,hire_status,interview_experience,interview_prepare) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-            cursor = mydb.cursor()
-            if compound[8]=='wrong':
-                cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
-                                                compound[3], compound[4], compound[5], compound[9], compound[10]])
-                mydb.commit()
+                    compound.append(str(tag2.string))
 
-            elif compound[4]=='錄取':
-                cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],'wrong', compound[3], 'wrong', compound[7], compound[8]])
-                mydb.commit()
-            
-            elif compound[8]=='詢問家庭狀況':
-                cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-                mydb.commit()
-            elif compound[8]=='未錄取':
-                cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-                mydb.commit()
-            elif compound[8]=='未通知':
-                cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-                mydb.commit()
-            elif compound[8]=='沒通知':
-                cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-                mydb.commit()
-            else:
-                try:
+                    # print(compound)
+
+            print(len(compound))
+            if len(compound)>8:
+                sql_insert_query = "INSERT INTO comment(company, address,title,length,comment_date,hire_status,interview_experience,interview_prepare) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+                cursor = mydb.cursor()
+                if compound[8]=='wrong':
                     cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
-                                                    compound[3], compound[4], compound[5], compound[8], compound[9]])
-                except:
-                    cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
-                                                    compound[3], compound[4], compound[5], compound[7], compound[7]])
+                                                    compound[3], compound[4], compound[5], compound[9], compound[10]])
+                    mydb.commit()
 
-                mydb.commit()
+                elif compound[4]=='錄取':
+                    cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],'wrong', compound[3], 'wrong', compound[7], compound[8]])
+                    mydb.commit()
+                
+                elif compound[8]=='詢問家庭狀況':
+                    cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
+                    mydb.commit()
+                elif compound[8]=='未錄取':
+                    cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
+                    mydb.commit()
+                elif compound[8]=='未通知':
+                    cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
+                    mydb.commit()
+                elif compound[8]=='沒通知':
+                    cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
+                    mydb.commit()
+                else:
+                    try:
+                        cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
+                                                        compound[3], compound[4], compound[5], compound[8], compound[9]])
+                    except:
+                        cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
+                                                        compound[3], compound[4], compound[5], compound[7], compound[7]])
 
-# compound=[]
-# compound.append(tag.string)
-# compound.append(tag2.string)
-# print(compound)
+                    mydb.commit()
+
+    # compound=[]
+    # compound.append(tag.string)
+    # compound.append(tag2.string)
+    # print(compound)
