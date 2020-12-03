@@ -3,5 +3,5 @@
         "./frontend",  "./backtend"
       ],
     "git.ignoreLimitWarning": true,
-    "python.pythonPath": "C:\\Users\\zoetw\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.pythonPath": "C:\\Users\\zoe\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
 }
