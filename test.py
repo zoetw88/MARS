@@ -25,7 +25,11 @@ mydb = mysql.connector.connect(
 compound = []
 # engine = sqlalchemy.create_engine(f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:3306/{DB_DATABASE}')
 Links = []
-
+if(mydb):
+    print("Connect to mysql successfully!")
+else:
+    print("Oops, connect to mysql unsuccessfully.")
+cursor = mydb.cursor()
 for i in range(1, 2):
     company = urllib.parse.quote('廣達電腦股份有限公司')
     converted_num = str(i)
@@ -62,6 +66,11 @@ for i in range(1, 2):
 
                 print(tag.string)
                 compound.append(str(tag.string))
+        
+        sql_insert_query = "INSERT INTO comment(company, address) VALUES (%s, %s)"
+        
+        cursor.execute(sql_insert_query, [compound[0], compound[1]])
+        mydb.commit()
         for tag2 in divTagss:
             if tag2.string is not None:
 
@@ -69,14 +78,11 @@ for i in range(1, 2):
                 compound.append(str(tag3))
 
                 # print(compound)
-if(mydb):
-    print("Connect to mysql successfully!")
-else:
-    print("Oops, connect to mysql unsuccessfully.")
+
 print(compound[0])
 sql_insert_query = "INSERT INTO comment(company, address) VALUES (%s, %s)"
 cursor = mydb.cursor()
-cursor.execute(sql_insert_query, [compound[0], compound[1]])
+cursor.executemany(sql_insert_query, [compound[0], compound[1]])
 mydb.commit()
 
 # compound=[]
