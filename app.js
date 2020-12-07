@@ -26,6 +26,7 @@ var server = app.listen(5000);
 app.use('/api/' + API_VERSION,
     [
         require('./routes/user_route'),
+        require('./routes/salary_route'),
     ]
 );
 

@@ -22,3 +22,7 @@ token:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMwMCwiZW1haWwiOiJ6b2V0dzg4Q
 
 GET http://localhost:5000/api/1.0/user/profile HTTP/1.1
 Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDY3MzM0NDMsImVtYWlsIjoiem9lNzc4N3R3QGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoiZmRzYWZkIiwiaWF0IjoxNjA2NzMzMTQzfQ.rGDFO9lYYnSLtgHQQXgJmntF9mwcMYoPZ6mWIVEZ1RU
+
+###
+
+GET http://localhost:5000/api/1.0/salary HTTP/1.1

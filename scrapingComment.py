@@ -32,7 +32,7 @@ if(mydb):
 else:
     print("Oops, connect to mysql unsuccessfully.")
 cursor = mydb.cursor()
-for x in['台灣積體電路製造股份有限公司','廣達電腦股份有限公司',]:
+for x in['鴻海精密工業股份有限公司','仁寶電腦工業股份有限公司','英業達股份有限公司','台達電子工業股份有限公司']:
     for i in range(1, 15):
         company = urllib.parse.quote(x)
         converted_num = str(i)
