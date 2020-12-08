@@ -25,4 +25,7 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDY3MzM0ND
 
 ###
 
-GET http://localhost:5000/api/1.0/salary HTTP/1.1
+GET http://localhost:5000/api/1.0/salary?company=廣達電腦股份有限公司 HTTP/1.1
+###
+
+GET http://localhost:5000/api/1.0/workinghour HTTP/1.1

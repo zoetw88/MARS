@@ -1,284 +1,175 @@
-function find_id(id_number) {
-    let result = null,
-        tmp = [];
-    window.location.search.substring(1).split("&").forEach(function (item) {
-        tmp = item.split("=");
-        if (tmp[0] === id_number) {
-            result = decodeURIComponent(tmp[1]);
-        }
-    });
-    console.log(result)
-    return result
-}
-
 company='聯發科技股份有限公司'
+year='10'
+axios.get(`/api/1.0/workinghour?company=${company}`)
+.then((res) => {
 
 
-axios.get(`/api/1.0/salary?company=${company}`
-)
-.then((response) => {
-    console.log(response.data)
 
+var margin = {top: 10, left: 30, bottom: 20, right: 10};
+var width = 600 - margin.left - margin.right;
+var height = 400 - margin.top - margin.bottom;
 
-var myData = `date	${response.data[0].company}	${response.data[1].company}	${response.data[2].company}\n\
-1	${response.data[0].salary}	${response.data[1].salary}	${response.data[2].salary}\n\
-2	${response.data[3].salary}	${response.data[4].salary}	${response.data[5].salary}\n\
-3	${response.data[6].salary}	${response.data[7].salary}	${response.data[8].salary}\n\
-4	${response.data[9].salary}	${response.data[10].salary}	${response.data[11].salary}\n\
-5	${response.data[12].salary}	${response.data[13].salary}	${response.data[14].salary}\n\
-6	${response.data[15].salary}	${response.data[16].salary}	${response.data[17].salary}\n\
-7	${response.data[18].salary}	${response.data[19].salary}	${response.data[20].salary}\n\
-8	${response.data[21].salary}	${response.data[22].salary}	${response.data[23].salary}\n\
-9	${response.data[24].salary}	${response.data[25].salary}	${response.data[26].salary}\n\
-10	${response.data[27].salary}	${response.data[28].salary}	${response.data[29].salary}\n`;
+var numberOfPoints = 100;
+var pointRadius = 9;
 
+d3.json('../../json/chart2.json', function(data) {
+    var labels = d3.set(data.map(function(d) {
+        return d.label;
+    })).values();
 
-        var margin = {
-            top: 20,
-            right: 80,
-            bottom: 80,
-            left: 80
-        },
-            width = 900 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+    var xExtent = d3.extent(data, function(d) { return d.x });
+    var yExtent = d3.extent(data, function(d) { return d.y });
+    var xRange = xExtent[1] - xExtent[0];
+    var yRange = yExtent[1] - yExtent[0];
 
-        // var parseDate = d3.time.format("%Y%m%d").parse;
+    var xScale = d3.scale.linear()
+        .domain([xExtent[0] - xRange*0.1, xExtent[1] + xRange*0.1])
+        .range([0, width]);
 
-        var x = d3.scale.linear()
-            .range([0, width]);
+    var yScale = d3.scale.linear()
+        .domain([yExtent[0] - yRange*0.1, yExtent[1] + yRange*0.1])
+        .range([height, 0]);
 
-        var y = d3.scale.linear()
-            .range([height, 0]);
+    var colourScale = d3.scale.ordinal()
+        .domain(labels)
+        .range(['#e41a1c', '#377eb8', '#4daf4a']);
 
-        var color = d3.scale.category10();
+    var shapeScale = d3.scale.ordinal()
+        .domain(labels)
+        .range([d3_shape.symbolCircle, d3_shape.symbolCross,
+            d3_shape.symbolSquare]);
 
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .orient("bottom");
+    var svg = d3.select('#container').append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .style('position', 'absolute')
+        .style('z-index', 1)
+        .append('g')
+        .attr("transform", "translate(" + margin.left + "," +
+            margin.top + ")");
 
-        var yAxis = d3.svg.axis()
-            .scale(y)
-            .orient("left");
+    var canvas = d3.select('#container').append('canvas')
+        .attr('width', width - 1)
+        .attr('height', height - 1)
+        .style('position', 'absolute')
+        .style('z-index', 2)
+        .style("transform", "translate(" + (margin.left + 1) +
+            "px" + "," + (margin.top + 1) + "px" + ")");
 
-        var line = d3.svg.line()
-            .interpolate("basis")
-            .x(function (d) {
-                return x(d.date);
-            })
-            .y(function (d) {
-                return y(d.temperature);
-            });
+    var context = canvas.node().getContext('2d');
 
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    d3.select("#container")
+        .style("width", width + margin.left + margin.right + 'px')
+        .style("height", height + margin.top + margin.bottom + "px");
 
-        var data = d3.tsv.parse(myData);
+    var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .innerTickSize(-height)
+        .outerTickSize(0)
+        .tickPadding(10)
+        .orient('bottom');
 
-        color.domain(d3.keys(data[0]).filter(function (key) {
-            return key !== "date";
-        }));
+    var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .innerTickSize(-width)
+        .outerTickSize(0)
+        .orient('left');
 
-        data.forEach(function (d) {
-            d.date = d.date
-        });
+    var xAxisSvg = svg.append('g')
+        .attr('class', 'axis')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(xAxis);
 
-        var cities = color.domain().map(function (name) {
-            return {
-                name: name,
-                values: data.map(function (d) {
-                    return {
-                        date: d.date,
-                        temperature: +d[name]
-                    };
-                })
-            };
-        });
+    var yAxisSvg = svg.append('g')
+        .attr('class', 'axis')
+        .call(yAxis);
 
-        x.domain(d3.extent(data, function (d) {
-            return d.date;
-        }));
+    // create zooming/panning behaviour
+    var zoomBehaviour = d3.behavior.zoom()
+        .x(xScale)
+        .y(yScale)
+        .scaleExtent([1, 5])
+        .on('zoom', onZoom);
 
-        y.domain([
-            d3.min(cities, function (c) {
-                return d3.min(c.values, function (v) {
-                    return v.temperature;
-                });
-            }),
-            d3.max(cities, function (c) {
-                return d3.max(c.values, function (v) {
-                    return v.temperature;
-                });
-            })
-        ]);
+    canvas.call(zoomBehaviour);
 
-        var legend = svg.selectAll('g')
-            .data(cities)
-            .enter()
-            .append('g')
-            .attr('class', 'legend');
+    // add legend
+    var legendWidth = 100;
+    var legendHeight = 90;
 
-        legend.append('rect')
-            .attr('x', width - 170)
-            .attr('y', function (d, i) {
-                return i * 20;
-            })
-            .attr('width', 10)
-            .attr('height', 10)
-            .style('fill', function (d) {
-                return color(d.name);
-            });
+    var legend = d3.select('#legend').append('svg')
+        .attr('width', legendWidth)
+        .attr('height', legendHeight);
+
+    legend.append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', legendWidth)
+        .attr('height', legendHeight)
+        .attr('stroke', 'black')
+        .attr('fill', 'white');
+
+    labels.forEach(function(d, i) {
+        var x = pointRadius + 10;
+        var y = 23 + i * 20;
+
+        var symbol = d3_shape.symbol()
+            .type(shapeScale(d))
+            .size(pointRadius * pointRadius);
+
+        legend.append('path')
+            .attr('d', symbol)
+            .attr('fill', colourScale(d))
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1)
+            .attr('transform', 'translate(' + x + ',' + y + ')');
 
         legend.append('text')
-            .attr('x', width - 150)
-            .attr('y', function (d, i) {
-                return (i * 20) + 9;
-            })
-            .text(function (d) {
-                return d.name;
-            });
-        svg.append("text")             
-            .attr("transform",
-                  "translate(" + (width/2) + " ," + 
-                                 (height + margin.top + 20) + ")")
-            .style("text-anchor", "middle")
-            .text("年資");
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis)
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform",  "translate(0," + height + ")")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("年薪 ($NT)");
+            .attr('class', 'legend')
+            .attr('x', pointRadius + 20)
+            .attr('y', y)
+            .attr('dominant-baseline', 'central')
+            .text(d);
+    });
 
-        var city = svg.selectAll(".city")
-            .data(cities)
-            .enter().append("g")
-            .attr("class", "city");
+    draw();
 
-        city.append("path")
-            .attr("class", "line")
-            .attr("d", function (d) {
-                return line(d.values);
-            })
-            .style("stroke", function (d) {
-                return color(d.name);
-            });
+    // draw points
+    function draw() {
+        console.log('draw');
 
-        city.append("text")
-            .datum(function (d) {
-                return {
-                    name: d.name,
-                    value: d.values[d.values.length - 1]
-                };
-            })
-            .attr("transform", function (d) {
-                return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")";
-            })
-            .attr("x", 3)
-            .attr("dy", ".35em")
-            .text(function (d) {
-                return d.name;
-            });
+        context.clearRect(0, 0, width, height);
 
-        var mouseG = svg.append("g")
-            .attr("class", "mouse-over-effects");
+        data.forEach(function(d) {
+            var x = Math.round(xScale(d.x));
+            var y = Math.round(yScale(d.y));
 
-        mouseG.append("path") // this is the black vertical line to follow mouse
-            .attr("class", "mouse-line")
-            .style("stroke", "black")
-            .style("stroke-width", "1px")
-            .style("opacity", "0");
+            var symbol = d3_shape.symbol()
+                .type(shapeScale(d.label))
+                .size(pointRadius * pointRadius)
+                .context(context);
 
-        var lines = document.getElementsByClassName('line');
+            context.translate(x, y);
+            context.fillStyle = colourScale(d.label);
+            context.beginPath();
+            symbol();
+            context.closePath();
+            context.fill();
+            context.stroke();
+            context.translate(-x, -y);
+        });
+    }
 
-        var mousePerLine = mouseG.selectAll('.mouse-per-line')
-            .data(cities)
-            .enter()
-            .append("g")
-            .attr("class", "mouse-per-line");
+    function onClick(e) {
+        console.log('click!!');
+    }
 
-        mousePerLine.append("circle")
-            .attr("r", 7)
-            .style("stroke", function (d) {
-                return color(d.name);
-            })
-            .style("fill", "none")
-            .style("stroke-width", "1px")
-            .style("opacity", "0");
+    function onZoom() {
+        console.log('onZoom');
 
-        mousePerLine.append("text")
-            .attr("transform", "translate(10,3)");
-
-        mouseG.append('svg:rect') // append a rect to catch mouse movements on canvas
-            .attr('width', width) // can't catch mouse events on a g element
-            .attr('height', height)
-            .attr('fill', 'none')
-            .attr('pointer-events', 'all')
-            .on('mouseout', function () { // on mouse out hide line, circles and text
-                d3.select(".mouse-line")
-                    .style("opacity", "0");
-                d3.selectAll(".mouse-per-line circle")
-                    .style("opacity", "0");
-                d3.selectAll(".mouse-per-line text")
-                    .style("opacity", "0");
-            })
-            .on('mouseover', function () { // on mouse in show line, circles and text
-                d3.select(".mouse-line")
-                    .style("opacity", "1");
-                d3.selectAll(".mouse-per-line circle")
-                    .style("opacity", "1");
-                d3.selectAll(".mouse-per-line text")
-                    .style("opacity", "1");
-            })
-            .on('mousemove', function () { // mouse moving over canvas
-                var mouse = d3.mouse(this);
-                d3.select(".mouse-line")
-                    .attr("d", function () {
-                        var d = "M" + mouse[0] + "," + height;
-                        d += " " + mouse[0] + "," + 0;
-                        return d;
-                    });
-
-                d3.selectAll(".mouse-per-line")
-                    .attr("transform", function (d, i) {
-                        console.log(width / mouse[0])
-                        var xDate = x.invert(mouse[0]),
-                            bisect = d3.bisector(function (d) { return d.date; }).right;
-                        idx = bisect(d.values, xDate);
-
-                        var beginning = 0,
-                            end = lines[i].getTotalLength(),
-                            target = null;
-
-                        while (true) {
-                            target = Math.floor((beginning + end) / 2);
-                            pos = lines[i].getPointAtLength(target);
-                            if ((target === end || target === beginning) && pos.x !== mouse[0]) {
-                                break;
-                            }
-                            if (pos.x > mouse[0]) end = target;
-                            else if (pos.x < mouse[0]) beginning = target;
-                            else break; //position found
-                        }
-
-                        d3.select(this).select('text')
-                            .text(y.invert(pos.y).toFixed(2));
-
-                        return "translate(" + mouse[0] + "," + pos.y + ")";
-                    });
-            });
-   
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-        
+        draw();
+        xAxisSvg.call(xAxis);
+        yAxisSvg.call(yAxis);
+    }
+});
+})

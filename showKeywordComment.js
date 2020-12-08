@@ -20,7 +20,7 @@ async function test() {
 
     let tf;
     // console.log('ok')
-    result_comment = await extract_comments('廣達電腦股份有限公司', '機構工程師')
+    result_comment = await extract_comments('台灣積體電路製造股份有限公司', '製程工程師')
     result__total_comment = await extract_comments_company('台灣積體電路製造股份有限公司')
     console.log(result__total_comment.result.length)
     for (let i = 0; i < result_comment.result.length; i++) {
@@ -79,7 +79,7 @@ async function test() {
         let tempcounts = othercounts[j];
         if (tempcounts[key]&& a<0) {
           counter[key].df++;
-          console.log(key,counter[key].df)
+          
         }
       }
     }
