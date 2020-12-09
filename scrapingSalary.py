@@ -32,12 +32,13 @@ if(mydb):
 else:
     print("Oops, connect to mysql unsuccessfully.")
 cursor = mydb.cursor()
-for x in ['鴻海精密工業股份有限公司','仁寶電腦工業股份有限公司','英業達股份有限公司','台達電子工業股份有限公司']:
+# '聯發科技股份有限公司','聯華電子股份有限公司','台灣康寧顯示玻璃股份有限公司','台灣美光記憶體股份有限公司','緯穎科技服務股份有限公司'
+# '友達光電','泰金寶電通股份有限公司','日月光半導體製造股份有限公司','啟碁科技股份有限公司','晨星半導體股份有限公司','IBM','力成科技股份有限公司','HTC','瑞昱半導體股份有限公司','華碩電腦股份有限公司','群創光電股份有限公司','光寶科技股份有限公司','大立光電股份有限公司','京元電子股份有限公司'
+for x in ['友達光電','泰金寶電通股份有限公司','日月光半導體製造股份有限公司','啟碁科技股份有限公司','晨星半導體股份有限公司','IBM','力成科技股份有限公司','HTC','瑞昱半導體股份有限公司']:
     for i in range(1, 15):
         company = urllib.parse.quote(x)
         converted_num = str(i)
-        url = 'https://www.goodjob.life/companies/' + \
-            company+'/salary-work-times?p='+str(i)
+        url = 'https://www.goodjob.life/companies/' + company+'/salary-work-times?p='+str(i)
 
         print(url)
         headers = {

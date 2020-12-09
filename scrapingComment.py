@@ -32,7 +32,7 @@ if(mydb):
 else:
     print("Oops, connect to mysql unsuccessfully.")
 cursor = mydb.cursor()
-for x in['鴻海精密工業股份有限公司','仁寶電腦工業股份有限公司','英業達股份有限公司','台達電子工業股份有限公司']:
+for x in['鴻海精密工業股份有限公司','和碩聯合科技股份有限公司','仁寶電腦工業股份有限公司','群聯電子股份有限公司','英業達股份有限公司','台達電子工業股份有限公司','GARMIN','台灣積體電路製造股份有限公司','緯創資通股份有限公司','廣達電腦股份有限公司']:
     for i in range(1, 15):
         company = urllib.parse.quote(x)
         converted_num = str(i)
@@ -85,6 +85,9 @@ for x in['鴻海精密工業股份有限公司','仁寶電腦工業股份有限�
                     # print(compound)
 
             print(len(compound))
+            if(compound[3].rfind('年')>0):
+                compound[3]=compound[3].rstrip('年')
+
             if len(compound)>8:
                 sql_insert_query = "INSERT INTO comment(company, address,title,length,comment_date,hire_status,interview_experience,interview_prepare) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
                 cursor = mydb.cursor()

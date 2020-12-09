@@ -11,7 +11,9 @@ var fpgrowth = new FPGrowth(.3);
 fpgrowth.on('data', function (itemset) {
     var support = itemset.support;
     var items = itemset.items;
+
     console.log( `${items} 支持度 ${support}`);
+
 });
 fpgrowth.exec(dataSet)
 

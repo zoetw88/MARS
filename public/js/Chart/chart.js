@@ -5,14 +5,14 @@ axios.get(`/api/1.0/workinghour?company=${company}`)
 
 
 
-var margin = {top: 10, left: 30, bottom: 20, right: 10};
+var margin = {top: 10, left: 50, bottom: 20, right: 10};
 var width = 600 - margin.left - margin.right;
 var height = 400 - margin.top - margin.bottom;
 
 var numberOfPoints = 100;
 var pointRadius = 9;
 
-d3.json('../../json/chart2.json', function(data) {
+d3.json('../../json/chart.json', function(data) {
     var labels = d3.set(data.map(function(d) {
         return d.label;
     })).values();
@@ -23,7 +23,7 @@ d3.json('../../json/chart2.json', function(data) {
     var yRange = yExtent[1] - yExtent[0];
 
     var xScale = d3.scale.linear()
-        .domain([xExtent[0] - xRange*0.1, xExtent[1] + xRange*0.1])
+        .domain([xExtent[0] - xRange*10, xExtent[1] + xRange*0.1])
         .range([0, width]);
 
     var yScale = d3.scale.linear()
