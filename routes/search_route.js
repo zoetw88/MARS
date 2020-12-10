@@ -4,7 +4,7 @@ const {wrapAsync} = require('../utils/utils');
 const {
     getSalary,
     getWorkingHour
-} = require('../controllers/salary_controller');
+} = require('../controllers/search_controller');
 
 
 router.route('/salary')

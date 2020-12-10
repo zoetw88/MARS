@@ -26,13 +26,20 @@ var server = app.listen(5000);
 app.use('/api/' + API_VERSION,
     [
         require('./routes/user_route'),
-        require('./routes/salary_route'),
+        require('./routes/search_route'),
     ]
 );
 
 
 app.use(bodyparser.json());
-
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
 // Page not found
 app.use(function(req, res, next) {
   res.status(404).sendFile(__dirname + '/public/404.html');

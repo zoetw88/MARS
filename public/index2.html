@@ -11,25 +11,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/png">
 
     <!--====== Flaticon CSS ======-->
-    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="./assets/css/flaticon.css">
 
     <!--====== Font Awesome CSS ======-->
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
 
     <!--====== Nice Select CSS ======-->
-    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="./assets/css/nice-select.css">
 
     <!--====== Bootstrap CSS ======-->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
 
     <!--====== Default CSS ======-->
-    <link rel="stylesheet" href="assets/css/default.css">
+    <link rel="stylesheet" href="./assets/css/default.css">
 
     <!--====== Style CSS ======-->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
 
 
 
@@ -174,17 +174,18 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="header-banner-content">
-                            <h5 class="sub-title">A complete Job Portal for diverse people</h5>
-                            <h2 class="main-title">Talent? Meet opportunity.</h2>
+                            <h5 class="sub-title">我們致力於讓你的工作職涯一帆風順</h5>
+                            <h2 class="main-title">你的專業導航員 MARS</h2>
 
                             <div class="header-search">
                                 <div class="search-form">
-                                    <input type="text" placeholder="Search For opportunity">
-                                    <select>
+                                    <input id='company' type="text" placeholder="公司" required>
+                                    <input id='title' type="text" placeholder="職稱" required>
+                                    <!-- <select>
                                         <option value="0">Jobs</option>
                                         <option value="1">People</option>
-                                    </select>
-                                    <button class="main-btn">Search now <i class="fa fa-search"></i></button>
+                                    </select> -->
+                                    <button class="main-btn"onclick="search()" >Search now <i class="fa fa-search"></i></button>
                                 </div>
                                 <div class="header-sign">
                                     <p><a href="register.html">Sign up now</a> to get started!</p>
@@ -777,27 +778,27 @@
     <!--====== PART ENDS ======-->
 
     <!-- row -->
-
-
+            
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--====== Jquery js ======-->
-    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/vendor/modernizr-3.7.1.min.js"></script>
 
     <!--====== Bootstrap js ======-->
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/popper.min-min.js"></script>
 
 
     <!--====== Nice Select js ======-->
-    <script src="assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
 
     <!--====== Counter Up js ======-->
-    <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.js"></script>
-
-
+    <script src="./assets/js/waypoints.min.js"></script>
+    <script src="./assets/js/jquery.counterup.js"></script>
+    <!--====== search js ======-->
+    <script src="./assets/js/main-search.js"></script>
     <!--====== Main js ======-->
-    <script src="assets/js/main.js"></script>
+    <script src="./assets/js/main.js"></script>
 
 </body>
 

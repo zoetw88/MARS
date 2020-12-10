@@ -2,18 +2,21 @@ const {
     salary,
     working_hour,
     test
-} = require('../models/salary_model');
+} = require('../models/search_model');
 
 const fs = require('fs');
 const getSalary = async (req, res) => {
     try {
-        let company= req.query.company;
-        let ip=req.ip
-        let title=req.query.title
-        let result = await salary(company,title)
-        let sendJSON =await JSON.stringify(result)
-         console.log(result)
+        let {title} = req.query
+        let {company} = req.query
       
+        let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        if (ip.substr(0, 7) == "::ffff:") {
+            ip = ip.substr(7)
+        }
+        let result = await salary(company, title, ip)
+        console.log('ok')
+        let sendJSON = await JSON.stringify(result)
         await fs.writeFile('C:/Users/zoetw/Documents/GitHub/WenChang/public/json/chart2.json',sendJSON,function(err, result) {
             if(err) console.log('error', err);
             console.log('done');

@@ -1,17 +1,4 @@
-company = '鴻海精密工業股份有限公司'
-title = '軟體工程師'
-
-
-axios.get(`/api/1.0/salary?company=${company}&title=${title}`)
-  .then((response) => {
-    console.log('salary ok')
-    barChart()
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-  function barChart(){
-  Plotly.d3.json('../../json/chart2.json', function(figure){
+Plotly.d3.json('../../json/chart2.json', function(figure){
 
     var trace1 = {
       x:figure[0].x,
@@ -45,4 +32,4 @@ axios.get(`/api/1.0/salary?company=${company}&title=${title}`)
     Plotly.newPlot('pie', data, layout);
   });
 
-  }
+
