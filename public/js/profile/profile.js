@@ -1,13 +1,11 @@
-
+let test = document.getElementById('user-profile-name')
+test.value="test"
+alert('ok')
 if ( localStorage.getItem("token")) {
-  console.log("ok");
+  
+alert('ok')
 
-}
-else {
-  console.log("no token");
-  window.location.href="/login.html";}
-
-axios.get("/api/1.0/user/member.html",
+axios.get("/api/1.0/member",
   {
       headers: {
         "Content-Type": "application/json",
@@ -16,7 +14,7 @@ axios.get("/api/1.0/user/member.html",
     }
   )
   .then(res=> {
-    window.location.href="/index2.html"
+    
     console.log("Back to profile.html")
     console.log(res.data);
     let name = res.data.user.name;
@@ -35,3 +33,8 @@ axios.get("/api/1.0/user/member.html",
   }
  
   
+
+}
+else {
+  console.log("no token");
+  window.location.href="/login.html";}

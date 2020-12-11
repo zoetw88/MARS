@@ -40,10 +40,12 @@ const verifyToken = async (req, res, next) => {
 
     if (typeof bearerHeader !== 'undefined') {
         const bearerToken = bearerHeader.split(' ')[1]
-        jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (err, data) => {
-            console.log(bearerToken)
+        jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
             if (error) return error
-            res.json('ok')
+            console.log(bearerToken)
+            
+            console.log('ok')
+            next()
           
         })
     } else {
@@ -110,8 +112,7 @@ const signIn = async (req, res) => {
     }
 }
 const getUserProfile = async (req, res) => {
-    const token = req.header('Authorization')
-    console.log(token)
+    
     const profile = await User.getUserProfile(req.decoded);
     if (profile.error) {
         res.status(403).send({
