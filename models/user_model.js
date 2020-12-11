@@ -9,8 +9,9 @@ const {TOKEN_EXPIRE,ACCESS_TOKEN_SECRET} = process.env
 const signUp = async (name,nickname, email, password) => {
     try {
         await transaction();
+       
         const emails = await query('SELECT email FROM user WHERE email = ? FOR UPDATE', [email]);
-      
+
         if (emails.length > 0){
             await commit();
             return {error: 'Email Already Exists'};
@@ -38,7 +39,6 @@ const signUp = async (name,nickname, email, password) => {
               
         
         result = await query('INSERT INTO user Set?', users);
-      
         await commit();  
         return {data};
     } catch (error) {
@@ -56,7 +56,7 @@ const nativeSignIn = async (email, password) => {
          
             const auth = await bcrypt.compare(password, result[0].password);
             if (auth) {
-                console.log('ok')
+           
                 access_token = jwt.sign({
                     exp:Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
                     email:email,
@@ -131,9 +131,9 @@ const getUserProfile = async (email) => {
             data:{
                 id: results[0].id,
                 provider: results[0].provider,
-                name: results[0].nickname,
+                nickname: results[0].nickname,
                 email: results[0].email,
-                picture: results[0].picture
+                // picture: results[0].picture
             }
         };
     }

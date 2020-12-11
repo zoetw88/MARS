@@ -5,7 +5,8 @@ const {
     signUp,
     signIn,
     getUserProfile,
-    verifyToken
+    verifyToken,
+    logout
 } = require('../controllers/user_controller');
 
 router.route('/user/signup')
@@ -13,6 +14,10 @@ router.route('/user/signup')
 
 router.route('/user/signin')
     .post(wrapAsync(signIn));
+
+
+router.route('/user/logout')
+    .get(wrapAsync(logout));
 
 router.route('/member')
     .get(verifyToken,wrapAsync(getUserProfile));

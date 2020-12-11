@@ -2,6 +2,7 @@
 	<link rel="stylesheet" href="./css/login.css">
 </head>
 <h2>你正在MARS海關檢查站中........</h2>
+<p id='message'></p>
 <body>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
@@ -13,10 +14,10 @@
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your email for registration</span>
-			<input type="text" id="sing_up_name"placeholder="Name" />
-			<input type="text" id="sing_up_nickname" placeholder="Nickname" />
-			<input type="email" id="sing_up_email" placeholder="Email" />
-			<input type="password" id="sing_up_password" placeholder="Password" />
+			<input type="text" id="sing_up_name"placeholder="Name" required>
+			<input type="text" id="sing_up_nickname" placeholder="Nickname" required>
+			<input type="email" id="sing_up_email" placeholder="Email" required>
+			<input type="password" id="sing_up_password" placeholder="Password" required>
 			<button onclick="signup()">Sign Up</button>
 		</form>
 	</div>
@@ -29,10 +30,13 @@
 				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 			</div>
 			<span>or use your account</span>
-			<input type="email" id="login_email"placeholder="Email" />
-			<input type="password"id="login_password" placeholder="Password" />
+			<input type="email" id="login_email"placeholder="Email" required>
+			<input type="password"id="login_password" placeholder="Password" required>
 			<a href="#">Forgot your password?</a>
 			<button onclick="login()">Sign In</button>
+			<br>
+			<br>
+			<buttion onclick='logout()'>log out</buttion>
 		</form>
 	</div>
 	<div class="overlay-container">

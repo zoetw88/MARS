@@ -9,8 +9,6 @@ const getSalary = async (req, res) => {
     try {
         let {title} = req.query
         let {company} = req.query
-        console.log(title)
-        console.log(company)
         let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         if (ip.substr(0, 7) == "::ffff:") {
             ip = ip.substr(7)
@@ -39,7 +37,6 @@ const getWorkingHour = async (req, res) => {
             company
         } = req.query;
       
-
         let result = await working_hour(company)
         let sendJSON =await JSON.stringify(result)
         console.log(result)

@@ -2,9 +2,6 @@ let test = document.getElementById('user-profile-name')
 test.value="test"
 alert('ok')
 if ( localStorage.getItem("token")) {
-  
-alert('ok')
-
 axios.get("/api/1.0/member",
   {
       headers: {
@@ -14,12 +11,8 @@ axios.get("/api/1.0/member",
     }
   )
   .then(res=> {
-    
-    console.log("Back to profile.html")
-    console.log(res.data);
-    let name = res.data.user.name;
-    let email = res.data.user.email;
-    // add user info to profile.html
+    let name = res.data.data.nickname;
+    let email = res.data.data.email;
     addUserProfile(name, email);
   })
   .catch(err => {
@@ -36,5 +29,5 @@ axios.get("/api/1.0/member",
 
 }
 else {
-  console.log("no token");
+  alert('尚未登入')
   window.location.href="/login.html";}
