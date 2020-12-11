@@ -17,7 +17,7 @@ app.use(express.static('public'));
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(bodyparser.json());
 app.use(morgan('dev'));
-// CORS allow all
+
 app.use(cors());
 
 var server = app.listen(5000);

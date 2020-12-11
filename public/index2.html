@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <!--====== Title ======-->
-    <title>JobMate | Home</title>
+    <title>MARS | Home</title>
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -139,12 +139,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="blog.html">Blog</a>
-                                
-                                <ul class="sub-menu">
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                </ul>
+                                <a href="/api/1.0/user/member.html">會員中心</a>
                             </li>
                             <li><a href="contact.html">Contact</a></li>
                             <li><a href="login.html">Log In</a></li>
@@ -179,13 +174,15 @@
 
                             <div class="header-search">
                                 <div class="search-form">
-                                    <input id='company' type="text" placeholder="公司" required>
-                                    <input id='title' type="text" placeholder="職稱" required>
+                                <form action="/api/1.0/salary" method="get">
+                                    <input id='company' type="text" placeholder="公司" name="company" required>
+                                    <input id='title' type="text" placeholder="職稱" name="title"required>
                                     <!-- <select>
                                         <option value="0">Jobs</option>
                                         <option value="1">People</option>
                                     </select> -->
-                                    <button class="main-btn"onclick="search()" >Search now <i class="fa fa-search"></i></button>
+                                    <button type =submit class="main-btn" >Search now <i class="fa fa-search"></i></button>
+                                </form>
                                 </div>
                                 <div class="header-sign">
                                     <p><a href="register.html">Sign up now</a> to get started!</p>
@@ -795,6 +792,8 @@
     <!--====== Counter Up js ======-->
     <script src="./assets/js/waypoints.min.js"></script>
     <script src="./assets/js/jquery.counterup.js"></script>
+     <!--====== member ======-->
+    <script src="./assets/js/profile.js"></script>
     <!--====== search js ======-->
     <script src="./assets/js/main-search.js"></script>
     <!--====== Main js ======-->

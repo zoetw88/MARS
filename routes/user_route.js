@@ -14,7 +14,7 @@ router.route('/user/signup')
 router.route('/user/signin')
     .post(wrapAsync(signIn));
 
-router.route('/user/profile')
+router.route('/member')
     .get(verifyToken,wrapAsync(getUserProfile));
 
 

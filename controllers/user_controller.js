@@ -6,16 +6,16 @@ const {
     ACCESS_TOKEN_SECRET
 } = process.env; // 30 days by seconds
 const jwt = require('jsonwebtoken')
+
 const signUp = async (req, res) => {
     let {
         name,
-        nickname
-    } = req.body;
-    const {
+        nickname,
         email,
         password
     } = req.body;
-
+    console.log(name)
+    console.log(email)
     if (!validator.isEmail(email)) {
         res.status(400).send({
             error: 'Request Error: Invalid email format'
@@ -42,12 +42,9 @@ const verifyToken = async (req, res, next) => {
         const bearerToken = bearerHeader.split(' ')[1]
         jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (err, data) => {
             console.log(bearerToken)
-            if (err) return console.log(err)
+            if (error) return error
             res.json('ok')
-            // req.data = data;
-            // req.authenticated = true;
-            // console.log(req.decoded)
-            // next();
+          
         })
     } else {
         res.sendStatus(401);
@@ -85,9 +82,11 @@ const signIn = async (req, res) => {
     try {
         let data = req.body;
         let result;
+        console.log(data)
         switch (data.provider) {
             case 'native':
                 result = await User.nativeSignIn(data.email, data.password);
+        
                 break;
 
             case 'facebook':

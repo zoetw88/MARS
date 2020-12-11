@@ -1,8 +1,10 @@
 function search() {
     let company = document.querySelector("#company").value
     let title = document.querySelector("#title").value
-   
-
+   if (company == null || title==null){
+     alert("請輸入公司及職稱")
+   }
+else{
     axios.get(`/api/1.0/salary?company=${company}&title=${title}`)
         .then((response) => {
             alert('test ok')
@@ -23,5 +25,5 @@ function search() {
                 }
 
         })
-
+      }
 }

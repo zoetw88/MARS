@@ -9,7 +9,8 @@ const getSalary = async (req, res) => {
     try {
         let {title} = req.query
         let {company} = req.query
-      
+        console.log(title)
+        console.log(company)
         let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         if (ip.substr(0, 7) == "::ffff:") {
             ip = ip.substr(7)
@@ -21,7 +22,8 @@ const getSalary = async (req, res) => {
             if(err) console.log('error', err);
             console.log('done');
           });
-        res.status(200).send(result)
+
+        res.redirect("/chart2.html")
     } catch (e) {
         console.log('Catch an error: ', e)
     }

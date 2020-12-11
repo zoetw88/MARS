@@ -49,6 +49,7 @@ const signUp = async (name,nickname, email, password) => {
 const nativeSignIn = async (email, password) => {
     try {
         await transaction();
+        console.log(email)
         const result = await query('SELECT * FROM user WHERE email = ?', [email]);
         if (result.length > 0) {
             await commit();
@@ -63,11 +64,14 @@ const nativeSignIn = async (email, password) => {
                 }, ACCESS_TOKEN_SECRET)
                 data = {
                     nickname: result[0].nickname,
-                    access_expired: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
-                    access_token: access_token,
+                    accessExpired: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
+                    accessToken: access_token,
                     email:email
                 };
                 return {data};
+            }
+            else{
+                return {error: 'password is wrong'};
             }
         }else{
             return {error: 'email is wrong'};
