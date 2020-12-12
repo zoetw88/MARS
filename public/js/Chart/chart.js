@@ -1,11 +1,9 @@
-company='聯發科技股份有限公司'
-year='10'
-axios.get(`/api/1.0/workinghour?company=${company}`)
-.then((res) => {
+// company='聯發科技股份有限公司'
+// year='10'
+// axios.get(`/api/1.0/workinghour?company=${company}`)
+// .then((res) => {
 
-
-
-var margin = {top: 10, left: 50, bottom: 20, right: 10};
+var margin = {top: 10, left: 160, bottom: 70, right: 20};
 var width = 600 - margin.left - margin.right;
 var height = 400 - margin.top - margin.bottom;
 
@@ -23,7 +21,7 @@ d3.json('../../json/chart.json', function(data) {
     var yRange = yExtent[1] - yExtent[0];
 
     var xScale = d3.scale.linear()
-        .domain([xExtent[0] - xRange*10, xExtent[1] + xRange*0.1])
+        .domain([30,100])
         .range([0, width]);
 
     var yScale = d3.scale.linear()
@@ -79,11 +77,24 @@ d3.json('../../json/chart.json', function(data) {
         .attr('class', 'axis')
         .attr('transform', 'translate(0,' + height + ')')
         .call(xAxis);
+    
+    var xAxislabel= svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width/2)
+    .attr("y", height + margin.top + 50)
+    .text("一週工時")
+    
 
     var yAxisSvg = svg.append('g')
         .attr('class', 'axis')
         .call(yAxis);
-
+    var yAxislabel =svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -margin.left+40)
+        .attr("x", -margin.top-100)
+        .text("年薪($NT)")
+    
     // create zooming/panning behaviour
     var zoomBehaviour = d3.behavior.zoom()
         .x(xScale)
@@ -94,12 +105,13 @@ d3.json('../../json/chart.json', function(data) {
     canvas.call(zoomBehaviour);
 
     // add legend
-    var legendWidth = 100;
+    var legendWidth = 350;
     var legendHeight = 90;
 
     var legend = d3.select('#legend').append('svg')
         .attr('width', legendWidth)
-        .attr('height', legendHeight);
+        .attr('height', legendHeight)
+        .attr("transform", function(d) { return "translate(-80,100)"; }) 
 
     legend.append('rect')
         .attr('x', 0)
@@ -125,11 +137,13 @@ d3.json('../../json/chart.json', function(data) {
             .attr('transform', 'translate(' + x + ',' + y + ')');
 
         legend.append('text')
+            .attr("font-size", 30)
             .attr('class', 'legend')
             .attr('x', pointRadius + 20)
             .attr('y', y)
             .attr('dominant-baseline', 'central')
-            .text(d);
+            .text(d)
+            
     });
 
     draw();
@@ -172,4 +186,3 @@ d3.json('../../json/chart.json', function(data) {
         yAxisSvg.call(yAxis);
     }
 });
-})

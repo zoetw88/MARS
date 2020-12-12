@@ -1,6 +1,4 @@
-let test = document.getElementById('user-profile-name')
-test.value="test"
-alert('ok')
+
 if ( localStorage.getItem("token")) {
 axios.get("/api/1.0/member",
   {
