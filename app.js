@@ -29,12 +29,7 @@ app.use(bodyparser.urlencoded({
 }));
 app.use(bodyparser.json());
 app.use(morgan('dev'));
-
 app.use(cors());
-async function test(){
-let test = await query("SELECT * FROM wenChang.message WHERE (sender = 'jeff' AND receiver = 'Zoe')OR(sender = 'Zoe' AND receiver = 'Jeff')")
-console.log(test)}
-test()
 app.use('/api/' + API_VERSION,
   [
     require('./routes/user_route'),
@@ -42,12 +37,45 @@ app.use('/api/' + API_VERSION,
   ]
 );
 
-app.post("/get_messages", function (request, result) {
-  query("SELECT * FROM message WHERE (sender = '" + request.body.sender + "' AND receiver = '" + request.body.receiver + "') OR (sender = '" + request.body.receiver + "' AND receiver = '" + request.body.sender + "')", function (error, messages) {
-    result.end(JSON.stringify(messages));
+app.post("/get_main_messages", async function (req, res) {
+  let {
+    username
+  } = req.body;
+  console.log(username)
+  let final_speaker;
+  let final_speaker_result = await query(`SELECT MAX(id),sender,receiver FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc limit 1`)
+
+  console.log(final_speaker_result)
+  if (final_speaker_result[0].sender != username) {
+    final_speaker = final_speaker_result[0].sender
+
+  } else {
+    final_speaker = final_speaker_result[0].receiver
+  }
+  
+  let main_message = query("SELECT * FROM message WHERE (sender = '" + username + "' AND receiver = '" + final_speaker + "') OR (sender = '" + final_speaker + "' AND receiver = '" + username + "')", function (error, messages) {
+    res.end(JSON.stringify(messages));
   });
 });
-app.use(bodyparser.json());
+
+app.post("/get_select_messages", async function (req, res) {
+  let {
+    chosenName,
+    username
+  } = req.body;
+    await query("SELECT * FROM message WHERE (sender = '" + chosenName + "' AND receiver = '" + username+ "') OR (sender = '" + username + "' AND receiver = '" + chosenName + "')", function (error, messages) {
+   res.end(JSON.stringify(messages));
+  });
+});
+
+app.post("/get_side_messages", async function (req, res) {
+  let {
+    username
+  } = req.body;
+  await query(`SELECT MAX(id),sender,receiver,message FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`, function (error, messages) {
+    res.end(JSON.stringify(messages));
+  });
+});
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
@@ -74,45 +102,35 @@ let sender;
 const io = require('socket.io')(http)
 
 
-io.use(function(socket, next){
+io.use(function (socket, next) {
   console.log("id", socket.handshake.query.id);
   sender = socket.handshake.query.id
   // return the result of next() to accept the connection.
   if (socket.handshake.query.id) {
-      return next();
+    return next();
   }
   // call next() with an Error if you need to reject the connection.
   next(new Error('Authentication error'));
 });
 
 io.on('connection', (socket) => {
-      console.log('socket connected', socket.id)
-      users[sender] = socket.id;
-      socket.on('disconnect', () => {
-        console.log('user disconnected');
-      });
-      socket.on("send_message", function (data) {
-        console.log(data.sender+"say" +data.message+ data.receiver)
-        var socketId = users[data.receiver];
-        io.to(socketId).emit("new_message", data);
-        query("INSERT INTO message (sender, receiver, message) VALUES ('" + data.sender + "', '" + data.receiver + "', '" + data.message + "')", function (error, result) {});
-      });
-  // socket.join(id)
-  // socket.on('new_message', ({ recipients, text }) => {
-  //   recipients.forEach(recipient => {
-  //     const newRecipients = recipients.filter(r => r !== recipient)
-  //     newRecipients.push(id)
-  //     socket.broadcast.to(recipient).emit('receive-message', {
-  //       recipients: newRecipients, sender: id, text
-  //     })
-  //   })
-  // })
+  console.log('socket connected', socket.id)
+  users[sender] = socket.id;
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on("send_message", function (data) {
+    console.log(data.sender + "say" + data.message + data.receiver)
+    var socketId = users[data.receiver];
+    io.to(socketId).emit("new_message", data);
+    query("INSERT INTO message (sender, receiver, message) VALUES ('" + data.sender + "', '" + data.receiver + "', '" + data.message + "')", function (error, result) {});
+  });
+
 })
 if (NODE_ENV != 'production') {
   http.listen(port, () => {
     console.log(`Listening on port: ${port}`);
   });
 }
-
 
 module.exports = app;

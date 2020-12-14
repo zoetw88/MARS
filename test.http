@@ -29,3 +29,30 @@ GET http://localhost:5000/api/1.0/salary?company=台灣積體電路製造股份�
 ###
 
 GET http://localhost:5000/api/1.0/workinghour?company=台達電子工業股份有限公司 HTTP/1.1
+
+###
+POST http://localhost:5000/get_main_messages
+Content-Type: application/json
+
+{
+    "username":"zoe"
+}
+
+###
+
+POST http://localhost:5000/get_select_messages
+Content-Type: application/json
+
+{
+    "username":"zoe",
+    "chosenName":"jeff"
+}
+
+###
+POST http://localhost:5000/get_side_messages
+Content-Type: application/json
+
+{
+ "username":"zoe"
+    
+}
