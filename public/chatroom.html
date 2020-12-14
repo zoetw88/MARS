@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <form onclick="enterName();">
+        <input id="name" placeholder="Enter name">
+        <input type="submit">
+    </form>
+
+    <ul id="users"></ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <form onclick="sendMessage();">
+        <input id="message" placeholder="Enter message">
+        <input type="submit">
+    </form>
+
+    <ul id="messages"></ul>
+
+    <script>
+        function sendMessage() {
+            event.preventDefault();
+            // get message
+            var message = document.getElementById("message").value;
+
+            // send message to server
+            socket.emit("send_message", {
+                sender: sender,
+                receiver: receiver,
+                message: message
+            });
+
+            // append your own message
+            var html = "";
+            html += "<li>You said: " + message + "</li>";
+
+            document.getElementById("messages").innerHTML += html;
+
+            // prevent form from submitting
+            return false;
+        }
+
+        // listen from server
+        socket.on("new_message", function (data) {
+            var html = "";
+            html += "<li>" + data.sender + " says: " + data.message + "</li>";
+
+            document.getElementById("messages").innerHTML += html;
+        });
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        var receiver = "";
+        var sender = "";
+        const socket = io();
+
+        socket.emit('new_message', "Hello Server!");
+
+        function enterName() {
+            event.preventDefault();
+            var name = document.getElementById("name").value;
+            socket.emit("user_connected", name);
+            sender = name;
+            return false;
+        }
+
+
+        socket.on("user_connected", function (username) {
+            var html = "";
+            html += "<li><button onclick='onUserSelected(this.innerHTML);'>" + username + "</button></li>";
+
+            document.getElementById("users").innerHTML += html;
+            console.log(username)
+        });
+
+        function onUserSelected(username) {
+
+            receiver = username;
+           
+            axios.post(`http://localhost:5000/get_messages`)
+                .then((response) => {
+                    console.log("message_get")
+
+                    var messages = response
+                    var html = "";
+
+                    for (var a = 0; a < messages.length; a++) {
+                        html += "<li>" + messages[a].sender + " says: " + messages[a].message + "</li>";
+                    }
+
+                    // append in list
+                    document.getElementById("messages").innerHTML += html;
+
+                })
+                .catch((error) => {
+                    console.log(error)
+                    if (!error.response) {
+                        // network error
+                    } else {
+                        // http status code
+                        const code = error.response.status
+                        // response data
+                        const response = error.response.data
+                        console.loge(code)
+                        console.log(response)
+                    }
+
+                })
+            }
+    </script>
+</body>
+
+</html>

@@ -15,6 +15,7 @@ const signUp = async (req, res) => {
         password
     } = req.body;
     console.log(name)
+    
     if(validator.isEmpty(name)||validator.isEmpty(nickname)||validator.isEmpty(password)){
         res.status(400).send({
             result: '資訊不完全'

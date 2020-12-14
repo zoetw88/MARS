@@ -1,10 +1,17 @@
-
 require('dotenv').config();
 const mysql = require('mysql');
 const env = process.env.NODE_ENV || 'production';
 const multipleStatements = (process.env.NODE_ENV === 'test');
-const {DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE, DB_DATABASE_TEST} = process.env;
-const {promisify} = require('util');
+const {
+    DB_HOST,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_DATABASE,
+    DB_DATABASE_TEST
+} = process.env;
+const {
+    promisify
+} = require('util');
 
 const mysqlConfig = {
     production: { // for EC2 machine
@@ -29,7 +36,9 @@ const mysqlConfig = {
 
 
 
-const mysqlCon = mysql.createConnection(mysqlConfig[env], {multipleStatements});
+const mysqlCon = mysql.createConnection(mysqlConfig[env], {
+    multipleStatements
+});
 const promiseQuery = promisify(mysqlCon.query).bind(mysqlCon);
 const promiseTransaction = promisify(mysqlCon.beginTransaction).bind(mysqlCon);
 const promiseCommit = promisify(mysqlCon.commit).bind(mysqlCon);
@@ -43,17 +52,11 @@ mysqlCon.connect((err) => {
 
 
 
-module.exports={
-	core: mysql,
+module.exports = {
+    core: mysql,
     query: promiseQuery,
     transaction: promiseTransaction,
     commit: promiseCommit,
     rollback: promiseRollback,
     end: promiseEnd,
 };
-
-
-
-
-
-

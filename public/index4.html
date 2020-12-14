@@ -9,8 +9,6 @@
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--chart-->
-    <link rel="stylesheet" type="text/css" href="./css/chart.css">
 
     <!--====== Favicon Icon ======-->
     <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/png">
@@ -83,7 +81,7 @@
         <div class="header-navbar">
             <div class="container">
                 <nav class="navbar navbar-expand-lg">
-                    <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Logo"></a>
+                    <a class="navbar-brand" href="index2.html"><img src="assets/images/logo.png" alt="Logo"></a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -198,6 +196,9 @@
                         <div class="card-body">
                             <div class="col-sm-6 text-center">
                                 <h2 class="chart-label-1"> 工時與薪水</h2>
+                                <br>
+                                <br>
+                                <h3 id="message-company"></h3>
                                 <div id="legend"></div>
                                 <div id="container" class="chart1"></div>
                             </div>
@@ -211,6 +212,9 @@
                         <div class="card-body">
                             <div class="col-sm-6 text-center">
                                 <h2 class="chart-label-2">年資與薪水</h2>
+                                <br>
+                                <br>
+                                <h3 id="message-salary"></h3>
                                 <div id='pie' class="chart2"></div>
                             </div>
                         </div>
@@ -223,6 +227,17 @@
 
 
     <!--====== COMMENTS PART START ======-->
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="section_title text-center pb-25">
+                <h5 class="sub_title">MARS 面試情報中心</h5>
+                <h3 class="main_title">Interview Top Secret</h3>
+            </div>
+        </div>
+    </div>
+
+    <hr class="line-seprate">
 <section class="trending_jobs pt-75 pb-80 gray-bg">
     <div class="container">
         <div class="cd-testimonials-wrapper cd-container">
@@ -557,17 +572,22 @@
     <!--====== PART ENDS ======-->
 
     <!-- row -->
+    
     <!--axios-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <!--salary-chart-->
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script src="./js/Chart/chart2.js"></script>
+
     <!--scatter-chart-->
     <script data-require="d3@3.5.3" data-semver="3.5.3" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js"></script>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="//d3js.org/d3-path.v0.1.min.js"></script>
     <script src="//d3js.org/d3-shape.v0.6.min.js"></script>
     <script src="./js/Chart/chart.js"></script>
+
+  
     <!--====== Jquery js ======-->
     <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="./assets/js/vendor/modernizr-3.7.1.min.js"></script>
