@@ -15,12 +15,12 @@ router.route('/user/signup')
 router.route('/user/signin')
     .post(wrapAsync(signIn));
 
-
 router.route('/user/logout')
     .get(wrapAsync(logout));
 
 router.route('/member')
     .get(verifyToken,wrapAsync(getUserProfile));
 
-
+router.route('/contact')
+    .get(verifyToken,wrapAsync(getUserProfile));
 module.exports = router;

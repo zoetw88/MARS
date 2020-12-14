@@ -59,7 +59,7 @@ async function signup() {
         if (response.data.data.accessToken) {
           window.localStorage.setItem('token', response.data.data.accessToken);
           setTimeout(function () {
-            window.location.href = "/index2.html"
+            window.location.href = "/index.html"
           }, 1000)
         } 
       })
@@ -95,7 +95,7 @@ async function login() {
           if (response.data.data.accessToken) {
             window.localStorage.setItem('token', response.data.data.accessToken);
             setTimeout(function () {
-              window.location.href = "/index2.html"
+              window.location.href = "/index.html"
             }, 1000)
           } else {
             setTimeout(function () {

@@ -24,7 +24,8 @@
 
     <!--====== Default CSS ======-->
     <link rel="stylesheet" href="./assets/css/default.css">
-
+    <!--====== chatbutton CSS ======-->
+    <link rel="stylesheet" href="./css/chat_button.css">
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="./assets/css/style_dashboard.css">
     <!--====== Comments CSS ======-->
@@ -81,7 +82,7 @@
         <div class="header-navbar">
             <div class="container">
                 <nav class="navbar navbar-expand-lg">
-                    <a class="navbar-brand" href="index2.html"><img src="assets/images/logo.png" alt="Logo"></a>
+                    <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Logo"></a>
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -100,11 +101,9 @@
 
                             <li><a href="login.html">Log In</a></li>
 
-                            <li><a class="main-btn" href="post-job.html">Post a job</a></li>
+                            <li><a class="main-btn" href="post-job.html">寫面試心得</a></li>
                         </ul> <!-- navbar nav -->
                     </div>
-
-
                 </nav>
             </div> <!-- container -->
         </div> <!-- header navbar -->
@@ -469,8 +468,39 @@
     </div> <!-- container -->
 </section>
 
-
-
+<!---chat button-->
+<div class="fab-container">
+    <div class="fab fab-icon-holder">
+        <i class="fa fa-list"></i>
+    </div>
+    <ul class="fab-options">
+        <li>
+            <span class="fab-label">詢問該公司員工</span>
+            <a href="./contact.html">
+            <div class="fab-icon-holder">
+                <i class="fa fa-paper-plane"></i>
+            </div>
+        </a>
+        </li>
+        <li>
+            <span class="fab-label" ></a>聊天室</span>
+           
+            <div class="fab-icon-holder" onClick="window.open('./chat.html');">
+            <i class="fa fa-comments"></i>
+            </div>
+    
+        </li>
+        <li>
+            <span class="fab-label">Feedback</span>
+            <a href="./member.html">
+            <div class="fab-icon-holder">
+                <i class="fa fa-cogs"></i>
+            </div>
+        </a>
+        </li>
+    </ul>
+</div>
+ 
 
     <!--====== FOOTER PART START ======-->
 
@@ -555,21 +585,6 @@
 
     <!--====== BACK TOP TOP PART ENDS ======-->
 
-    <!--====== PART START ======-->
-
-    <!--
-    <section class="">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-">
-                    
-                </div>
-            </div>
-        </div>
-    </section>
--->
-
-    <!--====== PART ENDS ======-->
 
     <!-- row -->
     
