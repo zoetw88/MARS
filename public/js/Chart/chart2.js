@@ -49,23 +49,32 @@ axios.get('../../json/salary.json')
             var data = [trace1]
           }
           var layout = {
-            width: 800,
-            height: 490,
+            width: 520,
+            height:500,
             plot_bgcolor: "transparent",
-            paper_bgcolor: "#FFF3",
+            paper_bgcolor: "transparent",
             showlegend: true,
+            margin: {
+              l:70,
+              r:40,
+              b: 0,
+              t: 50
+            },
             legend: {
+              legend : {
+                orientation: 'h' 
+            },
               bordercolor: "Black",
               borderwidth: 0.5,
               bgcolor: "white",
-              x: 1.7,
-              xanchor: 'right',
+              x: 0.2,
+             
               font: {
 
                 size: 16,
                 color: '#000'
               },
-              y: 1
+              y: -0.6
             },
 
             xaxis: {

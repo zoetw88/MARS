@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="./assets/css/style_dashboard.css">
     <!--====== Comments CSS ======-->
     <link rel="stylesheet" href="css/style.css">
+
+   
 </head>
 
 <body>
@@ -180,39 +182,36 @@
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="section_title text-center pb-25">
-                <h5 class="sub_title">MARS 薪資情報中心</h5>
+                <h4 class="sub_title">MARS 薪資情報中心</h4>
                 <h3 class="main_title">Job Salary PK Report</h3>
             </div>
         </div>
     </div>
 
     <hr class="line-seprate">
+
     <section class="category_area pt-10">
-        <div class="row">
-            <div class="col-md-12 col-lg-6">
-                <div class="mb-3 card">
-                    <div class="card-header-tab card-header-tab-animation card-header">
-                        <div class="card-body">
-                            <div class="col-sm-6 text-center">
-                                <h2 class="chart-label-1"> 工時與薪水</h2>
-                                <br>
-                                <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-6 ">
+                    <div class="mb-3 card">
+                        <div class="card-header-tab card-header-tab-animation card-header">
+                            <div class="card-body">
+                                <h2 class="chart-label-1 text-center"> 工時與薪水</h2>
                                 <h3 id="message-company"></h3>
+                             
+                                <div id="scatter_container" class="chart1"></div>
                                 <div id="legend"></div>
-                                <div id="container" class="chart1"></div>
                             </div>
                         </div>
                     </div>
+    
                 </div>
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <div class="mb-3 card">
-                    <div class="card-header-tab card-header-tab-animation card-header">
-                        <div class="card-body">
-                            <div class="col-sm-6 text-center">
-                                <h2 class="chart-label-2">年資與薪水</h2>
-                                <br>
-                                <br>
+                <div class="col-md-6 col-6">
+                    <div class="mb-3 card">
+                        <div class="card-header-tab card-header-tab-animation card-header">
+                            <div class="card-body">
+                                <h2 class="chart-label-2 text-center">年資與薪水</h2>
                                 <h3 id="message-salary"></h3>
                                 <div id='pie' class="chart2"></div>
                             </div>
@@ -221,7 +220,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>-->
     <!--====== CHART PART ENDS ======-->
 
 
@@ -230,7 +229,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="section_title text-center pb-25">
-                <h5 class="sub_title">MARS 面試情報中心</h5>
+                <h4 class="sub_title">MARS 面試情報中心</h4>
                 <h3 class="main_title">Interview Top Secret</h3>
             </div>
         </div>
@@ -596,12 +595,7 @@
     <script src="./js/Chart/chart2.js"></script>
 
     <!--scatter-chart-->
-    <script data-require="d3@3.5.3" data-semver="3.5.3" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js"></script>
-    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="//d3js.org/d3-path.v0.1.min.js"></script>
-    <script src="//d3js.org/d3-shape.v0.6.min.js"></script>
-    <script src="./js/Chart/chart.js"></script>
-
+ 
   
     <!--====== Jquery js ======-->
     <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
@@ -621,6 +615,12 @@
     <!--====== Main js ======-->
     <script src="./assets/js/main.js"></script>
 
+    <script data-require="d3@3.5.3" data-semver="3.5.3" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js"></script>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//d3js.org/d3-path.v0.1.min.js"></script>
+    <script src="//d3js.org/d3-shape.v0.6.min.js"></script>
+    <script src="./js/Chart/chart.js"></script>
+    <link rel="stylesheet" href="./assets/css/scatter.css">
 </body>
 
 </html>

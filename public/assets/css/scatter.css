@@ -1,0 +1,22 @@
+ .axis path,
+        .axis line {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .tick line{
+            opacity: 0.2;
+        }
+
+        text {
+            font: 18px sans-serif;
+        }
+
+        #scatter_container {
+            float: left;
+        }
+
+        #legend {
+            float: left;
+        }
