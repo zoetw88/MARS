@@ -112,7 +112,11 @@ app.use(function (err, req, res, next) {
 
 let users = [];
 let sender;
-const io = require('socket.io')(http)
+const io = require('socket.io')(http, {
+  cors: {
+    origin: '*',
+  }
+})
 
 
 io.use(function (socket, next) {
