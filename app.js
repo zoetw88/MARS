@@ -44,18 +44,24 @@ app.post("/get_main_messages", async function (req, res) {
   console.log(username)
   let final_speaker;
   let final_speaker_result = await query(`SELECT MAX(id),sender,receiver FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc limit 1`)
-
   console.log(final_speaker_result)
+  if(final_speaker_result.length>0){
   if (final_speaker_result[0].sender != username) {
     final_speaker = final_speaker_result[0].sender
 
   } else {
     final_speaker = final_speaker_result[0].receiver
   }
-  
-  let main_message = query("SELECT * FROM message WHERE (sender = '" + username + "' AND receiver = '" + final_speaker + "') OR (sender = '" + final_speaker + "' AND receiver = '" + username + "')", function (error, messages) {
-    res.end(JSON.stringify(messages));
-  });
+}else{
+  res.status(404).send('no chat info')
+}
+  let main_message = await query("SELECT * FROM message WHERE (sender = '" + username + "' AND receiver = '" + final_speaker + "') OR (sender = '" + final_speaker + "' AND receiver = '" + username + "')")
+  console.log(main_message)
+  if(main_message.length>0){
+    res.end(JSON.stringify(main_message));
+  }else{
+    res.status(404).send('no chat info')
+  }
 });
 
 app.post("/get_select_messages", async function (req, res) {
@@ -63,18 +69,25 @@ app.post("/get_select_messages", async function (req, res) {
     chosenName,
     username
   } = req.body;
-    await query("SELECT * FROM message WHERE (sender = '" + chosenName + "' AND receiver = '" + username+ "') OR (sender = '" + username + "' AND receiver = '" + chosenName + "')", function (error, messages) {
-   res.end(JSON.stringify(messages));
-  });
+   let result= await query("SELECT * FROM message WHERE (sender = '" + chosenName + "' AND receiver = '" + username+ "') OR (sender = '" + username + "' AND receiver = '" + chosenName + "')")
+  if(result.length>0){
+    res.end(JSON.stringify(result));
+  }else{
+    res.status(404).send('no chat info')
+  }
 });
 
 app.post("/get_side_messages", async function (req, res) {
   let {
     username
   } = req.body;
-  await query(`SELECT MAX(id),sender,receiver,message FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`, function (error, messages) {
-    res.end(JSON.stringify(messages));
-  });
+  let result=await query(`SELECT MAX(id),sender,receiver,message FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`)
+   
+  if(result.length>0){
+    res.end(JSON.stringify(result));
+  }else{
+    res.status(404).send('no chat info')
+  }
 });
 
 app.use(function (req, res, next) {

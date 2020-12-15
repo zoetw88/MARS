@@ -15,6 +15,8 @@ axios.get("/api/1.0/member",
   })
   .catch(err => {
     console.log(err, err.response);
+    alert('尚未登入')
+    window.location.href="/login.html";
   });
   function addUserProfile(name, email) {
     let userName = document.getElementById("user-profile-name");

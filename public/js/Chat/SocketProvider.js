@@ -10,43 +10,45 @@ if (localStorage.getItem("token")) {
             }
         })
         .then(res => {
-            sender = res.data.data.email
+            sender = res.data.data.nickname
             io = io('http://localhost:5000', {
                 query: {
                     id: sender
                 }
             })
-
             $('#profile').find('p').text(sender)
-            sender = 'zoe'
-
+            
             function organize_talk(response, username) {
                 for (let i = 0; i < response.data.length; i++) {
                     if (response.data[i].sender == username) {
-                        $('<li class="sent"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
+                        $('<li class="sent"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" /><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
                     } else {
-                        $('<li class="replies"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
+                        $('<li class="replies"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" /><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
                     }
                 }
 
             }
 
             function organize_talker(response, username) {
-                $('<li class="contact active"><div class="wrap"><span class="contact-status online"></span><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><div class="meta"><p class="name">' + response.data[0].receiver + '</p><p class="preview">' + response.data[0].message + '</p></div></div></li>').appendTo($('#contacts ul'));
-                for (let i = 1; i < response.data.length; i++) {
-
-
-
+                let talker=[]
+                for (let i = 0; i < response.data.length; i++) {
                     if (response.data[i].sender == username) {
                         console.log('ok')
-                        $('<li class="contact"><div class="wrap"><span class="contact-status online"></span><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><div class="meta"><p class="name">' + response.data[i].receiver + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                        if(talker.indexOf(response.data[i].receiver)<0){
+                        talker.push(response.data[i].receiver)
+                        $('<li class="contact"><div class="wrap"><span class="contact-status online"></span><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" /><div class="meta"><p class="name">' + response.data[i].receiver + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                        }
                     } else {
+                        if(talker.indexOf(response.data[i].sender)<0){
+                        talker.push(response.data[i].sender)
                         console.log('yes')
-                        $('<li class="contact"><div class="wrap"><span class="contact-status online"></span><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><div class="meta"><p class="name">' + response.data[i].sender + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
-                    }
+                          $('<li class="contact"><div class="wrap"><span class="contact-status online"></span><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" /><div class="meta"><p class="name">' + response.data[i].sender + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                    
+                        }
                 }
 
             }
+        }
 
             function getSideMessage(username) {
                 axios.post(`http://localhost:5000/get_side_messages`, {
@@ -68,6 +70,7 @@ if (localStorage.getItem("token")) {
                             console.loge(code)
                             console.log(response)
                         }
+                        
                     })
 
 
@@ -83,6 +86,7 @@ if (localStorage.getItem("token")) {
                     })
                     .catch((error) => {
                         console.log(error)
+                        window.location.href = "/index.html"
                         if (!error.response) {
                             // network error
                         } else {
@@ -90,9 +94,11 @@ if (localStorage.getItem("token")) {
                             const code = error.response.status
                             // response data
                             const response = error.response.data
-                            console.loge(code)
+                            console.log(code)
                             console.log(response)
+
                         }
+                      
                     })
 
 
@@ -120,9 +126,12 @@ if (localStorage.getItem("token")) {
                             const code = error.response.status
                             // response data
                             const response = error.response.data
-                            console.loge(code)
+                            console.log(code)
                             console.log(response)
+                            window.location.href = "/login.html"
                         }
+                        window.location.href = "/index.html"
+                       
                     })
 
             }
@@ -133,6 +142,7 @@ if (localStorage.getItem("token")) {
                 $(this).addClass('active');
                 $( "li" ).remove( ".sent" );
                 $( "li" ).remove( ".replies" );
+                
                 let chosenName = $(this).find('.name').text();
 
                 onUserSelected(chosenName,sender)
@@ -140,20 +150,21 @@ if (localStorage.getItem("token")) {
 
 
             function newMessage() {
-
                 receiver = $('.active').find('.name').text();
+                if(receiver==""){
+                    return false
+                }
                 console.log(receiver)
                 message = $(".message-input input").val();
                 if ($.trim(message) == '') {
                     return false;
                 }
-                $('<li class="sent"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+                $('<li class="sent"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
                 $('.message-input input').val(null);
                 $('.contact.active .preview').html('<span>You: </span>' + message);
-                $(".messages").animate({
-                    scrollTop: $(document).height()
-                }, "fast");
-
+                $('.messages').stop ().animate ({
+                    scrollTop: $('.messages')[0].scrollHeight
+                  });
                 io.emit("send_message", {
                     sender: sender,
                     receiver: receiver,
@@ -165,12 +176,14 @@ if (localStorage.getItem("token")) {
                 newMessage();
             });
             io.on("new_message", function (data) {
-                $('<li class="replies"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/1604398861214-orange.jpg" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+                $('<li class="replies"><img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" /><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
             });
 
         })
         .catch(err => {
             console.log(err, err.response);
+           
+            window.location.href = "/index.html"
         });
 } else {
     alert('尚未登入')
