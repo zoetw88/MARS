@@ -1,6 +1,6 @@
 
 if ( localStorage.getItem("token")) {
-axios.get("/api/1.0/member",
+axios.get("/api/1.0/user/member",
   {
       headers: {
         "Content-Type": "application/json",

@@ -56,7 +56,7 @@ const verifyToken = async (req, res, next) => {
     
         next()
     } else {
-        res.sendStatus(401);
+        res.sendStatus(403);
     };
 }
 catch(error){
@@ -114,7 +114,7 @@ const logout = async (req, res) => {
         res.status(200).send(result)
     
     } else {
-        res.sendStatus(401);
+        res.sendStatus(403);
     };
 }
 catch(error){

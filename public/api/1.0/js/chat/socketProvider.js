@@ -3,14 +3,16 @@ let sender = "";
 
 
 if (localStorage.getItem("token")) {
-    axios.get("/api/1.0/contact", {
+    axios.get("/api/1.0/chat", {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer" + " " + localStorage.getItem("token")
             }
         })
         .then(res => {
-            sender = res.data.data.nickname
+            console.log(res)
+            sender = res.data.nickname
+            console.log(sender)
             io = io('http://localhost:5000', {
                 query: {
                     id: sender
@@ -87,7 +89,7 @@ if (localStorage.getItem("token")) {
                     })
                     .catch((error) => {
                         console.log(error)
-                        window.location.href = "/index.html"
+                        
                         if (!error.response) {
                             // network error
                         } else {
@@ -129,9 +131,8 @@ if (localStorage.getItem("token")) {
                             const response = error.response.data
                             console.log(code)
                             console.log(response)
-                            window.location.href = "/login.html"
+                          
                         }
-                        window.location.href = "/index.html"
                        
                     })
 
@@ -184,7 +185,7 @@ if (localStorage.getItem("token")) {
         .catch(err => {
             console.log(err, err.response);
            
-            window.location.href = "/index.html"
+            // window.location.href = "/login.html";
         });
 } else {
     alert('尚未登入')

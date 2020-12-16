@@ -22,13 +22,13 @@ async function verify_token() {
       })
       .then((response) => {
         let nickname = response.data.nickname
-        return result = nickname
+        return nickname
       })
       .catch((error) => {
         console.log(error.response)
-        return result = false
+        return false
       })
-    return result
+  
   } catch (error) {
     return error
   }

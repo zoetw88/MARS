@@ -20,8 +20,8 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:5000/api/1.0/user/profile HTTP/1.1
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MDY3MzM0NDMsImVtYWlsIjoiem9lNzc4N3R3QGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoiZmRzYWZkIiwiaWF0IjoxNjA2NzMzMTQzfQ.rGDFO9lYYnSLtgHQQXgJmntF9mwcMYoPZ6mWIVEZ1RU
+GET http://localhost:5000/api/1.0/chat HTTP/1.1
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTExMjM0NzMsImVtYWlsIjoiem9ldHc4OEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6InpvZSIsImlhdCI6MTYwODEyMzQ3M30.GAxxrH_2F-RBUmXIXzGIlv0LKYZLCOKtIAveLyxTI3o
 
 ###
 

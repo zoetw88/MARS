@@ -11,20 +11,20 @@ import {keymap } from 'prosemirror-keymap'
 import {ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
 
 // import { CodeBlockView, arrowHandler } from './code_block.mjs';
-
+    let name=localStorage.getItem('nickname');
      function myCursorBuilder(user){
         const cursor = document.createElement('span')
         cursor.classList.add('ProseMirror-yjs-cursor')
         const userDiv = document.createElement('div')
-        userDiv.insertBefore(document.createTextNode(111), null)
+        userDiv.insertBefore(document.createTextNode(`${name}`), null)
         cursor.insertBefore(userDiv, null)
         return cursor
       }
 
-        let id =localStorage.getItem('id');
+      
         const user=myCursorBuilder()
         const ydoc = new Y.Doc()
-        const provider = new WebsocketProvider('ws://localhost:1234',`${id}`, ydoc)
+        const provider = new WebsocketProvider('ws://localhost:1234',`${name}`, ydoc)
         const type = ydoc.getXmlFragment('prosemirror')
         window.view = new EditorView(document.querySelector("#editor"), {
             state: EditorState.create({

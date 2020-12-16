@@ -119,6 +119,7 @@ const io = require('socket.io')(http, {
 
 io.use(function (socket, next) {
   sender = socket.handshake.query.id
+  console.log(sender)
   if (socket.handshake.query.id) {
     return next();
   }

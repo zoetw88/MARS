@@ -3,10 +3,8 @@ async function chart() {
     let title = document.querySelector("#title").value
     await axios.get(`/api/1.0/workinghour?company=${company}&title=${title}`)
       .then((response) => {
-        console.log('ok')
       })
       .catch((error) => {
-        console.log(error)
         if (!error.response) {
           // network error
         } else {
@@ -21,7 +19,7 @@ async function chart() {
       })
     await axios.get(`/api/1.0/salary?company=${company}&title=${title}`)
         .then((response) => {
-           window.location.href="/index4.html"
+           window.location.href="/search_result.html"
         })
         .catch((error) => {
             console.log(error)

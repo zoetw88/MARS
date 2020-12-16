@@ -15,11 +15,10 @@ const getSalary = async (req, res) => {
             ip = ip.substr(7)
         }
         let result = await salary(company, title, ip)
-        let salary_path=path.join(__dirname, '../public/json/salary.json')
+        let salary_path=path.join(__dirname, '../../public/json/salary.json')
         let sendJSON = await JSON.stringify(result)
         await fs.writeFile(salary_path,sendJSON,function(err, result) {
             if(err) console.log('error', err);
-           console.log('salary')
           })
           res.status(200).send('ok')
     } catch (e) {
@@ -39,10 +38,9 @@ const getWorkingHour = async (req, res) => {
         } = req.query;
         let result = await working_hour(company,title)
         let sendJSON =await JSON.stringify(result)
-        let company_path=path.join(__dirname, '../public/json/company.json')
+        let company_path=path.join(__dirname, '../../public/json/company.json')
         await fs.writeFile(company_path,sendJSON,function(err, result) {
             if(err) console.log('error', err);
-            console.log('company');
           });
           res.status(200).send('ok')
     } catch (e) {

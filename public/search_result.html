@@ -36,26 +36,6 @@
 
 <body>
 
-    <!--====== PRELOADER PART START ======-->
-
-    <div class="preloader">
-        <div class="loader">
-            <div class="ytp-spinner">
-                <div class="ytp-spinner-container">
-                    <div class="ytp-spinner-rotator">
-                        <div class="ytp-spinner-left">
-                            <div class="ytp-spinner-circle"></div>
-                        </div>
-                        <div class="ytp-spinner-right">
-                            <div class="ytp-spinner-circle"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--====== PRELOADER PART ENDS ======-->
 
     <!--====== PRELOADER PART START ======-->
 
@@ -98,7 +78,7 @@
                         <ul class="navbar-nav ml-auto">
                             <li class="active"><a href="index.html">Home</a></li>
                             <li>
-                                <a href="/member.html">會員中心</a>
+                                <a href="/api/1.0/user/member.html">會員中心</a>
                             </li>
 
                             <li><a href="login.html">Log In</a></li>
@@ -191,9 +171,9 @@
     <hr class="line-seprate">
 
     <section class="category_area pt-10">
-        <div class="container">
+        <div class="container d-flex justify-content-center">
             <div class="row">
-                <div class="col-md-6 col-6 ">
+                <div class="col-md-6 col-6 col-sm-12">
                     <div class="mb-3 card">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-body">
@@ -207,7 +187,7 @@
                     </div>
     
                 </div>
-                <div class="col-md-6 col-6">
+                <div class="col-md-6 col-6 col-sm-12">
                     <div class="mb-3 card">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-body">
@@ -236,7 +216,7 @@
     </div>
 
     <hr class="line-seprate">
-<section class="trending_jobs pt-75 pb-80 gray-bg">
+<section class="trending_jobs pt-35 pb-80 gray-bg">
     <div class="container">
         <div class="cd-testimonials-wrapper cd-container">
             <ul class="cd-testimonials">
@@ -484,7 +464,7 @@
         <li>
             <span class="fab-label" ></a>聊天室</span>
            
-            <div class="fab-icon-holder" onClick="window.open('./chat.html');">
+            <div class="fab-icon-holder" onClick="window.open('./api/1.0/chat.html');">
             <i class="fa fa-comments"></i>
             </div>
     
@@ -605,11 +585,11 @@
     <script src="./assets/js/popper.min.js"></script>
     <script src="./assets/js/popper.min-min.js"></script>
     <!----===Comment js-->
-    <script src="js/modernizr.js"></script>
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/masonry.pkgd.min.js"></script>
-    <script src="js/jquery.flexslider-min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="./js/comment/modernizr.js"></script>
+    <script src="./js/comment/jquery-2.1.1.js"></script>
+    <script src="./js/comment/masonry.pkgd.min.js"></script>
+    <script src="./js/comment/jquery.flexslider-min.js"></script>
+    <script src="./js/comment/main.js"></script>
     <!--====== Counter Up js ======-->
     <script src="./assets/js/counter.js"></script>
     <!--====== Main js ======-->
