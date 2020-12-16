@@ -4,9 +4,8 @@ const User = require('../models/user_model');
 const {
     TOKEN_EXPIRE,
     ACCESS_TOKEN_SECRET
-} = process.env; // 30 days by seconds
+} = process.env; 
 const jwt = require('jsonwebtoken')
-
 const signUp = async (req, res) => {
     let {
         name,
@@ -14,8 +13,7 @@ const signUp = async (req, res) => {
         email,
         password
     } = req.body;
-    console.log(name)
-    
+ 
     if(validator.isEmpty(name)||validator.isEmpty(nickname)||validator.isEmpty(password)){
         res.status(400).send({
             result: '資訊不完全'
@@ -66,33 +64,6 @@ catch(error){
 }
 };
 
-// const facebookSignIn = async (accessToken) => {
-//     if (!accessToken) {
-//         return {
-//             error: 'Request Error: access token is required.',
-//             status: 400
-//         };
-//     }
-//     try {
-//         const profile = await User.getFacebookProfile(accessToken);
-//         const {
-//             id,
-//             name,
-//             email
-//         } = profile;
-//         if (!id || !name || !email) {
-//             return {
-//                 error: 'Permissions Error: facebook access token can not get user id, name or email'
-//             };
-//         }
-
-//         return await User.facebookSignIn(id, name, email, accessToken);
-//     } catch (error) {
-//         return {
-//             error: error
-//         };
-//     }
-// };
 const signIn = async (req, res) => {
     try {
         let data = req.body;
@@ -162,12 +133,10 @@ const getUserProfile = async (req, res) => {
     }
 };
 
-
-
 module.exports = {
     signUp,
     signIn,
     getUserProfile,
     verifyToken,
-   logout
+    logout
 };

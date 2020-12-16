@@ -8,7 +8,7 @@ import {menuBar} from "prosemirror-menu"
 
 import {buildMenuItems} from "./menu"
 import {buildKeymap} from "./keymap"
-import {buildInputRules} from "../Editor/inputrules"
+import {buildInputRules} from "./inputrules"
 
 export {buildMenuItems, buildKeymap, buildInputRules}
 

@@ -1,4 +1,4 @@
-import{ schema} from'../Editor/schema';
+import{ schema} from'./schema';
 import{ Selection, TextSelection } from 'prosemirror-state';
 import CodeMirror from  'codemirror';
 import { undo, redo } from 'prosemirror-history';

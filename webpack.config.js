@@ -10,16 +10,16 @@ module.exports = {
   entry: {
  
     'note': [
-      path.join(__dirname, 'public/js/Editor/code_block.js'),
-      path.join(__dirname, 'public/js/Editor/icons.js'),
-      path.join(__dirname, 'public/js/Editor/Editor.js'),
-      path.join(__dirname, 'public/js/Editor/index.js'),
-      path.join(__dirname, 'public/js/Editor/inputrules.js'),
-      path.join(__dirname, 'public/js/Editor/keymap.js'),
-      path.join(__dirname, 'public/js/Editor/menu.js'),
-      path.join(__dirname, 'public/js/Editor/prompt.js'),
-      path.join(__dirname, 'public/js/Editor/prosemirror-menu.js'),
-      path.join(__dirname, 'public/js/Editor/schema.js'),
+      path.join(__dirname, 'public/js/editor/code_block.js'),
+      path.join(__dirname, 'public/js/editor/icons.js'),
+      path.join(__dirname, 'public/js/editor/editor.js'),
+      path.join(__dirname, 'public/js/editor/index.js'),
+      path.join(__dirname, 'public/js/editor/inputrules.js'),
+      path.join(__dirname, 'public/js/editor/keymap.js'),
+      path.join(__dirname, 'public/js/editor/menu.js'),
+      path.join(__dirname, 'public/js/editor/prompt.js'),
+      path.join(__dirname, 'public/js/editor/prosemirror-menu.js'),
+      path.join(__dirname, 'public/js/editor/schema.js'),
     ]
     
   },

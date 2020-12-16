@@ -4,9 +4,11 @@ const {
     commit,
     rollback
 } = require('./mysql');
+
 const {
     FPGrowth
-} = require("../fpgrowth");
+} = require("../fpgrowth-alogrithm/fpgrowth");
+
 const { selectAll } = require('prosemirror-commands');
 
 var final_result = {}
@@ -25,13 +27,12 @@ const salary = async (company, title,ip) => {
         await transaction();
         
         let query_str={ip:`${ip}`,company:`${company}`};
+        
         if(company!=null){
         await query('INSERT INTO recommend SET?',query_str)}
-           
- 
+        
         let hits_result = await query(`SELECT ip,group_concat(company) as company FROM wenChang.recommend group by ip`)
       
-    
         for (let i = 0; i < hits_result.length; i++) {
             let array = hits_result[i].company.split(",").map(String);
             dataset.push(array)

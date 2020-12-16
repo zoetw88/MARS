@@ -5,12 +5,12 @@ import {EditorView} from "prosemirror-view"
 import * as Y from 'yjs'
 import { schema } from './schema.js'
 import { WebsocketProvider } from 'y-websocket'
-import {rule} from "./index"
+import {rule} from "./index.js"
 import {baseKeymap} from"prosemirror-commands"
 import {keymap } from 'prosemirror-keymap'
 import {ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
 
-import { CodeBlockView, arrowHandler } from './code_block';
+// import { CodeBlockView, arrowHandler } from './code_block.mjs';
 
      function myCursorBuilder(user){
         const cursor = document.createElement('span')
@@ -20,9 +20,11 @@ import { CodeBlockView, arrowHandler } from './code_block';
         cursor.insertBefore(userDiv, null)
         return cursor
       }
+
+        let id =localStorage.getItem('id');
         const user=myCursorBuilder()
         const ydoc = new Y.Doc()
-        const provider = new WebsocketProvider('ws://localhost:1234','prosemirror', ydoc)
+        const provider = new WebsocketProvider('ws://localhost:1234',`${id}`, ydoc)
         const type = ydoc.getXmlFragment('prosemirror')
         window.view = new EditorView(document.querySelector("#editor"), {
             state: EditorState.create({

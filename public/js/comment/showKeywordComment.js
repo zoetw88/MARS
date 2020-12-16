@@ -3,7 +3,7 @@ const nodejieba = require("nodejieba");
 const {
   extract_comments,
   extract_comments_company
-} = require("../WenChang/models/comment_model")
+} = require("../../../models/comment_model")
 
 
 nodejieba.load({

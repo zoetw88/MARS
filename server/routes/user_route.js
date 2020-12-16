@@ -21,6 +21,4 @@ router.route('/user/logout')
 router.route('/member')
     .get(verifyToken,wrapAsync(getUserProfile));
 
-router.route('/contact')
-    .get(verifyToken,wrapAsync(getUserProfile));
 module.exports = router;

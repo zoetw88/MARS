@@ -17,12 +17,13 @@ const {
   transaction,
   commit,
   rollback
-} = require('./models/mysql');
+} = require('./server/models/mysql');
 
 
 app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
-
+app.set('view engine', 'ejs')
+app.set('views', __dirname + '/public/views');
 app.use(express.static('public'));
 app.use(bodyparser.urlencoded({
   extended: true
@@ -32,8 +33,9 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use('/api/' + API_VERSION,
   [
-    require('./routes/user_route'),
-    require('./routes/search_route'),
+    require('./server/routes/user_route'),
+    require('./server/routes/search_route'),
+    require('./server/routes/chat_route'),
   ]
 );
 
@@ -41,14 +43,12 @@ app.post("/get_main_messages", async function (req, res) {
   let {
     username
   } = req.body;
-  console.log(username)
+  
   let final_speaker;
   let final_speaker_result = await query(`SELECT MAX(id),sender,receiver FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc limit 1`)
-  console.log(final_speaker_result)
   if(final_speaker_result.length>0){
   if (final_speaker_result[0].sender != username) {
     final_speaker = final_speaker_result[0].sender
-
   } else {
     final_speaker = final_speaker_result[0].receiver
   }
@@ -56,7 +56,6 @@ app.post("/get_main_messages", async function (req, res) {
   res.status(404).send('no chat info')
 }
   let main_message = await query("SELECT * FROM message WHERE (sender = '" + username + "' AND receiver = '" + final_speaker + "') OR (sender = '" + final_speaker + "' AND receiver = '" + username + "')")
-  console.log(main_message)
   if(main_message.length>0){
     res.end(JSON.stringify(main_message));
   }else{
@@ -82,7 +81,6 @@ app.post("/get_side_messages", async function (req, res) {
     username
   } = req.body;
   let result=await query(`SELECT MAX(id),sender,receiver,message FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`)
-   
   if(result.length>0){
     res.end(JSON.stringify(result));
   }else{
@@ -112,21 +110,18 @@ app.use(function (err, req, res, next) {
 
 let users = [];
 let sender;
+
 const io = require('socket.io')(http, {
   cors: {
     origin: '*',
   }
 })
 
-
 io.use(function (socket, next) {
-  console.log("id", socket.handshake.query.id);
   sender = socket.handshake.query.id
-  // return the result of next() to accept the connection.
   if (socket.handshake.query.id) {
     return next();
   }
-  // call next() with an Error if you need to reject the connection.
   next(new Error('Authentication error'));
 });
 

@@ -1,5 +1,5 @@
 import {wrapItem, blockTypeItem, Dropdown, DropdownSubmenu, joinUpItem, liftItem,
-    selectParentNodeItem, undoItem, redoItem, icons, MenuItem} from "./prosemirror-menu"
+    selectParentNodeItem, undoItem, redoItem, icons, MenuItem} from "./prosemirror-menu.js"
 import {NodeSelection} from "prosemirror-state"
 import {toggleMark} from "prosemirror-commands"
 import {wrapInList} from "prosemirror-schema-list"
