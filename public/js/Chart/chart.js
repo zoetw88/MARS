@@ -1,6 +1,6 @@
-var margin = {top: 50, left:120, bottom: 100, right:125};
-var width =600 - margin.left - margin.right;
-var height = 430 - margin.top - margin.bottom;
+var margin = {top: 50, left:120, bottom: 90, right:50};
+var width =500 - margin.left - margin.right;
+var height = 410 - margin.top - margin.bottom;
 
 var numberOfPoints = 100;
 var pointRadius = 9;
@@ -101,12 +101,12 @@ d3.json('../../json/company.json', function(data) {
 
     // add legend
     var legendWidth = 300;
-    var legendHeight = 90;
+    var legendHeight = 85;
 
     var legend = d3.select('#legend').append('svg')
         .attr('width', legendWidth)
         .attr('height', legendHeight)
-        .attr("transform", function(d) { return "translate(105,-15)"; }) 
+        .attr("transform", function(d) { return "translate(105,5)"; }) 
 
     legend.append('rect')
         .attr('x', 0)

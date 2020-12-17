@@ -4,66 +4,76 @@
 
 <head>
 
-<meta charset='UTF-8'><meta name="robots" content="noindex">
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link href="./css/chat.css" rel="stylesheet" id="bootstrap-css">
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+	<meta charset='UTF-8'>
+	<meta name="robots" content="noindex">
+	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet'
+		type='text/css'>
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link href="./css/chat.css" rel="stylesheet" id="bootstrap-css">
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+	<link rel='stylesheet prefetch'
+		href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 
 </head>
+
 <body>
 
 
-<div id="frame">
-	<div id="sidepanel">
-		<div id="profile">
-			<div class="wrap">
-				<img id="profile-img" src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/mary.png" class="online" alt="" />
-				<p>Mike Ross</p>
-			
-				<div id="status-options">
-					<ul>
-						<li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
-						<li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
-						<li id="status-busy"><span class="status-circle"></span> <p>Busy</p></li>
-						<li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
-					</ul>
+	<div id="frame" class="rounded">
+		<div id="sidepanel">
+			<div id="profile">
+				<div class="wrap">
+					<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+					<div class="name">
+						<p></p>
+					</div>
+					<div class="grade">
+						<p>尊貴會員</p>
+					</div>
+					
+				</div>
+			</div>
+
+			<div id="contacts">
+				<ul>
+
+				</ul>
+			</div>
+
+		</div>
+		<div class="content">
+
+			<div class="contact-profile">
+				<img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" />
+				<div class="receiver">
+				<p></p>
+			</div>
+			<div class="receiver-company">
+				<p>廣達電腦股份有限公司</p>
+			</div>
+			</div>
+			</span>
+			<div class="messages">
+				<ul>
+
+				</ul>
+			</div>
+			<div class="message-input">
+				<div class="wrap">
+					<input type="text" placeholder="Write your message..." />
+					<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 				</div>
 			</div>
 		</div>
-		<div id="contacts">
-			<ul>
-				
-			</ul>
-		</div>
 	</div>
-	<div class="content">
-		<div class="contact-profile">
-			<img src="https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/fox.png" alt="" />
-			<p>Harvey Specter</p>
-		</div>
-		<div class="messages">
-			<ul>
-				
-			</ul>
-		</div>
-		<div class="message-input">
-			<div class="wrap">
-			<input type="text" placeholder="Write your message..." />
-			<button class="submit"><i class="fa  fa-pencil-square-o" aria-hidden="true"></i></button>
-			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-			</div>
-		</div>
-	</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
-<script src="./js/chat/socketProvider.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://use.typekit.net/hoy3lrg.js"></script>
-<script>try{Typekit.load({ async: true });}catch(e){}</script>]
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+	<script src="./js/chat/socketProvider.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.typekit.net/hoy3lrg.js"></script>
+	<script>try { Typekit.load({ async: true }); } catch (e) { }</script>
 
 </body>
+
 </html>
