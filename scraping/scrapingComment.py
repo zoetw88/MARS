@@ -45,6 +45,7 @@ for x in['鴻海精密工業股份有限公司','和碩聯合科技股份有限�
         data = urllib.request.Request(url, headers=headers)
         data = urllib.request.urlopen(data).read()
         soup = BeautifulSoup(data, "html.parser")
+        print(soup.prettify())
         divTag = soup.find_all("div", {
                             "class": "src-components-CompanyAndJobTitle-InterviewExperiences-__InterviewExperiences-module___container"})
 
