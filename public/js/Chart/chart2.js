@@ -49,8 +49,21 @@ axios.get('../../json/salary.json')
             var data = [trace1]
           }
           var layout = {
+            annotations: [
+              {
+                x: 0.5,
+                y: -0.15,
+                xref: 'paper',
+                yref: 'paper',
+                text: '年資',
+                font:{
+                  size: 18
+                },
+                showarrow: false,
+              }
+            ],
             width: 520,
-            height:500,
+            height:495,
             plot_bgcolor: "transparent",
             paper_bgcolor: "transparent",
             showlegend: true,
@@ -74,24 +87,10 @@ axios.get('../../json/salary.json')
                 size: 16,
                 color: '#000'
               },
-              y: -0.6
+              y: -0.4
             },
 
-            xaxis: {
-              tickfont: {
-
-                size: 18,
-                color: 'black'
-              },
-              title: {
-                text: '年資',
-                font: {
-
-                  size: 18,
-
-                }
-              },
-            },
+            
             yaxis: {
               tickfont: {
 

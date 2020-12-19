@@ -1,11 +1,4 @@
-###
-POST https://api.goodjob.life/graphql HTTP/1.1
-content-type: application/json
 
-{
-    "companyname": "廣達",
-    
-}
 
 ###
 post http://localhost:5000/api/1.0/user/signup HTTP/1.1
@@ -56,3 +49,6 @@ Content-Type: application/json
  "username":"zoe"
     
 }
+
+###
+GET http://localhost:5000/api/1.0/comments?company=台灣積體電路製造股份有限公司&title=製程工程師 HTTP/1.1

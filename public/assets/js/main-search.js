@@ -1,6 +1,8 @@
 async function chart() {
     let company = document.querySelector("#company").value
     let title = document.querySelector("#title").value
+    window.localStorage.setItem('company', company)
+    window.localStorage.setItem('title', title)
     await axios.get(`/api/1.0/workinghour?company=${company}&title=${title}`)
       .then((response) => {
       })
