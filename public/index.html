@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/css/default.css">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./css/test.css">
 </head>
 
 <body>
@@ -47,7 +48,7 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
                             <li class="active"><a href="index.html">Home</a></li>
-                            <li><a href="/api/1.0/member.html">會員中心</a></li>
+                            <li><a href="/api/1.0/member_manage.html">會員中心</a></li>
                             <li><a href="/login.html">Log In</a></li>
                             <li><a class="main-btn" href="post-job.html">寫面試心得</a></li>
                         </ul>
@@ -119,293 +120,32 @@
         </div>
         <div class="counter-shape"><img src="assets/images/shape-1.svg" alt="Shape"></div>
     </section>
-    <section class="category_area pt-75">
-        <div class="category_shape"><img src="assets/images/shape-2.png" alt="shape"></div>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <div class="section_title text-center pb-25">
-                        <h5 class="sub_title">Choose A Skill</h5>
-                        <h3 class="main_title">Browse Jobs By Catagory</h3>
-                    </div>
+<section class="trending_jobs pt-75 pb-80 gray-bg">
+    <div class="container d-flex justify-content-center">
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="section_title pb-25">
+                    <h5 class="sub_title text-center">MARS 公佈欄</h5>
+                    <h3 class="main_title text-center">Trending and Recent Company</h3>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_category category_color_1 text-center mt-30">
-                        <div class="category_icon"><i class="flaticon-vector"></i></div>
-                        <div class="category_content">
-                            <h4 class="category_title">Graphics & Design</h4>
-                            <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
-                        </div><a class="category_link" href="job-list.html"></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_category category_color_2 text-center mt-30">
-                        <div class="category_icon"><i class="flaticon-insurance"></i></div>
-                        <div class="category_content">
-                            <h4 class="category_title">Writing & Translation</h4>
-                            <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
-                        </div><a class="category_link" href="job-list.html"></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_category category_color_3 text-center mt-30">
-                        <div class="category_icon"><i class="flaticon-video"></i></div>
-                        <div class="category_content">
-                            <h4 class="category_title">Video & Animation</h4>
-                            <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
-                        </div><a class="category_link" href="job-list.html"></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_category category_color_4 text-center mt-30">
-                        <div class="category_icon"><i class="flaticon-programming"></i></div>
-                        <div class="category_content">
-                            <h4 class="category_title">Programming & Tech</h4>
-                            <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
-                        </div><a class="category_link" href="job-list.html"></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_category category_color_5 text-center mt-30">
-                        <div class="category_icon"><i class="flaticon-music-player"></i></div>
-                        <div class="category_content">
-                            <h4 class="category_title">Music & Audio</h4>
-                            <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
-                        </div><a class="category_link" href="job-list.html"></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_category category_color_6 text-center mt-30">
-                        <div class="category_icon"><i class="flaticon-digital-marketing"></i></div>
-                        <div class="category_content">
-                            <h4 class="category_title">Digital Marketing</h4>
-                            <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
-                        </div><a class="category_link" href="job-list.html"></a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="category_btn pt-60 text-center"><a href="job-list.html" class="main-btn main-btn-2">see
-                            more catagory</a></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="trending_jobs pt-75 pb-80 gray-bg">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-7">
-                    <div class="section_title pb-25">
-                        <h5 class="sub_title">Explore</h5>
-                        <h3 class="main_title">Trending and Recent Jobs</h3>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="jobs_tabs_menu d-flex justify-content-md-end">
-                        <ul class="nav" id="myTab" role="tablist">
-                            <li class="nav-item"><a class="active" id="trending-tab" data-toggle="tab" href="#trending"
-                                    role="tab" aria-controls="trending" aria-selected="true">Trending</a></li>
-                            <li class="nav-item"><a id="recent-tab" data-toggle="tab" href="#recent" role="tab"
-                                    aria-controls="recent" aria-selected="false">Recent jobs</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="trending" role="tabpanel" aria-labelledby="trending-tab">
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-1.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Wordpress Developer</a></h4>
-                                    <p class="sub_title">SpanTech</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-2.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">UI Designer</a></h4>
-                                    <p class="sub_title">MixLabs</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-3.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-alerts.html">Graphic Designer</a></h4>
-                                    <p class="sub_title">Hooli</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-4.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Python Developer</a></h4>
-                                    <p class="sub_title">Oilia</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-5.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Digital Marketer</a></h4>
-                                    <p class="sub_title">Hooli</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-6.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">UX Architecht</a></h4>
-                                    <p class="sub_title">MixLabs</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="recent" role="tabpanel" aria-labelledby="recent-tab">
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-6.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">UX Architecht</a></h4>
-                                    <p class="sub_title">Hooli</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-5.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Digital Marketer</a></h4>
-                                    <p class="sub_title">Twitter</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-4.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Python Developer</a></h4>
-                                    <p class="sub_title">Hooli</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-3.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Graphic Designer</a></h4>
-                                    <p class="sub_title">MixLabs</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-2.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">UI Designer</a></h4>
-                                    <p class="sub_title">Asus</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="single_jobs text-center mt-30">
-                                <div class="jobs_image"><img src="assets/images/jobs-1.jpg" alt="jobs"></div>
-                                <div class="jobs_content">
-                                    <h4 class="jobs_title"><a href="job-details.html">Wordpress Developer</a></h4>
-                                    <p class="sub_title">PiedPiper</p>
-                                </div>
-                                <div class="jobs_meta d-flex justify-content-between">
-                                    <p class="location"><i class="fa fa-map-marker"></i> 18 Brooklyn, NY</p>
-                                    <p class="time"><i class="fa fa-clock-o"></i> Full time</p>
-                                </div>
-                                <div class="jobs_btn"><a href="job-details.html" class="main-btn main-btn-2">apply
-                                        now</a></div>
-                            </div>
+            <div class="col-md-8 mb-80 offset-md-2">
+                <div class="mb-3 card ">
+                    <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center">
+                        <div class="card-body ">
+                            <figure class="highcharts-figure">
+                                <div id="container"></div>
+                                <p class="highcharts-description">
+                                </p>
+                            </figure>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+</section>
     <section class="subscribe_area pt-80 pb-80">
         <div class="container">
             <div class="subscribe_wrapper">
@@ -520,6 +260,14 @@
     <script src="./assets/js/jquery.counterup.js"></script>
     <script src="./assets/js/main-search.js"></script>
     <script src="./assets/js/main.js"></script>
+  
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="./js/Chart/test.js"></script>
 </body>
 
 </html>

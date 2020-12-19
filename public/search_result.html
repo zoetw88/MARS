@@ -29,7 +29,7 @@
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="./assets/css/style_dashboard.css">
     <!--====== Comments CSS ======-->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/comment_form.css">
 
    
 </head>
@@ -116,6 +116,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-sm-6">
+                        
                         <div class="counter">
                             <div class="counter-icon">
                                 <i class="fa fa-users"></i>
@@ -170,18 +171,20 @@
 
     <hr class="line-seprate">
 
-    <section class="category_area pt-10">
+    <section class="category_area pt-35 pb-80 gray-bg">
         <div class="container ">
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12 col-lg-6  col-sm-12 col-xs-1">
                     <div class="mb-3 card ">
                         <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center ">
                             <div class="card-body  ">
+                            <div class="scatter-chart">
                                 <h2 class="chart-label-1 text-center"> 工時與薪水</h2>
                                 <h3 id="message-company"></h3>
                                 <div id="scatter_container" class="chart1"></div>
                                 <div id="legend"></div>
                             </div>
+                        </div>
                         </div>
                     </div>
     
@@ -217,48 +220,104 @@
     <hr class="line-seprate">
 <section class="trending_jobs pt-35 pb-80 gray-bg">
     <div class="container">
-        <div class="cd-testimonials-wrapper cd-container">
-            <ul class="cd-testimonials">
-                <li>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                    <div class="cd-author">
-                        <img src="img/avatar-1.jpg" alt="Author image">
-                        <ul class="cd-author-info">
-                            <li>MyName</li>
-                            <li>CEO, AmberCreative</li>
-                        </ul>
+        <div class="row ">
+            <div class="col-md-12 col-lg-12  col-sm-12 col-xs-12">
+                <div class="mb-3 card keyword-card ">
+                    <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center ">
+                        <div class="card-body">
+                            <div class="comment-keyword ">
+                                <h4 class="job_details_title text-center">全部面試心得關鍵字</h4>
+                                <div class="row d-flex justify-content-center">
+                                    <div class="job_skills mt-20">
+                                        <ul class="  list-inline ">
+                                            <li  class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li  class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li  class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li  class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li  class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li  class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li class="list-inline-item"><a href="#">單辭</a></li>
+                                            <li class="list-inline-item"><a href="#">單辭</a></li>
+                                        </ul>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 testimonials-card">
+                                    <div class="mb-3 card  ">
+                                        <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center ">
+                                            <div class="card-body">
+                                <div class="testimonials">
+                                    <div class="cd-testimonials-wrapper cd-container">
+                                        <ul class="cd-testimonials">
+                                            <li>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                                                    eiusmod
+                                                    tempor incididunt ut
+                                                    labore et dolore magna aliqua.</p>
+                                                <div class="cd-author">
+                                                    <img src="img/avatar-1.jpg" alt="Author image">
+                                                    <ul class="cd-author-info">
+                                                        <li>MyName</li>
+                                                        <li>CEO, AmberCreative</li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                    Necessitatibus
+                                                    ea,
+                                                    perferendis
+                                                    error repudiandae numquam dolor fuga temporibus. Unde omnis,
+                                                    consequuntur.
+                                                </p>
+                                                <div class="cd-author">
+                                                    <img src="img/avatar-2.jpg" alt="Author image">
+                                                    <ul class="cd-author-info">
+                                                        <li>MyName</li>
+                                                        <li>Designer, CodyHouse</li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam totam
+                                                    nulla
+                                                    est, illo
+                                                    molestiae maxime officiis, quae ad, ipsum vitae deserunt molestias
+                                                    eius
+                                                    alias.</p>
+                                                <div class="cd-author">
+                                                    <img src="img/avatar-3.jpg" alt="Author image">
+                                                    <ul class="cd-author-info">
+                                                        <li>MyName</li>
+                                                        <li>CEO, CompanyName</li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+
+                                        </ul> <!-- cd-testimonials -->
+
+                                        <a href="#0" class="cd-see-all">See all</a>
+                                    </div>
+                                </div><!-- cd-testimonials-wrapper -->
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </li>
-
-                <li>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ea, perferendis
-                        error repudiandae numquam dolor fuga temporibus. Unde omnis, consequuntur.</p>
-                    <div class="cd-author">
-                        <img src="img/avatar-2.jpg" alt="Author image">
-                        <ul class="cd-author-info">
-                            <li>MyName</li>
-                            <li>Designer, CodyHouse</li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam totam nulla est, illo
-                        molestiae maxime officiis, quae ad, ipsum vitae deserunt molestias eius alias.</p>
-                    <div class="cd-author">
-                        <img src="img/avatar-3.jpg" alt="Author image">
-                        <ul class="cd-author-info">
-                            <li>MyName</li>
-                            <li>CEO, CompanyName</li>
-                        </ul>
-                    </div>
-                </li>
-
-            </ul> <!-- cd-testimonials -->
-
-            <a href="#0" class="cd-see-all">See all</a>
-        </div> <!-- cd-testimonials-wrapper -->
+                </div>
+            </div>
+        </div>
 
         <div class="cd-testimonials-all">
             <div class="cd-testimonials-all-wrapper">
@@ -445,7 +504,91 @@
 
     </div> <!-- container -->
 </section>
-
+<!---===joblist-->
+<section class="category_area pt-75">
+    <div class="category_shape"><img src="assets/images/shape-2.png" alt="shape"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="section_title text-center pb-25">
+                    <h5 class="sub_title">MARS 職缺情報中心</h5>
+                    <h3 class="main_title">JobList </h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_1 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-vector"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Graphics & Design</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_2 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-insurance"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Writing & Translation</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_3 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-video"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Video & Animation</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_4 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-programming"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Programming & Tech</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_5 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-music-player"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Music & Audio</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_6 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-digital-marketing"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Digital Marketing</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_category category_color_6 text-center mt-30">
+                    <div class="category_icon"><i class="flaticon-digital-marketing"></i></div>
+                    <div class="category_content">
+                        <h4 class="category_title">Digital Marketing</h4>
+                        <p class="text"><i class="fa fa-briefcase"></i> 12 Open Positions</p>
+                    </div><a class="category_link" href="job-list.html"></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="category_btn pt-60 text-center"><a href="job-list.html" class="main-btn main-btn-2">see
+                        more catagory</a></div>
+            </div>
+        </div>
+    </div>
+</section>
 <!---chat button-->
 <div class="fab-container">
     <div class="fab fab-icon-holder">
