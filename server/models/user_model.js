@@ -1,16 +1,15 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const got = require('got');
-const {query, transaction, commit, rollback} = require('./mysql');
 const salt = parseInt(process.env.BCRYPT_SALT);
+const {query, transaction, commit, rollback} = require('./mysql');
 const {TOKEN_EXPIRE,ACCESS_TOKEN_SECRET} = process.env
+
 const signUp = async (name,nickname, email, password) => {
     try {
         await transaction();
-       
-        const emails = await query('SELECT email FROM user WHERE email = ? FOR UPDATE', [email]);
+        let emails = await query('SELECT email FROM user WHERE email = ? FOR UPDATE', [email]);
 
         if (emails.length > 0){
             await commit();
@@ -37,10 +36,10 @@ const signUp = async (name,nickname, email, password) => {
                 useremail:email
               };
               
-        
-        result = await query('INSERT INTO user Set?', users);
+        await query('INSERT INTO user Set?', users);
         await commit();  
         return {data};
+
     } catch (error) {
         await rollback();
         return {error};
@@ -49,12 +48,11 @@ const signUp = async (name,nickname, email, password) => {
 const nativeSignIn = async (email, password) => {
     try {
         await transaction();
-        console.log(email)
-        const result = await query('SELECT * FROM user WHERE email = ?', [email]);
+      
+        let result = await query('SELECT * FROM user WHERE email = ?', [email]);
         if (result.length > 0) {
             await commit();
-         
-            const auth = await bcrypt.compare(password, result[0].password);
+            let auth = await bcrypt.compare(password, result[0].password);
             if (auth) {
            
                 access_token = jwt.sign({
@@ -77,7 +75,6 @@ const nativeSignIn = async (email, password) => {
             return {error: 'email is wrong'};
         }
        
-    
     } catch (error) {
         await rollback();
         return {error};
@@ -94,9 +91,9 @@ const facebookSignIn = async (id, name, email, accessToken) => {
             picture:'https://graph.facebook.com/' + id + '/picture?type=large',
         };
 
-        const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE', [email]);
+        let users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE', [email]);
         if (users.length === 0) { // Insert new user
-            const queryStr = 'insert into user set ?';
+            let queryStr = 'insert into user set ?';
              await query(queryStr, user);
         } 
         await commit();
@@ -105,6 +102,7 @@ const facebookSignIn = async (id, name, email, accessToken) => {
             access_token: access_token
         };
         return {data};
+
     } catch (error) {
         await rollback();
         return {error};
@@ -116,14 +114,15 @@ const getFacebookProfile = async function(accessToken){
             responseType: 'json'
         });
         return res.body;
-    } catch (e) {
-        console.log(e);
+
+    } catch (error) {
+
         throw('Permissions Error: facebook access token is wrong');
     }
 };
 
 const getUserProfile = async (email) => {
-    const results = await query('SELECT * FROM user WHERE email = ?', [email]);
+    let results = await query('SELECT * FROM user WHERE email = ?', [email]);
     if (results.length === 0) {
         return {error: 'Invalid Access Token'};
     } else {
@@ -133,7 +132,7 @@ const getUserProfile = async (email) => {
                 provider: results[0].provider,
                 nickname: results[0].nickname,
                 email: results[0].email,
-                // picture: results[0].picture
+                
             }
         };
     }

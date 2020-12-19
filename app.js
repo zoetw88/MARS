@@ -18,7 +18,7 @@ const {
   commit,
   rollback
 } = require('./server/models/mysql');
-
+const { keyword } = require('./server/models/show_keyword_model');
 
 app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
@@ -38,6 +38,7 @@ app.use('/api/' + API_VERSION,
     require('./server/routes/chat_route'),
   ]
 );
+
 
 app.post("/get_main_messages", async function (req, res) {
   let {
