@@ -7,11 +7,15 @@ const {
 const {
     fp_alogrithm
 } = require('./fp_alogrithm_model')
+const {
+    filter_company
+} = require('./search_model')
 
 
 const extract_comments = async (company,title) => {
     try {
         await transaction();
+        company= await filter_company(company)
         let result_company_filter= await fp_alogrithm(company)
         let result_company=[];
         result_company.push(company)
@@ -32,6 +36,7 @@ const extract_comments = async (company,title) => {
 const extract_comments_company = async (company,title) => {
     try {
         await transaction();
+        company= await filter_company(company)
         const result = await query(`SELECT * ,MATCH (title) AGAINST (?) as score from comment Where company IN (?) HAVING score > 0.6 `, [title,company]);
         
         if (result.length > 0){

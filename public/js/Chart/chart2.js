@@ -1,44 +1,44 @@
-axios.get('../../json/salary.json')
-  .then((res) => {
-      if (res.data == "no") {
-        let test = document.querySelector("#message-salary")
-        test.innerHTML = "(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報"
-      } else {
-        Plotly.d3.json('../../json/salary.json', function (figure) {
+company=window.localStorage.getItem('company')
+title=window.localStorage.getItem('title')
 
+axios.get(`api/1.0/salary?company=${company}&title=${title}`)
+  .then((response) => {
+     
+if (response.data!='no'){
+  response=response.data
           var trace1 = {
-            x: figure[0].x,
-            y: figure[0].y,
-            name: figure[0].name,
+            x: response[0].x,
+            y: response[0].y,
+            name: response[0].name,
             mode: 'lines+markers',
             connectgaps: true
           }
 
 
-          if (figure[1] && figure[2]) {
+          if (response[1]&&response[2]) {
 
             var trace2 = {
-              x: figure[1].x,
-              y: figure[1].y,
-              name: figure[1].name,
+              x: response[1].x,
+              y: response[1].y,
+              name: response[1].name,
               mode: 'lines+markers',
               connectgaps: true
             }
             var trace3 = {
-              x: figure[2].x,
-              y: figure[2].y,
-              name: figure[2].name,
+              x: response[2].x,
+              y: response[2].y,
+              name: response[2].name,
               mode: 'lines+markers',
               connectgaps: true
             }
 
             var data = [trace1, trace2, trace3];
-          } else if (figure[1]) {
+          } else if (response[1]) {
 
             var trace2 = {
-              x: figure[1].x,
-              y: figure[1].y,
-              name: figure[1].name,
+              x: response[1].x,
+              y: response[1].y,
+              name: response[1].name,
               mode: 'lines+markers',
               connectgaps: true
             }
@@ -109,7 +109,12 @@ axios.get('../../json/salary.json')
           };
 
           Plotly.newPlot('pie', data, layout);
-        });
+   }
+  else{
+    let test = document.querySelector("#message-salary")
+    test.innerHTML = "(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報"
+  }
+  
+  });
 
 
-  }})

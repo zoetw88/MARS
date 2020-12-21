@@ -11,10 +11,13 @@ const signUp = async (req, res) => {
         name,
         nickname,
         email,
-        password
+        password,
+        union,
+        title,
+        company
     } = req.body;
  
-    if(validator.isEmpty(name)||validator.isEmpty(nickname)||validator.isEmpty(password)){
+    if(validator.isEmpty(name)||validator.isEmpty(nickname)||validator.isEmpty(password)||validator.isEmpty(company)||validator.isEmpty(union)||validator.isEmpty(title)){
         res.status(400).send({
             result: '資訊不完全'
         });
@@ -27,7 +30,7 @@ const signUp = async (req, res) => {
         return;
     }
     name = validator.escape(name);
-    let result = await User.signUp(name, nickname, email, password);
+    let result = await User.signUp(name, nickname, email, password,company,union,title);
     if (result.error) {
         result=result.error
         res.status(403).send({

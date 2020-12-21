@@ -23,6 +23,7 @@ const getSalary = async (req, res) => {
             ip = ip.substr(7)
         }
         let result = await salary(company, title, ip)
+        console.log(result)
         let salary_path=path.join(__dirname, '../../public/json/salary.json')
         let sendJSON = await JSON.stringify(result)
         await fs.writeFile(salary_path,sendJSON,function(err, result) {

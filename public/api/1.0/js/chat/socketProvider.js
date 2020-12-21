@@ -26,9 +26,11 @@ if (localStorage.getItem("token")) {
 
                 for (let i = 0; i < response.data.length; i++) {
                     if (response.data[i].sender == username) {
+                        $('.receiver-company').find("p").text(response.data[i].receivercompany)
                         $('.receiver').find("p").text(response.data[i].receiver)
                         $('<li class="sent"><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
                     } else {
+                        $('.receiver-company').find("p").text(response.data[i].sendercompany)
                         $('.receiver').find("p").text(response.data[i].sender)
                         $('<li class="replies"><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
                     }
@@ -44,13 +46,13 @@ if (localStorage.getItem("token")) {
                         if(talker.indexOf(response.data[i].receiver)<0){
                         talker.push(response.data[i].receiver)
 
-                        $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response.data[i].receiver + '</p><p class="company">'+'廣達電腦股份有限公司' +'</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                        $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response.data[i].receiver + '</p><p class="company">'+ response.data[i].receivercompany +'</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
                         }
                     } else {
                         if(talker.indexOf(response.data[i].sender)<0){
                         talker.push(response.data[i].sender)
                         console.log('yes')
-                          $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response.data[i].sender + '</p><p class="company">'+ '廣達電腦股份有限公司' + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                          $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response.data[i].sender + '</p><p class="company">'+ response.data[i].sendercompany +'</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
                     
                         }
                 }
@@ -122,11 +124,11 @@ if (localStorage.getItem("token")) {
                         chosenName: chosenName
                     })
                     .then((response) => {
-                        console.log(response)
+                       
                         organize_talk(response, username)
                     })
                     .catch((error) => {
-                        console.log(error)
+                        
                         if (!error.response) {
                             // network error
                         } else {

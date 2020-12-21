@@ -15,10 +15,14 @@
 					<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
 				</div>
 				<span>or use your email for registration</span>
+	
 				<input type="text" id="sing_up_name" placeholder="Name" required>
 				<input type="text" id="sing_up_nickname" placeholder="Nickname" required>
 				<input type="email" id="sing_up_email" placeholder="Email" required>
 				<input type="password" id="sing_up_password" placeholder="Password" required>
+				<input type="text" id="sing_up_company" placeholder="現職公司" required>
+				<input type="text" id="sing_up_union" placeholder="所屬單位" required>
+				<input type="text" id="sing_up_title" placeholder="擔任職位" required>
 				<button onclick="signup()">Sign Up</button>
 			</form>
 		</div>
@@ -55,6 +59,7 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="./js/login/login.js"></script>
 

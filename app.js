@@ -47,7 +47,7 @@ app.post("/get_main_messages", async function (req, res) {
   } = req.body;
   
   let final_speaker;
-  let final_speaker_result = await query(`SELECT MAX(id),sender,receiver FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc limit 1`)
+  let final_speaker_result = await query(`SELECT MAX(id),sender,receiver,sendercompany,recivercompany FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc limit 1`)
   if(final_speaker_result.length>0){
   if (final_speaker_result[0].sender != username) {
     final_speaker = final_speaker_result[0].sender
@@ -82,7 +82,7 @@ app.post("/get_side_messages", async function (req, res) {
   let {
     username
   } = req.body;
-  let result=await query(`SELECT MAX(id),sender,receiver,message FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`)
+  let result=await query(`SELECT MAX(id),sender,receiver,message,receivercompany,sendercompany FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`)
   if(result.length>0){
     res.end(JSON.stringify(result));
   }else{
@@ -119,6 +119,14 @@ const io = require('socket.io')(http, {
   }
 })
 
+async function talk(data){
+
+  let receivercompany= await query("select company from user where nickname= ?",[data.receiver])
+  console.log(receivercompany)
+  let sendercompany= await query("select company from user where nickname= ?",[data.sender])
+  
+  await query("INSERT INTO message (sender, receiver, message,receivercompany,sendercompany) VALUES ('" + data.sender + "', '" + data.receiver + "', '" + data.message + "','" + receivercompany[0].company+ "','" + sendercompany[0].company+ "')");
+}
 io.use(function (socket, next) {
   sender = socket.handshake.query.id
   console.log(sender)
@@ -135,10 +143,10 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
   socket.on("send_message", function (data) {
-    console.log(data.sender + "say" + data.message + data.receiver)
     var socketId = users[data.receiver];
     io.to(socketId).emit("new_message", data);
-    query("INSERT INTO message (sender, receiver, message) VALUES ('" + data.sender + "', '" + data.receiver + "', '" + data.message + "')", function (error, result) {});
+    
+    talk(data)
   });
 
 })

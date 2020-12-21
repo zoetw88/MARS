@@ -9,6 +9,20 @@ const {
 } = require('./fp_alogrithm_model');
 
 const moment=require('moment')
+
+const filter_company=async(company)=>{
+    
+    let query_company = await query(`SELECT company,MATCH (company) AGAINST (?) as score from salary having score >0.2  order by score DESC limit 1`,[company])
+        
+    if(query_company.length<1){
+        query_company=await query('SELECT main_company as company from company_connection where another_name= ?',[company])
+    }
+
+    query_company =query_company[0].company
+
+    return query_company
+}
+
 const salary = async (company, title, ip) => {
 
     let final_result;
@@ -31,7 +45,9 @@ const salary = async (company, title, ip) => {
             await query('INSERT INTO recommend SET?', query_str)
         }
 
-        let result_company = await fp_alogrithm(company)
+        let query_company= await filter_company(company)
+      
+        let result_company = await fp_alogrithm(query_company)
 
         let query_salary = `
         WITH salary_avg
@@ -47,7 +63,7 @@ const salary = async (company, title, ip) => {
         Where company IN (?)
         GROUP BY experience 
         `
-        let salary_result = await query(query_salary, [title, company]);
+        let salary_result = await query(query_salary, [title, query_company]);
         let salary_2_result = await query(query_salary, [title, result_company[0]]);
         let salary_3_result = await query(query_salary, [title, result_company[1]]);
 
@@ -80,7 +96,7 @@ const salary = async (company, title, ip) => {
 
         if (salary_result.length > 0) {
 
-            combine_data(salary_result, result_avg, company);
+            combine_data(salary_result, result_avg,query_company);
             combine_data(salary_2_result, result_2_avg, result_company[0]);
             combine_data(salary_3_result, result_3_avg, result_company[1]);
 
@@ -104,7 +120,9 @@ const working_hour = async (company, title) => {
     try {
         await transaction();
 
-        let result_company = await fp_alogrithm(company)
+        let query_company=await filter_company(company)
+
+        let result_company = await fp_alogrithm(query_company)
 
         let query_hour = `WITH hourlist 
             AS (
@@ -119,14 +137,14 @@ const working_hour = async (company, title) => {
               hourlist
             WHERE company IN (?)`
        
-        let main_salary_result = await query(query_hour,[title, company])
-        console.log(main_salary_result)
-        let query_company = [];
+        let main_salary_result = await query(query_hour,[title, query_company])
+   
+        let combine_company = [];
 
-        query_company = query_company.concat(company, result_company[0], result_company[1])
+        combine_company = combine_company.concat(query_company, result_company[0], result_company[1])
        
         if (main_salary_result.length > 0) {
-            let salary_result = await query(query_hour,[ title, query_company])
+            let salary_result = await query(query_hour,[ title, combine_company])
             console.log(salary_result)
             if (salary_result.length > 0) {
                 await commit();
@@ -149,6 +167,9 @@ const working_hour = async (company, title) => {
 const joblist = async (company, title) => {
     try {
         await transaction();
+
+        company=await filter_company(company)
+
         let result_company = await fp_alogrithm(company)
 
         let query_job = `
@@ -277,5 +298,6 @@ module.exports = {
     joblist,
     counter,
     company,
-    job
+    job,
+    filter_company
 };

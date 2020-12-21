@@ -22,7 +22,7 @@ async function verify_token() {
       })
       .then((response) => {
         let nickname = response.data.nickname
-        return nickname
+      
       })
       .catch((error) => {
         console.log(error.response)
@@ -36,31 +36,30 @@ async function verify_token() {
 }
 
 async function signup() {
- try{ 
-   let result = await verify_token()
-  if (result) {
-    let message = document.getElementById("message");
-    message.textContent = `阿囉哈, ${result},你已經登入過了!`;
-
-  } else {
+try{
+  
     let name = document.getElementById("sing_up_name").value
     let email = document.getElementById("sing_up_email").value
     let password = document.getElementById("sing_up_password").value
     let nickname = document.getElementById("sing_up_nickname").value
-
+    let company = document.getElementById("sing_up_company").value
+    let title = document.getElementById("sing_up_title").value
+    let union = document.getElementById("sing_up_union").value
     axios.post("/api/1.0/user/signup", {
         name: name,
         email: email,
         password: password,
-        nickname: nickname
+        nickname: nickname,
+        company:company,
+        title:title,
+        union:union
       })
       .then((response) => {
 
         if (response.data.data.accessToken) {
+          window.localStorage.setItem('id', nickname);
           window.localStorage.setItem('token', response.data.data.accessToken);
-          setTimeout(function () {
-            window.location.href = "/index.html"
-          }, 1000)
+          hello(nickname)
         } 
       })
       .catch((error) => {
@@ -70,55 +69,58 @@ async function signup() {
         message.textContent = `看過來, ${error_message}!`;
       })
     
-    }
+    
   }catch(error){
     return error
   }
 }
 
-async function login() {
-  let result = await verify_token()
-  if (result) {
-    let message = document.getElementById("message");
-    message.textContent = `阿囉哈, ${result},你已經登入過了!`;
+async function login(){
+      
+  
+      try {
+        let email = document.getElementById("login_email").value
+        let password = document.getElementById("login_password").value
+        axios.post("/api/1.0/user/signin", {
+            email: email,
+            password: password,
+            provider: 'native'
+          })
+          .then((response) => {
 
-  } else {
-    try {
-      let email = document.getElementById("login_email").value
-      let password = document.getElementById("login_password").value
-      axios.post("/api/1.0/user/signin", {
-          email: email,
-          password: password,
-          provider: 'native'
-        })
-        .then((response) => {
-          if (response.data.data.accessToken) {
-            window.localStorage.setItem('token', response.data.data.accessToken);
-            setTimeout(function () {
-              window.location.href = "/index.html"
-            }, 1000)
-          } else {
+            if (response.data.data.accessToken) {
+              window.localStorage.setItem('token', response.data.data.accessToken);
+              window.localStorage.setItem('id', response.data.data.nickname);
+              hello(response.data.data.nickname)
+
+            } else {
+              setTimeout(function () {
+                window.location.reload();
+              }, 1500)
+            }
+          })
+          .catch((error) => {
+
+            let error_message = error.response.data.result
+            let message = document.getElementById("message");
+            message.textContent = `看過來, ${error_message}!`;
             setTimeout(function () {
               window.location.reload();
             }, 1500)
-          }
-        })
-        .catch((error) => {
-          let error_message = error.response.data.result
-          let message = document.getElementById("message");
-          message.textContent = `看過來, ${error_message}!`;
-          setTimeout(function () {
-            window.location.reload();
-          }, 1500)
-        })
-    } catch (error) {
-      return error
-    }
+          })
+      } catch (error) {
+        return error
+      }
 
-  }
+    
 }
 
-
+async function hello(nickname){
+  await swal(`早安午安晚安${nickname}歡迎來到火星`, "你的一小步是改善台灣職場生態的一大步", "success")
+  .then(() => {
+    window.location.href = "/index.html"
+  });
+}
 function logout() {
   event.preventDefault()
   try {

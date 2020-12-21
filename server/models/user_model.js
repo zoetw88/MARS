@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt');
 const got = require('got');
 const salt = parseInt(process.env.BCRYPT_SALT);
 const {query, transaction, commit, rollback} = require('./mysql');
+const { company } = require('./search_model');
 const {TOKEN_EXPIRE,ACCESS_TOKEN_SECRET} = process.env
 
-const signUp = async (name,nickname, email, password) => {
+const signUp = async (name,nickname, email, password,company,union,title) => {
     try {
         await transaction();
         let emails = await query('SELECT email FROM user WHERE email = ? FOR UPDATE', [email]);
@@ -20,7 +21,10 @@ const signUp = async (name,nickname, email, password) => {
                 nickname: nickname,
                 email: email,
                 password: bcrypt.hashSync(password, salt),
-                provider: 'native'
+                provider: 'native',
+                title:title,
+                company:company,
+                union:union
               }
           
               access_token = jwt.sign({
