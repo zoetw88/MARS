@@ -4,7 +4,12 @@ var height = 410 - margin.top - margin.bottom;
 
 var numberOfPoints = 100;
 var pointRadius = 9;
-
+axios.get('../../json/company.json')
+  .then((res) => {
+      if (res.data == "no") {
+        let test = document.querySelector("#message-company")
+        test.innerHTML = "(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報"
+      } else {
 d3.json('../../json/company.json', function(data) {
     var labels = d3.set(data.map(function(d) {
         return d.label;
@@ -144,7 +149,7 @@ d3.json('../../json/company.json', function(data) {
 
     // draw points
     function draw() {
-        console.log('draw');
+    
 
         context.clearRect(0, 0, width, height);
 
@@ -169,14 +174,15 @@ d3.json('../../json/company.json', function(data) {
     }
 
     function onClick(e) {
-        console.log('click!!');
+      
     }
 
     function onZoom() {
-        console.log('onZoom');
+        
 
         draw();
         xAxisSvg.call(xAxis);
         yAxisSvg.call(yAxis);
     }
 });
+}})

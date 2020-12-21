@@ -1,32 +1,31 @@
 
-if ( localStorage.getItem("token")) {
-    axios.get("/api/1.0/contact",
+let company = window.localStorage.getItem('company')
+let nickname= window.localStorage.getItem('id')
+document.getElementById('companyname').innerHTML=company
+document.getElementById('username').innerHTML="Hi，"+nickname
+
+function ask(event){
+  event.preventDefault()
+  let message=document.getElementById('askquestion').value
+  
+    axios.post("/api/1.0/question",
       {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer" + " " + localStorage.getItem("token")
-          }
+        company:company,
+        nickname:nickname,
+        question:message
+
         }
       )
       .then(res=> {
-        let name = res.data.data.nickname;
-        let email = res.data.data.email;
-        addUserProfile(name, email);
+        swal("Good job! 已成功送出問題", "敬請期待", "success");
+        setTimeout((()=>window.location.href="/index.html"),3000)
       })
       .catch(err => {
         console.log(err, err.response);
       });
-      function addUserProfile(name, email) {
-        let userName = document.getElementById("user-profile-name");
-        let userEmail = document.getElementById("user-profile-email");
-        userName.textContent = `Welcome, ${name}!`;
-        userEmail.textContent = `E-mail: ${email}`;
-      }
      
-      
+    
     
     }
-    else {
-      alert('尚未登入')
-      window.location.href="/login.html";}
+    
     

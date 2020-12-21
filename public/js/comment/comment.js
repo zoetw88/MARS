@@ -1,6 +1,7 @@
 let company = window.localStorage.getItem('company')
 let title = window.localStorage.getItem('title')
 
+document.querySelector("#companyname").innerHTML=company
 
 axios.get(`/api/1.0/comments?company=${company}&title=${title}`)
   .then(response => {
@@ -9,7 +10,7 @@ axios.get(`/api/1.0/comments?company=${company}&title=${title}`)
 
 axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
   .then(response => {
-    console.log(response)
+    
     keyword(response)
   })
 

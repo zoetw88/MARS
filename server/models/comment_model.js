@@ -32,7 +32,7 @@ const extract_comments = async (company,title) => {
 const extract_comments_company = async (company,title) => {
     try {
         await transaction();
-        const result = await query(`SELECT count * ,MATCH (title) AGAINST (?) as score from comment Where company IN (?) HAVING score > 0.6 `, [title,company]);
+        const result = await query(`SELECT * ,MATCH (title) AGAINST (?) as score from comment Where company IN (?) HAVING score > 0.6 `, [title,company]);
         
         if (result.length > 0){
             await commit();

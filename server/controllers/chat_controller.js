@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const {
     ACCESS_TOKEN_SECRET
 } = process.env;
-
+const {sendQuestion}= require('../models/chat_model');
 
 const verifyToken = async (req, res, ) => {
     try {
@@ -29,10 +29,29 @@ const verifyToken = async (req, res, ) => {
 
 };
 
-const editor = async (req, res) => {
+const askQuestion = async (req, res) => {
     try {
+      
         let {
-            nickname
+            nickname,
+            company,
+            question
+        } = req.body
+       await sendQuestion(company,question,nickname)
+     res.status(200).send('ok')
+    } catch (error) {
+        return {
+            error
+        };
+    }
+
+}
+
+
+const editor = async (req, res) => {
+try {
+    let {
+        nickname
         } = req.query
         res.render('editor2');
 
@@ -41,9 +60,9 @@ const editor = async (req, res) => {
             error
         };
     }
-
 }
 module.exports = {
     editor,
-    verifyToken
+    verifyToken,
+    askQuestion
 };

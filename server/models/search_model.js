@@ -7,11 +7,8 @@ const {
 const {
     fp_alogrithm
 } = require('./fp_alogrithm_model');
-const {
-    EvalSourceMapDevToolPlugin
-} = require('webpack');
 
-
+const moment=require('moment')
 const salary = async (company, title, ip) => {
 
     let final_result;
@@ -22,10 +19,12 @@ const salary = async (company, title, ip) => {
 
     try {
         await transaction();
-
+        let time =moment().format('YYYY-MM-DD')
         let query_str = {
             ip: `${ip}`,
-            company: `${company}`
+            company: `${company}`,
+            title:`${title}`,
+            time:`${time}`
         };
 
         if (company != null) {
@@ -38,12 +37,14 @@ const salary = async (company, title, ip) => {
         WITH salary_avg
             AS (
             SELECT salary,
-            experience,company,MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE) as score from salary Where company =? HAVING score > 0.6
+            experience,company,MATCH (title) AGAINST (?) as score from salary HAVING score > 0.58
         ) 
         SELECT 
            AVG(salary)as salary ,experience,company
         FROM
             salary_avg
+        
+        Where company IN (?)
         GROUP BY experience 
         `
         let salary_result = await query(query_salary, [title, company]);
@@ -84,7 +85,7 @@ const salary = async (company, title, ip) => {
             combine_data(salary_3_result, result_3_avg, result_company[1]);
 
             await commit();
-            console.log(data)
+     
             return data;
 
         } else {
@@ -105,15 +106,28 @@ const working_hour = async (company, title) => {
 
         let result_company = await fp_alogrithm(company)
 
-        let query_hour = `SELECT salary AS y,working_hour AS x,company AS label ,MATCH (title) AGAINST (?) AS score FROM salary WHERE company IN (?) HAVING score > 0.6 ORDER BY FIELD(title,?)`
-        let main_salary_result = await query(query_hour, [title, company, company])
-
+        let query_hour = `WITH hourlist 
+            AS (
+                SELECT
+                * ,MATCH (title) AGAINST (?) AS score
+                FROM salary
+            HAVING score > 0.58
+            ) 
+            SELECT 
+            salary AS y,working_hour AS x,company AS label
+            FROM
+              hourlist
+            WHERE company IN (?)`
+       
+        let main_salary_result = await query(query_hour,[title, company])
+        console.log(main_salary_result)
         let query_company = [];
 
         query_company = query_company.concat(company, result_company[0], result_company[1])
-
+       
         if (main_salary_result.length > 0) {
-            let salary_result = await query(query_hour, [title, query_company, query_company])
+            let salary_result = await query(query_hour,[ title, query_company])
+            console.log(salary_result)
             if (salary_result.length > 0) {
                 await commit();
                 return salary_result
@@ -138,19 +152,19 @@ const joblist = async (company, title) => {
         let result_company = await fp_alogrithm(company)
 
         let query_job = `
-    
 
-    WITH joblist AS (
-    SELECT * ,MATCH (title) AGAINST (?) AS score FROM job HAVING score > 0.6
-    ) 
-    SELECT 
-        *
-    FROM
-        joblist
-    WHERE company IN ?
-
-    ORDER BY field
-        (title,?)`
+         WITH joblist 
+         AS (
+        SELECT * ,MATCH (title) AGAINST (?) AS score FROM job HAVING score > 0.6
+            ) 
+        SELECT 
+            *
+        FROM
+            joblist
+        WHERE company IN 
+            ?
+        ORDER BY field
+            (title,?)`
         let query_company = [];
 
         query_company = query_company.concat(company, result_company[0], result_company[1])
@@ -172,6 +186,47 @@ const joblist = async (company, title) => {
     }
 };
 
+async function company(){
+    try {
+        await transaction();
+        let query_company = `SELECT DISTINCT company FROM salary`
+        let company_result = await query(query_company)
+        
+        if (company_result.length > 0) {
+            await commit();
+            return company_result
+        } else {
+            return 'no'
+        }
+
+    } catch (error) {
+        await rollback();
+        return {
+            error
+        };
+    }
+};
+
+async function job(){
+    try {
+        await transaction();
+        let query_job = `SELECT DISTINCT title FROM salary`
+        let company_result = await query(query_job)
+        
+        if (company_result.length > 0) {
+            await commit();
+            return company_result
+        } else {
+            return 'no'
+        }
+
+    } catch (error) {
+        await rollback();
+        return {
+            error
+        };
+    }
+};
 const counter = async (company, title) => {
 
     try {
@@ -202,8 +257,6 @@ const counter = async (company, title) => {
 
          let comment_count = await query(query_comment, [title, company])
 
-
-    
         if (data.length > 0) {
             await commit();
             return job_result
@@ -222,5 +275,7 @@ module.exports = {
     salary,
     working_hour,
     joblist,
-    counter
+    counter,
+    company,
+    job
 };

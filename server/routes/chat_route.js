@@ -4,12 +4,15 @@ const {
 } = require('../utils/utils');
 const {
     editor,
-    verifyToken
+    verifyToken,
+    askQuestion
 } = require('../controllers/chat_controller');
 
 
 router.route('/chat').get(wrapAsync(verifyToken));
 
 router.route('/editor').get(wrapAsync(editor));
+
+router.route('/question').post(wrapAsync(askQuestion));
 
 module.exports = router;

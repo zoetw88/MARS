@@ -1,7 +1,9 @@
 const {
     salary,
     working_hour,
-    joblist
+    joblist,
+    company,
+    job
 } = require('../models/search_model');
 const {
     extract_comments 
@@ -26,6 +28,7 @@ const getSalary = async (req, res) => {
         await fs.writeFile(salary_path,sendJSON,function(err, result) {
             if(err) console.log('error', err);
           })
+          
 
         res.status(200).send(result)
 
@@ -88,7 +91,7 @@ const getKeywords = async (req, res) => {
             title
         } = req.query
         let result=await keyword(company,title)
-    
+  
         // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         // if (ip.substr(0, 7) == "::ffff:") {
         //     ip = ip.substr(7)
@@ -100,7 +103,7 @@ const getKeywords = async (req, res) => {
     }
 }
    
-const getJoblist = async (req, res) => {
+const getJob104list = async (req, res) => {
     try {
         let {
             company,
@@ -118,11 +121,36 @@ const getJoblist = async (req, res) => {
         return {error};
     }
 }
+
+const getCompanylist = async (req, res) => {
+    try {
+        
+        let result=await company()
+        res.status(200).send(result)
+        
+    } catch (error) {
+        return {error};
+    }
+}
+
+
+const getJoblist = async (req, res) => {
+    try {
+        
+        let result=await job()
+        res.status(200).send(result)
+        
+    } catch (error) {
+        return {error};
+    }
+}
 module.exports = {
     getSalary,
     getWorkingHour,
     getComments,
     getKeywords,
+    getJob104list,
+    getCompanylist,
     getJoblist
 
 };

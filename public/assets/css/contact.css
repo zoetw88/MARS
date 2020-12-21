@@ -1,0 +1,20 @@
+#banner-ask{
+    color:gold
+}
+.question-mark{
+font-size:30px;
+}
+
+#companyname{
+    font-family: "Montserrat", "sans-serif";
+    font-weight: 600;
+    color:rgb(83, 120, 241);
+    font-size:24px;
+    margin-top: 20px;
+}
+#questiontitle{
+    font-family: "Montserrat", "sans-serif";
+    font-weight: 600;
+    color:rgb(16, 15, 19);
+    font-size:24px;
+}

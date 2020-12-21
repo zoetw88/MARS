@@ -79,7 +79,9 @@
                 <nav class="navbar navbar-expand-lg">
                     <a class="navbar-brand" href="index.html"><img src="assets/images/logo.png" alt="Logo"></a>
 
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                         <span class="toggler-icon"></span>
                         <span class="toggler-icon"></span>
                         <span class="toggler-icon"></span>
@@ -87,71 +89,16 @@
 
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
-                            <li><a href="index.html">Home</a></li>
+                            <li class="active"><a href="index.html">Home</a></li>
                             <li>
-                                <a href="#">Page</a>
+                                <a href="/api/1.0/user/member.html">會員中心</a>
+                            </li>
 
-                                <ul class="sub-menu">
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="job-list.html">Job Page</a></li>
-                                    <li><a href="job-details.html">Job Details</a></li>
-                                    <li><a href="resume.html">Resume Page</a></li>
-                                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="pricing.html">Pricing Tables</a></li>
-                                    <li><a href="change-password.html">Change Password</a></li>
-                                    <li><a href="notifications.html">Notifications</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">Candidates</a>
-                                
-                                <ul class="sub-menu">
-                                    <li><a href="browse-categories.html">Browse Categories</a></li>
-                                    <li><a href="bookmarked.html">Bookmarked</a></li>
-                                    <li><a href="add-resume.html">Add Resume</a></li>
-                                    <li><a href="manage-resume.html">Manage Resumes</a></li>
-                                    <li><a href="job-alerts.html">Job Alerts</a></li>
-                                </ul>
-                            </li>
-                            <li class="active">
-                                <a href="#">Employers</a>
-                                
-                                <ul class="sub-menu">
-                                    <li class="active"><a href="post-job.html">Post Job</a></li>
-                                    <li><a href="manage-jobs.html">Manage Jobs</a></li>
-                                    <li><a href="manage-applications.html">Manage Applications</a></li>
-                                    <li><a href="browse-resumes.html">Browse Resumes</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="blog.html">Blog</a>
-                                
-                                <ul class="sub-menu">
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="contact.html">Contact</a></li>
                             <li><a href="login.html">Log In</a></li>
 
-                            <li><a class="main-btn" href="post-job.html">Post a job</a></li>
+                            <li><a class="main-btn" href="post-job.html">寫面試心得</a></li>
                         </ul> <!-- navbar nav -->
                     </div>
-
-                    <div class="language">
-                        <div class="dropdown">
-                            <button class="language_btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">en </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a href="#">English</a>
-                                <a href="#">Deutsch</a>
-                                <a href="#">Русский</a>
-                                <a href="#">Español</a>
-                                <a href="#">Français</a>
-                            </div>
-                        </div>
-                    </div> <!-- language -->
                 </nav>
             </div> <!-- container -->
         </div> <!-- header navbar -->
@@ -162,12 +109,9 @@
                     <div class="col-lg-12">
                         <div class="banner_content d-sm-flex align-items-center justify-content-between">
                             <div class="content">
-                                <h3 class="page_title">Create Resume</h3>
-                                <p>More than 6 million jobseekers turn to Fitcareer in their search for work, making over 150,000 applications every day.</p>
+                                <h3 class="page_title">面試心得</h3>
+                                <p>勞資雙方資訊不對等，等你來解決</p>
                             </div> <!-- content -->
-                            <div class="banner_btn">
-                                <a class="main-btn " href="#">75K JOBS</a>
-                            </div> <!-- banner btn -->
                         </div> <!-- banner content -->
                     </div>
                 </div> <!-- row -->
@@ -185,27 +129,16 @@
                 <div class="col-xl-8 col-lg-10">
                     <div class="post_job_form">
                         <form action="#">
-                            <h4 class="post_job_title">Basic information</h4>
-
+                            <h2 class="post_job_title">面試細節</h2>
+    
                             <div class="single_post_job">
-                                <label>Job Title</label>
+                                <label>面試工作職稱</label>
                                 <input type="text" placeholder="Write job title">
-                            </div> <!-- single resume -->
-
+                            </div> 
                             <div class="single_post_job">
-                                <label>Company</label>
-                                <input type="text" placeholder="Write company name">
-                            </div> <!-- single resume -->
-
-                            <div class="single_post_job">
-                                <label>Location (optional)</label>
-                                <input type="text" placeholder="e.g.London">
-                            </div> <!-- single resume -->
-
-                            <div class="single_post_job">
-                                <label>Category</label>
+                                <label>面試公司</label>
                                 <select>
-                                    <option>All Categories</option>
+                                    <option>鴻海精密工業股份有限公司</option>
                                     <option>Finance</option>
                                     <option>IT & Engineering</option>
                                     <option>Education/Training</option>
@@ -215,60 +148,46 @@
                                     <option>Science</option>
                                     <option>Food Services</option>
                                 </select>
-                            </div> <!-- single resume -->
-
+                            </div>
                             <div class="single_post_job">
-                                <label>Job Tags (optional)</label>
-                                <input type="text" placeholder="e.g.PHP,Social Media,Management">
-                                <p>Comma separate tags, such as required skills or technologies, for this job.</p>
-                            </div> <!-- single resume -->
-
+                                <label>其他公司</label>
+                                <input type="text" placeholder="Write company name">
+                            </div>
+    
                             <div class="single_post_job">
-                                <label>Description</label>
+                                <label>面試公司單位</label>
+                                <input type="text" placeholder="Write company name">
+                            </div>
+    
+                            <div class="single_post_job">
+                                <label>公司地點</label>
+                                <input type="text" placeholder="e.g.London">
+                            </div>
+    
+    
+    
+    
+    
+                            <div class="single_post_job">
+                                <label>第一次面試</label>
                                 <textarea id="summernote"></textarea>
+                                <label>請至少輸入100個字</label>
                             </div> <!-- single resume -->
-
+    
                             <div class="single_post_job">
-                                <label>Application email / URL</label>
-                                <input type="text" placeholder="Enter an email address or website URL">
+                                <label>第二次面試</label>
+                                <textarea id="summernote"></textarea>
+                                <label>請至少輸入100個字</label>
                             </div> <!-- single resume -->
-
                             <div class="single_post_job">
-                                <label>Closing Date (optional)</label>
-                                <input id="datepicker" type="text" placeholder="yyyy-mm-dd">
+                                <label>面試準備</label>
+                                <textarea id="summernote"></textarea>
+                                <label>請至少輸入100個字</label>
                             </div> <!-- single resume -->
-                            
-                            <h4 class="post_job_title">Company Details</h4>
-
-                            <div class="single_post_job">
-                                <label>Company Name</label>
-                                <input type="text" placeholder="Enter the name of the company">
-                            </div> <!-- single resume -->
-
-                            <div class="single_post_job">
-                                <label>Website (optional)</label>
-                                <input type="text" placeholder="http://">
-                            </div> <!-- single resume -->
-
-                            <div class="single_post_job">
-                                <label>Tagline (optional)</label>
-                                <input type="text" placeholder="Briefly describe your company">
-                            </div> <!-- single resume -->
-
-                            <div class="single_post_job">
-                                <label>Tagline (optional)</label>
-                                <input type="text" placeholder="Briefly describe your company">
-                            </div> <!-- single resume -->
-
-                            <div class="single_post_job">
-                                <label for="file-4">Choose file...</label>
-                                <input id="file-4" type="file" placeholder="Name">
-                            </div> <!-- single resume -->
-
                             <div class="single_post_job">
                                 <button class="main-btn">Submit your job</button>
                             </div> <!-- single resume -->
-
+    
                         </form>
                     </div> <!-- JobMate form -->
                 </div>

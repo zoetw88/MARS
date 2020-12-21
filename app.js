@@ -36,6 +36,7 @@ app.use('/api/' + API_VERSION,
     require('./server/routes/user_route'),
     require('./server/routes/search_route'),
     require('./server/routes/chat_route'),
+   
   ]
 );
 

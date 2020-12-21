@@ -22,7 +22,7 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTExMjM0Nz
 GET http://localhost:5000/api/1.0/salary?company=廣達電腦股份有限公司&title=軟體工程師 HTTP/1.1
 ###
 
-GET http://localhost:5000/api/1.0/workinghour?company=廣達電腦股份有限公司&title=軟體工程師 HTTP/1.1
+GET http://localhost:5000/api/1.0/workinghour?company=和碩聯合科技股份有限公司&title=機構 HTTP/1.1
 
 ###
 POST http://localhost:5000/get_main_messages
@@ -61,3 +61,23 @@ GET http://localhost:5000/api/1.0/keywords?company=和碩聯合科技股份有�
 ###
 
 GET http://localhost:5000/api/1.0/joblist?company=和碩聯合科技股份有限公司&title=軟體工程師 HTTP/1.1
+
+###
+POST http://localhost:5000/api/1.0/question
+Content-Type: application/json
+
+{
+    "nickname":"zoe",
+    "company":"廣達電腦股份有限公司",
+    "question":"請問待遇如何"
+}
+
+###
+###
+
+GET http://localhost:5000/api/1.0/companylist
+Content-Type: application/json
+
+###
+GET http://localhost:5000/api/1.0/joblist
+Content-Type: application/json

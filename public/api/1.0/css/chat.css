@@ -160,7 +160,7 @@ body {
 
 #frame #sidepanel #profile .wrap .name  p{
 	float: left;
-	margin-left: 75px;
+	margin-left:150px;
 	color:navy;
 }
 
@@ -669,6 +669,7 @@ body {
 }
 
 #frame .content .contact-profile .receiver p {
+	margin-left:15px;
 	font-size: larger;
     font-weight: bold;
 	color: azure;
