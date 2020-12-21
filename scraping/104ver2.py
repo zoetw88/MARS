@@ -23,7 +23,7 @@ mydb = mysql.connector.connect(
     database='wenChang'
 )
 
-for x in['鴻海精密工業股份有限公司','和碩聯合科技股份有限公司','仁寶電腦工業股份有限公司','群聯電子股份有限公司','英業達股份有限公司','台達電子工業股份有限公司','GARMIN','台灣積體電路製造股份有限公司','緯創資通股份有限公司','廣達電腦股份有限公司']:
+for x in['和碩聯合科技股份有限公司']:
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'}
     company_key=x
@@ -77,7 +77,7 @@ for x in['鴻海精密工業股份有限公司','和碩聯合科技股份有限�
         exp=content.find('li',{"class":"job-mode__exp"})
         
         data=  (
-                    company.a.text,
+                    '和碩聯合科技股份有限公司',
                     title.a.get('title'),
     #                 # '工作內容':soup2.find('p',{'class',"mb-5 r3 job-description__content text-break"}),
     #                 # '職務類別':soup2.find("('div', {'class': 'trigger'})>u"),
@@ -105,7 +105,7 @@ for x in['鴻海精密工業股份有限公司','和碩聯合科技股份有限�
         
         result.append(data)     
         i=i+1
-    sql_insert_query = "INSERT INTO job_info(company,title,edu,exp,link) VALUES (%s,%s,%s,%s,%s)"
+    sql_insert_query = "INSERT INTO job(company,title,edu,exp,link) VALUES (%s,%s,%s,%s,%s)"
     cursor = mydb.cursor()
     cursor.executemany(sql_insert_query, result)
     mydb.commit()

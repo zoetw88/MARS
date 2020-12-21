@@ -34,7 +34,7 @@ else:
 cursor = mydb.cursor()
 # '聯發科技股份有限公司','聯華電子股份有限公司','台灣康寧顯示玻璃股份有限公司','台灣美光記憶體股份有限公司','緯穎科技服務股份有限公司'
 # '友達光電','泰金寶電通股份有限公司','日月光半導體製造股份有限公司','啟碁科技股份有限公司','晨星半導體股份有限公司','IBM','力成科技股份有限公司','HTC','瑞昱半導體股份有限公司','華碩電腦股份有限公司','群創光電股份有限公司','光寶科技股份有限公司','大立光電股份有限公司','京元電子股份有限公司'
-for x in ['友達光電','泰金寶電通股份有限公司','日月光半導體製造股份有限公司','啟碁科技股份有限公司','晨星半導體股份有限公司','IBM','力成科技股份有限公司','HTC','瑞昱半導體股份有限公司']:
+for x in ['和碩集團_和碩聯合科技股份有限公司']:
     for i in range(1, 15):
         company = urllib.parse.quote(x)
         converted_num = str(i)
@@ -76,7 +76,7 @@ for x in ['友達光電','泰金寶電通股份有限公司','日月光半導體
             print(data[6])
             sql_insert_query = "INSERT INTO salary(company,title,type,working_time,working_hour,work_overtime,experience,salary,salary_hour,time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             cursor = mydb.cursor()
-            cursor.execute(sql_insert_query, [data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]])
+            cursor.execute(sql_insert_query, ['和碩聯合科技股份有限公司',data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]])
             mydb.commit()
         #         if compound[8] == 'wrong':
                     # cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],

@@ -7,7 +7,8 @@ const {
     getSalary,
     getWorkingHour,
     getComments,
-    getKeywords
+    getKeywords,
+    getJoblist
 } = require('../controllers/search_controller');
 
 
@@ -19,7 +20,11 @@ router.route('/workinghour')
 
 router.route('/keywords')
     .get(wrapAsync(getKeywords));
+
 router.route('/comments')
     .get(wrapAsync(getComments));
+
+router.route('/joblist')
+    .get(wrapAsync(getJoblist));
 
 module.exports = router;

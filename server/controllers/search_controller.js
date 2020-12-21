@@ -1,6 +1,7 @@
 const {
     salary,
     working_hour,
+    joblist
 } = require('../models/search_model');
 const {
     extract_comments 
@@ -87,6 +88,7 @@ const getKeywords = async (req, res) => {
             title
         } = req.query
         let result=await keyword(company,title)
+    
         // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
         // if (ip.substr(0, 7) == "::ffff:") {
         //     ip = ip.substr(7)
@@ -97,11 +99,30 @@ const getKeywords = async (req, res) => {
         return {error};
     }
 }
-
+   
+const getJoblist = async (req, res) => {
+    try {
+        let {
+            company,
+            title
+        } = req.query
+        let result=await joblist(company,title)
+        
+        // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        // if (ip.substr(0, 7) == "::ffff:") {
+        //     ip = ip.substr(7)
+        // }
+        res.status(200).send(result)
+        
+    } catch (error) {
+        return {error};
+    }
+}
 module.exports = {
     getSalary,
     getWorkingHour,
     getComments,
-    getKeywords
+    getKeywords,
+    getJoblist
 
 };

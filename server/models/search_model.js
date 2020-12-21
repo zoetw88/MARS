@@ -38,7 +38,7 @@ const salary = async (company, title, ip) => {
         WITH salary_avg
             AS (
             SELECT salary,
-            experience,company,MATCH (title) AGAINST (?) as score from salary Where company =?HAVING score > 0.6
+            experience,company,MATCH (title) AGAINST (? IN NATURAL LANGUAGE MODE) as score from salary Where company =? HAVING score > 0.6
         ) 
         SELECT 
            AVG(salary)as salary ,experience,company
@@ -84,6 +84,7 @@ const salary = async (company, title, ip) => {
             combine_data(salary_3_result, result_3_avg, result_company[1]);
 
             await commit();
+            console.log(data)
             return data;
 
         } else {
@@ -103,18 +104,16 @@ const working_hour = async (company, title) => {
         await transaction();
 
         let result_company = await fp_alogrithm(company)
+
         let query_hour = `SELECT salary AS y,working_hour AS x,company AS label ,MATCH (title) AGAINST (?) AS score FROM salary WHERE company IN (?) HAVING score > 0.6 ORDER BY FIELD(title,?)`
         let main_salary_result = await query(query_hour, [title, company, company])
 
-        let query_company=[];
-        query_company.push(company)
-        query_company.push(result_company[0])
-        query_company.push(result_company[1])
+        let query_company = [];
+
+        query_company = query_company.concat(company, result_company[0], result_company[1])
 
         if (main_salary_result.length > 0) {
-
             let salary_result = await query(query_hour, [title, query_company, query_company])
-
             if (salary_result.length > 0) {
                 await commit();
                 return salary_result
@@ -131,7 +130,97 @@ const working_hour = async (company, title) => {
         };
     }
 };
+
+
+const joblist = async (company, title) => {
+    try {
+        await transaction();
+        let result_company = await fp_alogrithm(company)
+
+        let query_job = `
+    
+
+    WITH joblist AS (
+    SELECT * ,MATCH (title) AGAINST (?) AS score FROM job HAVING score > 0.6
+    ) 
+    SELECT 
+        *
+    FROM
+        joblist
+    WHERE company IN ?
+
+    ORDER BY field
+        (title,?)`
+        let query_company = [];
+
+        query_company = query_company.concat(company, result_company[0], result_company[1])
+        
+        let job_result = await query(query_job, [title, [query_company], query_company])
+    
+        if (job_result.length > 0) {
+            await commit();
+            return job_result
+        } else {
+            return 'no'
+        }
+
+    } catch (error) {
+        await rollback();
+        return {
+            error
+        };
+    }
+};
+
+const counter = async (company, title) => {
+
+    try {
+        await transaction();
+      
+        let query_job = `
+        WITH joblist AS (
+        SELECT * ,MATCH (title) AGAINST (?) AS score FROM job HAVING score > 0.6
+        ) 
+        SELECT 
+            count(title)
+         FROM
+            joblist
+         WHERE company = ?`
+        
+        let job_count = await query(query_job, [title, company])
+
+             
+        let query_comment = `
+        WITH commentlist AS (
+        SELECT * ,MATCH (title) AGAINST (?) AS score FROM comment HAVING score > 0.6
+        ) 
+        SELECT 
+            count(interview_experience)
+         FROM
+            commentlist
+         WHERE company = ?`
+
+         let comment_count = await query(query_comment, [title, company])
+
+
+    
+        if (data.length > 0) {
+            await commit();
+            return job_result
+        } else {
+            return 'no'
+        }
+
+    } catch (error) {
+        await rollback();
+        return {
+            error
+        };
+    }
+};
 module.exports = {
     salary,
-    working_hour
+    working_hour,
+    joblist,
+    counter
 };

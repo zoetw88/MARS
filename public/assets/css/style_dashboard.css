@@ -1218,6 +1218,10 @@ p {
 /*===========================
        04.CATEGORY css 
 ===========================*/
+.job-container{
+  width: 300px;
+  height:300px;
+}
 .category_area {
   position: relative;
   z-index: 9; }

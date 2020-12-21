@@ -4,12 +4,9 @@ const fs = require('fs');
 const {
   extract_comments_title,
   extract_comments_company,
-  extract_comments_single
 } = require("./comment_model")
-const {
-  count
-} = require("console");
-const { data } = require("jquery");
+
+const _ = require('lodash');
 
 const dict_path = path.join(__dirname, '../../server/alogrithm/ti-idf/dict.txt')
 const stop_path = path.join(__dirname, '../../server/alogrithm/ti-idf/stop_text')
@@ -18,32 +15,29 @@ nodejieba.load({
   dict: dict_path
 })
 
-async function keyword(company,title) {
+async function keyword(company, title) {
   try {
-    
-    let words = [];
+    const stop_word = fs.readFileSync(stop_path).toString();
+    let stop_word_list = Array.from(stop_word)
+    let single_wordlist = [];
     let counter = {};
     let counts = 1;
     let str;
-    let tf;
     let result = [];
     let final_word;
-    let othercounts = [];
-    let y = [];
-    const array = fs.readFileSync(stop_path).toString();
 
-    result_comment = await extract_comments_company(company, title)
-    result_total_comment = await extract_comments_title(title)
+    result_comments = await extract_comments_company(company, title)
+    result_total_comments = await extract_comments_title(title)
 
-    for (let i = 0; i < result_comment.result.length; i++) {
-      str += result_comment.result[i].interview_experience.toString()
-    }
+    let combine_comments = result_comments.result.map(comment => {
+      str += comment.interview_experience.toString()
+      return str
+    })
 
-    let afterTokenize = nodejieba.cut(str)
-
+    let afterTokenize = nodejieba.cut(combine_comments.toString())
     afterTokenize.map(word => {
-      if (counter[word] === undefined && array.indexOf(word) < 0) {
-        words.push(word)
+      if (counter[word] === undefined && stop_word.indexOf(word) < 0) {
+        single_wordlist.push(word)
         counter[word] = {
           tf: 1,
           df: 0
@@ -55,64 +49,48 @@ async function keyword(company,title) {
       counts = counts + 1;
     })
 
-
-
-    for (let j = 1; j < result_total_comment.result.length; j++) {
+    let total_wordlist = result_total_comments.result.map(comment => {
       let tempcounts = {};
-      let tokens = nodejieba.cut(result_total_comment.result[j].interview_experience)
-      for (let k = 0; k < tokens.length; k++) {
-        let w = tokens[k];
-        if (tempcounts[w] === undefined) {
-          tempcounts[w] = true;
+      let tokens = nodejieba.cut(comment.interview_experience)
+      tokens.map(token => {
+        if (tempcounts[token] === undefined) {
+          tempcounts[token] = true
         }
-      }
-      othercounts.push(tempcounts);
-    }
+      })
+      return tempcounts
+    })
 
-    for (let g = 0; g < array.length; g++) {
-      y.push(array[g])
-    }
-
-
-    for (let i = 0; i < words.length; i++) {
-      const key = words[i];
-      var a = y.indexOf(key)
-      for (let j = 0; j < othercounts.length; j++) {
-        let tempcounts = othercounts[j];
-        if (tempcounts[key] && a < 0) {
+    single_wordlist.map(word => {
+      let check_stop_word = stop_word_list.indexOf(word)
+      let key = word
+      total_wordlist.map(word => {
+        if (word[key] && check_stop_word < 0) {
           counter[key].df++;
-
         }
-      }
-    }
+      })
+    })
 
-    for (let i = 0; i < words.length; i++) {
-      let key = words[i];
-      counter[key].tfidf = counter[key].tf / counts * Math.log(result_comment.result.length / counter[key].df);
-    }
+    single_wordlist.map(word => {
+      counter[word].tfidf = counter[word].tf / counts * Math.log(result_comments.result.length / counter[word].df);
+    })
 
-    words.sort(compare);
+    single_wordlist.sort(compare);
 
     function compare(a, b) {
       let countA = counter[a].tfidf;
       let countB = counter[b].tfidf;
       return countB - countA;
     }
-   
-    for (var i = 0; i < words.length; i++) {
-      let key = words[i];
-      final_word={}
-      
-      if ((counter[key].tfidf) < 1 && 0.0038 < (counter[key].tfidf)) {
-      
-        // console.log(key + ' ' + counter[key].tfidf);
-  
-        final_word['keyword']=key
-       
-       
+
+    single_wordlist.map(word => {
+      final_word = {}
+      if ((counter[word].tfidf) < 1 && 0.0038 < (counter[word].tfidf)) {
+        final_word['keyword'] = word
       }
       result.push(final_word)
-    }
+
+    })
+
     return result
 
   } catch (error) {
