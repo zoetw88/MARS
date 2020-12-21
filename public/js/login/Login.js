@@ -57,6 +57,7 @@ try{
       .then((response) => {
 
         if (response.data.data.accessToken) {
+          window.localStorage.setItem('editor', nickname);
           window.localStorage.setItem('id', nickname);
           window.localStorage.setItem('token', response.data.data.accessToken);
           hello(nickname)
@@ -89,6 +90,7 @@ async function login(){
           .then((response) => {
 
             if (response.data.data.accessToken) {
+              window.localStorage.setItem('editor', response.data.data.nickname);
               window.localStorage.setItem('token', response.data.data.accessToken);
               window.localStorage.setItem('id', response.data.data.nickname);
               hello(response.data.data.nickname)

@@ -10,7 +10,7 @@ if (localStorage.getItem("token")) {
             }
         })
         .then(res => {
-            console.log(res)
+          
             sender = res.data.nickname
             console.log(sender)
             io = io('http://localhost:5000', {
@@ -26,6 +26,7 @@ if (localStorage.getItem("token")) {
 
                 for (let i = 0; i < response.data.length; i++) {
                     if (response.data[i].sender == username) {
+                        localStorage.setItem('talker',response.data[i].receiver);
                         $('.receiver-company').find("p").text(response.data[i].receivercompany)
                         $('.receiver').find("p").text(response.data[i].receiver)
                         $('<li class="sent"><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
@@ -40,9 +41,9 @@ if (localStorage.getItem("token")) {
 
             function organize_talker(response, username) {
                 let talker=[]
-                for (let i = 0; i < response.data.length; i++) {
+                for (let i = 0; i < response.data.length; i++) {    
                     if (response.data[i].sender == username) {
-                     
+                        
                         if(talker.indexOf(response.data[i].receiver)<0){
                         talker.push(response.data[i].receiver)
 
@@ -124,7 +125,8 @@ if (localStorage.getItem("token")) {
                         chosenName: chosenName
                     })
                     .then((response) => {
-                       
+                        
+                        
                         organize_talk(response, username)
                     })
                     .catch((error) => {
@@ -163,7 +165,7 @@ if (localStorage.getItem("token")) {
                 if(receiver==""){
                     return false
                 }
-                console.log(receiver)
+           
                 message = $(".message-input input").val();
                 if ($.trim(message) == '') {
                     return false;
@@ -187,6 +189,41 @@ if (localStorage.getItem("token")) {
             io.on("new_message", function (data) {
                 $('<li class="replies"><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
             });
+            
+            function editor(){
+                receiver = $('.active').find('.name').text();
+                if(receiver==""){
+                    return false
+                }
+           
+                axios.get("/api/1.0/editor")
+                  .then((response) => {
+                      console.log(response)
+                    localStorage.setItem('talker',receiver);
+                   
+                    let editor=localStorage.setItem('editor',response.data.room);
+
+                    io.emit("editor", {
+                        sender: sender,
+                        receiver: receiver,
+                        room: editor
+                    });
+                    window.open("/editor.html");
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    
+                  })
+                }
+                $('.editor').click(function () {
+                    editor();
+                });
+                io.on("editor", function (data) {
+                    localStorage.setItem('talker',data.sender);
+                   
+                    localStorage.setItem('editor',data.room);
+                });
+           
 
         })
         .catch(err => {

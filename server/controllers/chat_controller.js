@@ -50,11 +50,14 @@ const askQuestion = async (req, res) => {
 
 const editor = async (req, res) => {
 try {
-    let {
-        nickname
-        } = req.query
-        res.render('editor2');
-
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+      }
+        room={
+            room:getRandomInt(3)
+        }
+        res.status(200).send(room)
+        
     } catch (error) {
         return {
             error
