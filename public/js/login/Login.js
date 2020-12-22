@@ -36,6 +36,7 @@ async function verify_token() {
 }
 
 async function signup() {
+  event.preventDefault();
 try{
   
     let name = document.getElementById("sing_up_name").value
@@ -77,8 +78,7 @@ try{
 }
 
 async function login(){
-      
-  
+  event.preventDefault();
       try {
         let email = document.getElementById("login_email").value
         let password = document.getElementById("login_password").value
@@ -89,18 +89,18 @@ async function login(){
           })
           .then((response) => {
 
-            if (response.data.data.accessToken) {
+            // if (response.data.data.accessToken) {
               window.localStorage.setItem('editor', response.data.data.nickname);
               window.localStorage.setItem('token', response.data.data.accessToken);
               window.localStorage.setItem('id', response.data.data.nickname);
               hello(response.data.data.nickname)
          
 
-            } else {
-              setTimeout(function () {
-                window.location.reload();
-              }, 1500)
-            }
+            // } else {
+            //   setTimeout(function () {
+            //     window.location.reload();
+            //   }, 1500)
+            // }
           })
           .catch((error) => {
 
