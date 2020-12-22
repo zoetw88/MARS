@@ -96,11 +96,7 @@ async function login(){
               hello(response.data.data.nickname)
          
 
-            // } else {
-            //   setTimeout(function () {
-            //     window.location.reload();
-            //   }, 1500)
-            // }
+        
           })
           .catch((error) => {
 

@@ -10,31 +10,32 @@ import {baseKeymap} from"prosemirror-commands"
 import {keymap } from 'prosemirror-keymap'
 import {ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
 import { CodeBlockView, arrowHandler } from './code_block.js';
+
+
+window.addEventListener('load', () => {
 var randomColor = require('randomcolor'); // import the script
 var color = randomColor();
-let editor=localStorage.getItem('editor');
-    let id=localStorage.getItem('talker');
-     function myCursorBuilder(user){
-        const cursor = document.createElement('span')
-        cursor.classList.add('ProseMirror-yjs-cursor')
-        const userDiv = document.createElement('div')
-        userDiv.insertBefore(document.createTextNode(`${id}`), null)
-        userDiv.setAttribute('style', `background-color: ${color}`)
-        cursor.insertBefore(userDiv, null)
-        return cursor
-      }
-   
+let urlParams = new URLSearchParams(window.location.search);
+
+let room=urlParams.get('room');
+
+  
+
+const editor = document.createElement('div')
+editor.setAttribute('id', 'editor')
+const editorContainer = document.createElement('div')
+editorContainer.insertBefore(editor, null)
       
-        const user=myCursorBuilder()
+       
         const ydoc = new Y.Doc()
-        const provider = new WebsocketProvider('ws://localhost:1234',`${editor}`, ydoc)
+        const provider = new WebsocketProvider('ws://localhost:1234',`${room}`, ydoc)
         const type = ydoc.getXmlFragment('prosemirror')
-        window.view = new EditorView(document.querySelector("#editor"), {
+        const prosemirrorView=window.view = new EditorView(document.querySelector("#editor"), {
             state: EditorState.create({
              schema,
                 plugins: [
-                    ySyncPlugin(type),
-                    yCursorPlugin(provider.awareness,{ cursorBuilder: myCursorBuilder }),
+                   
+                    yCursorPlugin(provider.awareness),
                     yUndoPlugin(),
                     keymap(baseKeymap,{
                       'Mod-z': undo,
@@ -44,8 +45,10 @@ let editor=localStorage.getItem('editor');
                   ].concat(rule({ schema }))
             })
            , nodeViews: { code_block(node, view, getPos) {return new CodeBlockView(node, view, getPos)}}
-        })
-        
- 
 
-  r
+          
+        })
+        document.body.insertBefore(editorContainer, null)
+ 
+        window.example = { provider, ydoc, type, prosemirrorView }
+      })

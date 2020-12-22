@@ -5,7 +5,7 @@ const {
     ACCESS_TOKEN_SECRET
 } = process.env;
 const {sendQuestion}= require('../models/chat_model');
-
+const path=require('path')
 const verifyToken = async (req, res, ) => {
     try {
         let bearerHeader = req.header('authorization')
@@ -50,13 +50,11 @@ const askQuestion = async (req, res) => {
 
 const editor = async (req, res) => {
 try {
-    function getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
-      }
-        room={
-            room:getRandomInt(3)
-        }
-        res.status(200).send(room)
+    let {room} = req.query
+    console.log('__dirname：', __dirname)
+    res.sendFile(path.join(__dirname,'../../public/api/1.0/editor.html'));
+    
+    
         
     } catch (error) {
         return {

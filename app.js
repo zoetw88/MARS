@@ -124,7 +124,6 @@ async function talk(data){
   let receivercompany= await query("select company from user where nickname= ?",[data.receiver])
   console.log(receivercompany)
   let sendercompany= await query("select company from user where nickname= ?",[data.sender])
-  
   await query("INSERT INTO message (sender, receiver, message,receivercompany,sendercompany) VALUES ('" + data.sender + "', '" + data.receiver + "', '" + data.message + "','" + receivercompany[0].company+ "','" + sendercompany[0].company+ "')");
 }
 io.use(function (socket, next) {
@@ -139,23 +138,22 @@ io.use(function (socket, next) {
 io.on('connection', (socket) => {
   console.log('socket connected', socket.id)
   users[sender] = socket.id;
-  socket.on('disconnect', () => {
+  socket.on('disconnect', () => 
+  {
     console.log('user disconnected');
   });
   socket.on("send_message", function (data) {
     var socketId = users[data.receiver];
     io.to(socketId).emit("new_message", data);
-    
+  
     talk(data)
   });
-  socket.on("editor", function (data) {
+  socket.on("ask_to_editor", function (data) {
     var socketId = users[data.receiver];
-    
-    io.to(socketId).emit("editor",{
-   
-      room: data.room})
-    
-  });
+    io.to(socketId).emit("reply_editor",{
+    sender:data.sender,
+    message:data.message});
+})
 })
 if (NODE_ENV != 'production') {
   http.listen(port, () => {
