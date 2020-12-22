@@ -221,7 +221,7 @@ if (localStorage.getItem("token")) {
                 io.on("editor", function (data) {
                     localStorage.setItem('talker',data.sender);
                    
-                    localStorage.setItem('editor',data.room);
+                  
                 });
            
 
