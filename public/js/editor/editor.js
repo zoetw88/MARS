@@ -27,7 +27,7 @@ let editor=localStorage.getItem('editor');
       
         const user=myCursorBuilder()
         const ydoc = new Y.Doc()
-        const provider = new WebsocketProvider('wss://demos.yjs.dev',`${editor}`, ydoc)
+        const provider = new WebsocketProvider('ws://localhost:1234',`${editor}`, ydoc)
         const type = ydoc.getXmlFragment('prosemirror')
         window.view = new EditorView(document.querySelector("#editor"), {
             state: EditorState.create({
