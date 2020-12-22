@@ -150,7 +150,10 @@ io.on('connection', (socket) => {
   });
   socket.on("editor", function (data) {
     var socketId = users[data.receiver];
-    io.to(socketId).emit("editor", data);
+    
+    io.to(socketId).emit("editor",{
+   
+      room: data.room})
     
   });
 })
