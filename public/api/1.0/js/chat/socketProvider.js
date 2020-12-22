@@ -232,8 +232,11 @@ if (localStorage.getItem("token")) {
             // window.location.href = "/login.html";
         });
 } else {
-    alert('尚未登入')
-    window.location.href = "/login.html";
+    swal("尚未登入")
+    setTimeout(function () {
+        window.location.href = "/login.html"
+      }, 2000)
+    
 }
 $(".messages").animate({ scrollTop: $(document).height() }, "fast");
 

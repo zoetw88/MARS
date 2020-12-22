@@ -51,7 +51,7 @@ function send_cancel_email(user_email,subject,text){
         to: user_email, 
         subject: subject,
         text:text, 
-        html:"<p><strong>時尚之路，你永不孤單!永遠歡迎你的回歸----StylishDream團隊</strong></p><img src =https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/catwalk_308480654_1000.jpg></img>"
+        html:"<p><strong>台灣職場生態改變由你做起!!有人詢問貴司相關問題。</strong><p>http://18.136.112.92/api/1.0/chat.html</p></p><img src =https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/rules-good-co-worker-relationship1.jpg></img>"
     };
     
     transporter.sendMail(options, function(error, info){

@@ -94,6 +94,7 @@ async function login(){
               window.localStorage.setItem('token', response.data.data.accessToken);
               window.localStorage.setItem('id', response.data.data.nickname);
               hello(response.data.data.nickname)
+         
 
             } else {
               setTimeout(function () {
@@ -118,8 +119,10 @@ async function login(){
 }
 
 async function hello(nickname){
+
   await swal(`早安午安晚安${nickname}歡迎來到火星`, "你的一小步是改善台灣職場生態的一大步", "success")
   .then(() => {
+    
     window.location.href = "/index.html"
   });
 }
