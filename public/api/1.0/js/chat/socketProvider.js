@@ -220,8 +220,8 @@ if (localStorage.getItem("token")) {
                 });
                 io.on("editor", function (data) {
                     localStorage.setItem('talker',data.sender);
-                   
-                  
+                    localStorage.removeItem('editor');
+                    localStorage.setItem('editor',data.room);
                 });
            
 
