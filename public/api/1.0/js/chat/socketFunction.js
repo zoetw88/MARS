@@ -61,6 +61,7 @@ function newMessages() {
 async function askCollaborate(data) {
     swal.fire({
         title: `你想要和${data.info.sender}一起共同編輯嗎?`,
+        icon:'question',
         type: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -81,11 +82,10 @@ async function askCollaborate(data) {
                 padding: '3em',
                 background: '#fff url(/images/trees.png)',
                 backdrop: `
-              rgba(0,0,123,0.4)
-              url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
-              top left
-              no-repeat
-            `
+                rgba(0,0,123,0.4)
+                url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
+                top left
+                no-repeat`
             })
             io.emit("yes_collaborate", {
                 receiver: data.info.receiver,
