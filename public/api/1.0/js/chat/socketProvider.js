@@ -1,8 +1,5 @@
-
-
 let receiver = "";
 let sender = "";
-
 
 if (localStorage.getItem("token")) {
     axios.get("/api/1.0/chat", {
@@ -12,142 +9,52 @@ if (localStorage.getItem("token")) {
             }
         })
         .then(res => {
-
             sender = res.data.nickname
-            console.log(sender)
+
+            $('#profile').find('p').text(sender)
+
             io = io('http://localhost:5000', {
                 query: {
                     id: sender
                 }
             })
 
-            $('#profile').find('p').text(sender)
+            io.emit("getMessages", {
+                username: sender
+            })
+            io.on("loadMessages", function (data) {
+                organizeTalk(data.messages, sender)
+                organizeTalker(data.side_messages, sender)
+            });
+            io.on("reloadMessages", function (data) {
+                organizeTalk(data.messages, sender)
 
+            });
+            io.on("reply_editor", function (data) {
+                askCollaborate(data)
+            });
 
-            function organize_talk(response, username) {
+            io.on("reply_no", function (data) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${data.sender}義正嚴辭地拒絕和你協作!`,
+                })
 
-                for (let i = 0; i < response.data.length; i++) {
-                    if (response.data[i].sender == username) {
-                        localStorage.setItem('talker', response.data[i].receiver);
-                        $('.receiver-company').find("p").text(response.data[i].receivercompany)
-                        $('.receiver').find("p").text(response.data[i].receiver)
-                        $('<li class="sent"><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
-                    } else {
-                        $('.receiver-company').find("p").text(response.data[i].sendercompany)
-                        $('.receiver').find("p").text(response.data[i].sender)
-                        $('<li class="replies"><p>' + response.data[i].message + '</p></li>').appendTo($('.messages ul'));
-                    }
-                }
+            });
 
-            }
+            io.on("reply_yes", function (data) {
+                Swal.fire({
+                    icon: 'info',
+                    title: `太棒了${data.sender}接受你的邀請了!`,
+                    text: `請按下面的傳送門`,
+                    html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${data.room}&id=${data.sender}><b>傳送門</b></a>`
+                })
 
-            function organize_talker(response, username) {
-                let talker = []
-                for (let i = 0; i < response.data.length; i++) {
-                    if (response.data[i].sender == username) {
-
-                        if (talker.indexOf(response.data[i].receiver) < 0) {
-                            talker.push(response.data[i].receiver)
-
-                            $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response.data[i].receiver + '</p><p class="company">' + response.data[i].receivercompany + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
-                        }
-                    } else {
-                        if (talker.indexOf(response.data[i].sender) < 0) {
-                            talker.push(response.data[i].sender)
-                            console.log('yes')
-                            $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response.data[i].sender + '</p><p class="company">' + response.data[i].sendercompany + '</p><p class="preview">' + response.data[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
-
-                        }
-                    }
-                }
-            }
-
-            function getSideMessage(username) {
-                axios.post(`http://localhost:5000/get_side_messages`, {
-                        username: username
-                    })
-                    .then((response) => {
-                        console.log(response)
-                        organize_talker(response, username)
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        if (!error.response) {
-                            // network error
-                        } else {
-                            // http status code
-                            const code = error.response.status
-                            // response data
-                            const response = error.response.data
-                            console.loge(code)
-                            console.log(response)
-                        }
-
-                    })
-
-
-            }
-
-            function getMainMessage(username) {
-                axios.post(`http://localhost:5000/get_main_messages`, {
-                        username: username
-                    })
-                    .then((response) => {
-                        console.log(response)
-                        organize_talk(response, username)
-
-                    })
-                    .catch((error) => {
-                        console.log(error)
-
-                        if (!error.response) {
-                            // network error
-                        } else {
-                            // http status code
-                            const code = error.response.status
-                            // response data
-                            const response = error.response.data
-                            console.log(code)
-                            console.log(response)
-
-                        }
-
-                    })
-
-
-            }
-
-
-            getMainMessage(sender)
-            getSideMessage(sender)
-
-            function onUserSelected(chosenName, username) {
-                axios.post(`http://localhost:5000/get_select_messages`, {
-                        username: username,
-                        chosenName: chosenName
-                    })
-                    .then((response) => {
-
-
-                        organize_talk(response, username)
-                    })
-                    .catch((error) => {
-
-                        if (!error.response) {
-                            // network error
-                        } else {
-                            // http status code
-                            const code = error.response.status
-                            // response data
-                            const response = error.response.data
-                            console.log(code)
-                            console.log(response)
-
-                        }
-
-                    })
-
-            }
+            });
+            io.on("new_message", function (data) {
+                $('<li class="replies"><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
+            });
 
 
             $(document).on('click', '.contact', function () {
@@ -158,86 +65,37 @@ if (localStorage.getItem("token")) {
 
                 let chosenName = $(this).find('.name').text();
 
-                onUserSelected(chosenName, sender)
+                io.emit("selectMessages", {
+                    chosenName: chosenName,
+                    sender: sender,
+                });
             })
 
+            $('.submit').on('click', function () {
+                newMessages();
+            });
 
-            function newMessage() {
-                receiver = $('.active').find('.name').text();
-                if (receiver == "") {
-                    return false
-                }
+            $('.editor').on('click', function () {
+                editor();
+            });
 
-                message = $(".message-input input").val();
-                if ($.trim(message) == '') {
+            $(".messages").animate({
+                scrollTop: $(document).height()
+            }, "fast");
+
+
+            $(window).on('keydown', function (e) {
+                if (e.which == 13) {
+                    newMessages();
                     return false;
                 }
-                $('<li class="sent"><p>' + message + '</p></li>').appendTo($('.messages ul'));
-                $('.message-input input').val(null);
-                $('.contact.active .preview').html('<span>You: </span>' + message);
-                $('.messages').stop().animate({
-                    scrollTop: $('.messages')[0].scrollHeight
-                });
-                io.emit("send_message", {
-                    sender: sender,
-                    receiver: receiver,
-                    message: message
-                });
-
-            }
-            $('.submit').click(function () {
-                newMessage();
             });
-            io.on("new_message", function (data) {
-                $('<li class="replies"><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
-            });
-
-            function editor() {
-                receiver = $('.active').find('.name').text();
-                if (receiver == "") {
-                    return false
-                }
-            io.emit("ask_to_editor", {
-                receiver:receiver,
-                sender:sender,
-                message:'是否願意共同協作'
-            })
-            };
-            io.on("reply_editor", function (data) {
-                hello(data)
-            });
-
-            
-            $('.editor').click(function () {
-                editor();
-                console.log('hihji')
-            });
-        
-        async function hello(data){
-
-            swal({
-                title: `你想要和${data.sender}一起共同編輯嗎?`,
-                buttons: true,
-              })
-              .then((willDelete) => {
-                if (willDelete) {
-                  swal("等等總機小姐會傳給您共同編輯的連結", {
-                    icon: "success",
-                  });
-
-                } else {
-                  swal(`${data.sender}哭哭!`);
-                }
-              });
-        }
-
 
         })
         .catch(err => {
             console.log(err, err.response);
-
-            // window.location.href = "/login.html";
         });
+
 } else {
     swal("尚未登入")
     setTimeout(function () {
@@ -245,43 +103,3 @@ if (localStorage.getItem("token")) {
     }, 2000)
 
 }
-$(".messages").animate({
-    scrollTop: $(document).height()
-}, "fast");
-
-$("#profile-img").click(function () {
-    $("#status-options").toggleClass("active");
-});
-
-
-
-$("#status-options ul li").click(function () {
-    $("#profile-img").removeClass();
-    $("#status-online").removeClass("active");
-    $("#status-away").removeClass("active");
-    $("#status-busy").removeClass("active");
-    $("#status-offline").removeClass("active");
-    $(this).addClass("active");
-
-    if ($("#status-online").hasClass("active")) {
-        $("#profile-img").addClass("online");
-    } else if ($("#status-away").hasClass("active")) {
-        $("#profile-img").addClass("away");
-    } else if ($("#status-busy").hasClass("active")) {
-        $("#profile-img").addClass("busy");
-    } else if ($("#status-offline").hasClass("active")) {
-        $("#profile-img").addClass("offline");
-    } else {
-        $("#profile-img").removeClass();
-    };
-
-    $("#status-options").removeClass("active");
-});
-
-
-$(window).on('keydown', function (e) {
-    if (e.which == 13) {
-        newMessage();
-        return false;
-    }
-});

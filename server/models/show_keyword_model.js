@@ -28,7 +28,7 @@ async function keyword(company, title) {
 
     result_comments = await extract_comments_company(company, title)
     result_total_comments = await extract_comments_title(title)
-   
+
     let combine_comments = result_comments.result.map(comment => {
       str += comment.interview_experience.toString()
       return str

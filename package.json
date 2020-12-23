@@ -47,6 +47,7 @@
     "prosemirror-view": "^1.16.3",
     "randomcolor": "^0.6.2",
     "socket.io": "^3.0.3",
+    "socket.io-client": "^3.0.4",
     "sweetalert": "^2.1.2",
     "validator": "^13.1.17",
     "y-prosemirror": "^1.0.0",

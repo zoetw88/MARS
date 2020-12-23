@@ -12,83 +12,26 @@ const cors = require('cors');
 const app = express();
 const morgan = require('morgan')
 const http = require("http").createServer(app)
-const {
-  query,
-  transaction,
-  commit,
-  rollback
-} = require('./server/models/mysql');
-const { keyword } = require('./server/models/show_keyword_model');
+const {chatroom} = require("./server/routes/socket_route");
 
 app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/public/views');
 app.use(express.static('public'));
-app.use(bodyparser.urlencoded({
-  extended: true
-}));
+app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
 app.use(morgan('dev'));
 app.use(cors());
+
 app.use('/api/' + API_VERSION,
   [
     require('./server/routes/user_route'),
     require('./server/routes/search_route'),
     require('./server/routes/chat_route'),
-   
+
   ]
 );
-
-
-app.post("/get_main_messages", async function (req, res) {
-  let {
-    username
-  } = req.body;
-  
-  let final_speaker;
-  let final_speaker_result = await query(`SELECT MAX(id),sender,receiver,sendercompany,receivercompany FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc limit 1`)
-  if(final_speaker_result.length>0){
-  if (final_speaker_result[0].sender != username) {
-    final_speaker = final_speaker_result[0].sender
-  } else {
-    final_speaker = final_speaker_result[0].receiver
-  }
-}else{
-  res.status(404).send('no chat info')
-}
-  let main_message = await query("SELECT * FROM message WHERE (sender = '" + username + "' AND receiver = '" + final_speaker + "') OR (sender = '" + final_speaker + "' AND receiver = '" + username + "')")
-  if(main_message.length>0){
-    res.end(JSON.stringify(main_message));
-  }else{
-    res.status(404).send('no chat info')
-  }
-});
-
-app.post("/get_select_messages", async function (req, res) {
-  let {
-    chosenName,
-    username
-  } = req.body;
-   let result= await query("SELECT * FROM message WHERE (sender = '" + chosenName + "' AND receiver = '" + username+ "') OR (sender = '" + username + "' AND receiver = '" + chosenName + "')")
-  if(result.length>0){
-    res.end(JSON.stringify(result));
-  }else{
-    res.status(404).send('no chat info')
-  }
-});
-
-app.post("/get_side_messages", async function (req, res) {
-  let {
-    username
-  } = req.body;
-  let result=await query(`SELECT MAX(id),sender,receiver,message,receivercompany,sendercompany FROM wenChang.message where(sender ='${username}')or (receiver='${username}') group by sender ,receiver order by max(id) desc`)
-  if(result.length>0){
-    res.end(JSON.stringify(result));
-  }else{
-    res.status(404).send('no chat info')
-  }
-});
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
@@ -110,51 +53,16 @@ app.use(function (err, req, res, next) {
 });
 
 
-let users = [];
-let sender;
+
 
 const io = require('socket.io')(http, {
   cors: {
     origin: '*',
   }
 })
+chatroom(io)
 
-async function talk(data){
 
-  let receivercompany= await query("select company from user where nickname= ?",[data.receiver])
-  console.log(receivercompany)
-  let sendercompany= await query("select company from user where nickname= ?",[data.sender])
-  await query("INSERT INTO message (sender, receiver, message,receivercompany,sendercompany) VALUES ('" + data.sender + "', '" + data.receiver + "', '" + data.message + "','" + receivercompany[0].company+ "','" + sendercompany[0].company+ "')");
-}
-io.use(function (socket, next) {
-  sender = socket.handshake.query.id
-  console.log(sender)
-  if (socket.handshake.query.id) {
-    return next();
-  }
-  next(new Error('Authentication error'));
-});
-
-io.on('connection', (socket) => {
-  console.log('socket connected', socket.id)
-  users[sender] = socket.id;
-  socket.on('disconnect', () => 
-  {
-    console.log('user disconnected');
-  });
-  socket.on("send_message", function (data) {
-    var socketId = users[data.receiver];
-    io.to(socketId).emit("new_message", data);
-  
-    talk(data)
-  });
-  socket.on("ask_to_editor", function (data) {
-    var socketId = users[data.receiver];
-    io.to(socketId).emit("reply_editor",{
-    sender:data.sender,
-    message:data.message});
-})
-})
 if (NODE_ENV != 'production') {
   http.listen(port, () => {
     console.log(`Listening on port: ${port}`);

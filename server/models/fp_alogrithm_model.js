@@ -41,7 +41,10 @@ async function fp_alogrithm(company) {
         });
         fpgrowth.exec(dataset)
         
-        query_str_company = 'SELECT company FROM recommend WHERE company NOT IN (?)GROUP BY company ORDER BY COUNT(company) DESC LIMIT ? '
+        query_str_company = 
+        `SELECT company
+        FROM recommend WHERE company NOT IN (?)
+        GROUP BY company ORDER BY COUNT(company) DESC LIMIT ? `
         
         switch (result_company.length) {
 

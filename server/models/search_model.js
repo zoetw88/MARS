@@ -8,17 +8,24 @@ const {
     fp_alogrithm
 } = require('./fp_alogrithm_model');
 
-const moment=require('moment')
+const moment = require('moment')
 
-const filter_company=async(company)=>{
-    
-    let query_company = await query(`SELECT company,MATCH (company) AGAINST (?) as score from salary having score >0.2  order by score DESC limit 1`,[company])
-        
-    if(query_company.length<1){
-        query_company=await query('SELECT main_company as company from company_connection where another_name= ?',[company])
+const filter_company = async (company) => {
+
+    let querystr_company = `
+    SELECT company,MATCH (company) AGAINST (?) AS score 
+    FROM salary HAVING score >0.2 ORDER BY score DESC limit 1`
+
+    let query_company = await query(querystr_company, [company])
+
+    if (query_company.length < 1) {
+        let querystr_company = `
+        SELECT main_company AS company 
+        FROM company_connection WHERE another_name= ?`
+        query_company = await query(querystr_company, [company])
     }
 
-    query_company =query_company[0].company
+    query_company = query_company[0].company
 
     return query_company
 }
@@ -33,35 +40,29 @@ const salary = async (company, title, ip) => {
 
     try {
         await transaction();
-        let time =moment().format('YYYY-MM-DD')
+        let time = moment().format('YYYY-MM-DD')
         let query_str = {
             ip: `${ip}`,
             company: `${company}`,
-            title:`${title}`,
-            time:`${time}`
+            title: `${title}`,
+            time: `${time}`
         };
 
         if (company != null) {
             await query('INSERT INTO recommend SET?', query_str)
         }
 
-        let query_company= await filter_company(company)
-      
+        let query_company = await filter_company(company)
+
         let result_company = await fp_alogrithm(query_company)
 
         let query_salary = `
-        WITH salary_avg
-            AS (
-            SELECT salary,
-            experience,company,MATCH (title) AGAINST (?) as score from salary HAVING score > 0.58
+        WITH salary_avg AS (
+            SELECT salary,experience,company,MATCH (title) AGAINST (?) as score 
+            FROM salary HAVING score > 0.58
         ) 
-        SELECT 
-           AVG(salary)as salary ,experience,company
-        FROM
-            salary_avg
-        
-        Where company IN (?)
-        GROUP BY experience 
+        SELECT AVG(salary)as salary ,experience,company
+        FROM salary_avg Where company IN (?) GROUP BY experience 
         `
         let salary_result = await query(query_salary, [title, query_company]);
         let salary_2_result = await query(query_salary, [title, result_company[0]]);
@@ -96,12 +97,12 @@ const salary = async (company, title, ip) => {
 
         if (salary_result.length > 0) {
 
-            combine_data(salary_result, result_avg,query_company);
+            combine_data(salary_result, result_avg, query_company);
             combine_data(salary_2_result, result_2_avg, result_company[0]);
             combine_data(salary_3_result, result_3_avg, result_company[1]);
 
             await commit();
-     
+
             return data;
 
         } else {
@@ -120,31 +121,26 @@ const working_hour = async (company, title) => {
     try {
         await transaction();
 
-        let query_company=await filter_company(company)
+        let query_company = await filter_company(company)
 
         let result_company = await fp_alogrithm(query_company)
 
-        let query_hour = `WITH hourlist 
-            AS (
-                SELECT
-                * ,MATCH (title) AGAINST (?) AS score
-                FROM salary
-            HAVING score > 0.58
-            ) 
-            SELECT 
-            salary AS y,working_hour AS x,company AS label
-            FROM
-              hourlist
-            WHERE company IN (?)`
-       
-        let main_salary_result = await query(query_hour,[title, query_company])
-   
+        let query_hour = `
+        WITH hourlist AS (
+        SELECT * ,MATCH (title) AGAINST (?) AS score
+        FROM salary HAVING score > 0.58
+        ) 
+        SELECT salary AS y,working_hour AS x,company AS label
+        FROM hourlist WHERE company IN (?)`
+
+        let main_salary_result = await query(query_hour, [title, query_company])
+
         let combine_company = [];
 
         combine_company = combine_company.concat(query_company, result_company[0], result_company[1])
-       
+
         if (main_salary_result.length > 0) {
-            let salary_result = await query(query_hour,[ title, combine_company])
+            let salary_result = await query(query_hour, [title, combine_company])
             console.log(salary_result)
             if (salary_result.length > 0) {
                 await commit();
@@ -168,30 +164,23 @@ const joblist = async (company, title) => {
     try {
         await transaction();
 
-        company=await filter_company(company)
+        company = await filter_company(company)
 
         let result_company = await fp_alogrithm(company)
 
         let query_job = `
-
-         WITH joblist 
-         AS (
-        SELECT * ,MATCH (title) AGAINST (?) AS score FROM job HAVING score > 0.6
+        WITH joblist AS (
+        SELECT * ,MATCH (title) AGAINST (?) AS score 
+        FROM job HAVING score > 0.6
             ) 
-        SELECT 
-            *
-        FROM
-            joblist
-        WHERE company IN 
-            ?
-        ORDER BY field
-            (title,?)`
+        SELECT * FROM joblist 
+        WHERE company IN ? ORDER BY field (title,?)`
         let query_company = [];
 
         query_company = query_company.concat(company, result_company[0], result_company[1])
-        
+
         let job_result = await query(query_job, [title, [query_company], query_company])
-    
+
         if (job_result.length > 0) {
             await commit();
             return job_result
@@ -207,12 +196,12 @@ const joblist = async (company, title) => {
     }
 };
 
-async function company(){
+async function company() {
     try {
         await transaction();
         let query_company = `SELECT DISTINCT company FROM salary`
         let company_result = await query(query_company)
-        
+
         if (company_result.length > 0) {
             await commit();
             return company_result
@@ -228,12 +217,12 @@ async function company(){
     }
 };
 
-async function job(){
+async function job() {
     try {
         await transaction();
         let query_job = `SELECT DISTINCT title FROM salary`
         let company_result = await query(query_job)
-        
+
         if (company_result.length > 0) {
             await commit();
             return company_result
@@ -252,31 +241,26 @@ const counter = async (company, title) => {
 
     try {
         await transaction();
-      
+
         let query_job = `
         WITH joblist AS (
         SELECT * ,MATCH (title) AGAINST (?) AS score FROM job HAVING score > 0.6
         ) 
-        SELECT 
-            count(title)
-         FROM
-            joblist
-         WHERE company = ?`
-        
+        SELECT count(title)
+        FROM joblist WHERE company = ?`
+
         let job_count = await query(query_job, [title, company])
 
-             
+
         let query_comment = `
         WITH commentlist AS (
-        SELECT * ,MATCH (title) AGAINST (?) AS score FROM comment HAVING score > 0.6
+        SELECT * ,MATCH (title) AGAINST (?) AS score 
+        FROM comment HAVING score > 0.6
         ) 
-        SELECT 
-            count(interview_experience)
-         FROM
-            commentlist
-         WHERE company = ?`
+        SELECT count(interview_experience)
+        FROM commentlist WHERE company = ?`
 
-         let comment_count = await query(query_comment, [title, company])
+        let comment_count = await query(query_comment, [title, company])
 
         if (data.length > 0) {
             await commit();
