@@ -56,7 +56,7 @@ async function chart() {
     window.localStorage.setItem('company', company)
     window.localStorage.setItem('title', title)
 
-   
+    axios.get(`/api/1.0/salary?company=${company}&title=${title}`)
      axios.get(`/api/1.0/workinghour?company=${company}&title=${title}`)
       .then((response) => {
    
