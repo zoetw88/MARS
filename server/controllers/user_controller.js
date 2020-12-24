@@ -113,7 +113,7 @@ const logout = async (req, res) => {
             if (error) return error
             return data
         })
-
+        
         res.status(200).send(result)
     
     } else {

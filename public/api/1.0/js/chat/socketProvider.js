@@ -9,6 +9,19 @@ if (localStorage.getItem("token")) {
             }
         })
         .then(res => {
+            
+            if(res.data.name=="JsonWebTokenError"){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '你尚未正式踏入火星領地!',
+                }).then((result) => {
+                    window.location.href = "/login.html"
+                })
+                
+                
+        };
+            
             sender = res.data.nickname
 
             $('#profile').find('p').text(sender)
@@ -18,11 +31,12 @@ if (localStorage.getItem("token")) {
                     id: sender
                 }
             })
-
+            console.log('okk')
             io.emit("getMessages", {
                 username: sender
             })
             io.on("loadMessages", function (data) {
+              
                 organizeTalk(data.messages, sender)
                 organizeTalker(data.side_messages, sender)
             });
@@ -82,12 +96,15 @@ if (localStorage.getItem("token")) {
             });
 
         })
-        .catch(err => {
-            console.log(err, err.response);
+        .catch(error => {
+           console.log(error.response);
+           
+          
+            return error
         });
 
 } else {
-    swal("尚未登入")
+    swal.fire("尚未登入")
     setTimeout(function () {
         window.location.href = "/login.html"
     }, 2000)

@@ -117,7 +117,7 @@ function editor() {
     })
 };
 
-function say_yes(){
+function say_yes(data){
 
     Swal.fire({
         icon: 'info',
@@ -136,7 +136,7 @@ function say_yes(){
 }
 
 
-function say_no(){
+function say_no(data){
 
     Swal.fire({
         icon: 'error',

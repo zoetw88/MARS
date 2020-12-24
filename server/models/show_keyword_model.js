@@ -90,8 +90,8 @@ async function keyword(company, title) {
       result.push(final_word)
 
     })
-
-    return result
+    
+   return result
 
   } catch (error) {
     return error

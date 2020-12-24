@@ -53,9 +53,10 @@ const salary = async (company, title, ip) => {
         }
 
         let query_company = await filter_company(company)
-
+        
         let result_company = await fp_alogrithm(query_company)
-
+        console.log(result_company)
+        return query_company
         let query_salary = `
         WITH salary_avg AS (
             SELECT salary,experience,company,MATCH (title) AGAINST (?) as score 
@@ -130,7 +131,7 @@ const working_hour = async (company, title) => {
         SELECT * ,MATCH (title) AGAINST (?) AS score
         FROM salary HAVING score > 0.58
         ) 
-        SELECT salary AS y,working_hour AS x,company AS label
+        SELECT (salary/1000000) AS y,working_hour AS x,company AS label
         FROM hourlist WHERE company IN (?)`
 
         let main_salary_result = await query(query_hour, [title, query_company])

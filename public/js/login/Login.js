@@ -12,33 +12,41 @@ signInButton.addEventListener('click', () => {
 
 
 async function verify_token() {
-  event.preventDefault()
+
   try {
-    let result = axios.get("/api/1.0/user/logout", {
+    axios.get("/api/1.0/user/logout", {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer" + " " + localStorage.getItem("token")
         }
       })
       .then((response) => {
-        let nickname = response.data.nickname
-      
+        if (res.data.name == "JsonWebTokenError") {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '你尚未正式踏入火星領地!',
+          }).then((result) => {
+            window.location.href = "/login.html"
+          })
+        };
       })
+
       .catch((error) => {
         console.log(error.response)
         return false
       })
-  
+
   } catch (error) {
     return error
   }
 
 }
 
-async function signup() {
+async function signup(event) {
   event.preventDefault();
-try{
-  
+  try {
+
     let name = document.getElementById("sing_up_name").value
     let email = document.getElementById("sing_up_email").value
     let password = document.getElementById("sing_up_password").value
@@ -51,9 +59,9 @@ try{
         email: email,
         password: password,
         nickname: nickname,
-        company:company,
-        title:title,
-        union:union
+        company: company,
+        title: title,
+        union: union
       })
       .then((response) => {
 
@@ -62,67 +70,76 @@ try{
           window.localStorage.setItem('id', nickname);
           window.localStorage.setItem('token', response.data.data.accessToken);
           hello(nickname)
-        } 
+        }
       })
       .catch((error) => {
         console.log(error)
         let error_message = error.response.data.result
-        let message = document.getElementById("message");
-        message.textContent = `看過來, ${error_message}!`;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error_message,
+        }).then(() => {
+          setTimeout(function () {
+            window.location.reload();
+          }, 1500)
+        })
       })
-    
-    
-  }catch(error){
+
+
+
+
+  } catch (error) {
     return error
   }
 }
 
-async function login(){
+async function login(event) {
   event.preventDefault();
-      try {
-        let email = document.getElementById("login_email").value
-        let password = document.getElementById("login_password").value
-        axios.post("/api/1.0/user/signin", {
-            email: email,
-            password: password,
-            provider: 'native'
-          })
-          .then((response) => {
+  try {
+    let email = document.getElementById("login_email").value
+    let password = document.getElementById("login_password").value
+    axios.post("/api/1.0/user/signin", {
+        email: email,
+        password: password,
+        provider: 'native'
+      })
+      .then((response) => {
 
-            // if (response.data.data.accessToken) {
-              window.localStorage.setItem('nickname', response.data.data.nickname);
-              window.localStorage.setItem('token', response.data.data.accessToken);
-              window.localStorage.setItem('id', response.data.data.nickname);
-              hello(response.data.data.nickname)
-         
+        // if (response.data.data.accessToken) {
+        window.localStorage.setItem('nickname', response.data.data.nickname);
+        window.localStorage.setItem('token', response.data.data.accessToken);
+        window.localStorage.setItem('id', response.data.data.nickname);
+        hello(response.data.data.nickname)
 
-        
-          })
-          .catch((error) => {
 
-            let error_message = error.response.data.result
-            let message = document.getElementById("message");
-            message.textContent = `看過來, ${error_message}!`;
-            setTimeout(function () {
-              window.location.reload();
-            }, 1500)
-          })
-      } catch (error) {
-        return error
-      }
 
-    
+      })
+      .catch((error) => {
+
+        let error_message = error.response.data.result
+        console.log(error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error_message,
+        }).then(() => {
+          setTimeout(function () {
+            window.location.reload();
+          }, 1500)
+        })
+      })
+
+
+  } catch (error) {
+    return error
+  }
+
+
 }
 
-async function hello(nickname){
 
-  await swal(`早安午安晚安${nickname}歡迎來到火星`, "你的一小步是改善台灣職場生態的一大步", "success")
-  .then(() => {
-    
-    window.location.href = "/index.html"
-  });
-}
-function logout() {
+function logout(event) {
   event.preventDefault()
   try {
     axios.get("/api/1.0/user/logout", {
@@ -132,38 +149,34 @@ function logout() {
         }
       })
 
-      .then((response) => {
-        window.localStorage.clear('token');
-        let message = document.getElementById("message");
-        message.textContent = `務必再次登入火星!`;
-        setTimeout(function () {
-          window.location.reload();
-        }, 800)
-      })
-      .catch((error) => {
-        console.log(error.response.data)
+      .then(() => {
+        goodbody()
+          .catch((error) => {
+            console.log(error.response.data)
 
 
+          })
       })
   } catch (error) {
     return error
   }
 
-
 }
-  // async function signIN(e){
-  //   e.preventDefault()
-  //   const result = await axios.post("/api/1.0/user/signin",{
-  //     'provider': 'native',
-  //     'email': idRef.current.value,
-  //     "password":passwordRef.current.value})
-  //     .then((response) => {
-  //       console.log(response.data.data.access_token)
-  //       if(response.data)
-  //         localStorage.setItem('wenchange', JSON.stringify(response.data.data.access_token),onIdSubmit(idRef.current.value))
 
-  //     })
-  //     .catch((error) => {resultRef.current.innerText='登入錯誤'  })
-    
-  // }
+function hello(nickname) {
 
+  Swal.fire(`早安午安晚安${nickname}歡迎來到火星`, '你的一小步是改善台灣職場生態的一大步', 'success')
+    .then(() => {
+      window.location.href = "/index.html"
+    });
+}
+
+
+function goodbody() {
+  let nickname = localStorage.getItem("nickname")
+  window.localStorage.clear('token');
+  Swal.fire(`${nickname}務必再次登入火星!`, "台灣的職場生態改變由你我做起", "success")
+    .then(() => {
+      window.location.href = "/index.html"
+    });
+}

@@ -18,6 +18,7 @@ axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
 let add_comments = [];
 
 function comment_extract(response) {
+  if(response.data.length>0){
   for (let i = 0; i < response.data.length; i++) {
     let split_result = response.data[i].interview_experience.split('\n')
     if (split_result[0] == "wrong" || split_result[0] == "詢問家庭狀況" || split_result[0] == "無") {
@@ -44,12 +45,17 @@ function comment_extract(response) {
     $(' <div class="mySlides"><a class="id">ID:' + response.data[i].id+ '</a><p class="date">評論日期：' + response.data[i].comment_date + '</p><p class="first-interview text-left">' + split_result[0] + '</p><p class="second-interview text-left">' + split_result[1] + '</p><p class="author">' + response.data[i].company + '<br>應徵職位：' + response.data[i].title + '</p></div>').appendTo($('div.slideshow-container'));
 
   }
-  $(' <div class="mySlides"><p>謝謝收看</p></div>').appendTo($('div.slideshow-container'));
+  $(' <div class="mySlides"><p>謝謝收看</p></div>').appendTo($('div.slideshow-container'));}
+  else{
+   document.querySelector('.firstslide').innerHTML='尚未有人提供相關心得'
+  }
 
 }
 
 
 function keyword(response) {
+  
+  if(response.length>0){
   for (let i = 0; i < 10; i++) {
     if (response.data[i].keyword == undefined || response.data[i].keyword == "" || response.data[i].keyword.length < 2) {
       continue
@@ -57,7 +63,7 @@ function keyword(response) {
     $('<li class="list-inline-item"><a href="#">' + response.data[i].keyword + '</a></li>').appendTo($('ul.list-inline'));
 
   }
-
+  }
 }
 
 

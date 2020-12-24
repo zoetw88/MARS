@@ -16,7 +16,7 @@
 				<input type="text" id="sing_up_company" placeholder="現職公司" required>
 				<input type="text" id="sing_up_union" placeholder="所屬單位" required>
 				<input type="text" id="sing_up_title" placeholder="擔任職位" required>
-				<button onclick="signup()">Sign Up</button>
+				<button onclick="signup(event)">Sign Up</button>
 			</form>
 		</div>
 		<div class="form-container sign-in-container">
@@ -25,10 +25,10 @@
 				<input type="email" id="login_email" placeholder="Email" required>
 				<input type="password" id="login_password" placeholder="Password" required>
 				<a href="#">Forgot your password?</a>
-				<button onclick="login()">Sign In</button>
+				<button onclick="login(event)">Sign In</button>
 				<br>
 				<br>
-				<buttion onclick='logout()'>log out</buttion>
+				<buttion onclick='logout(event)'>log out</buttion>
 			</form>
 		</div>
 		<div class="overlay-container">
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="./js/login/login.js"></script>
 

@@ -85,7 +85,8 @@ d3.json('../../json/company.json', function (data) {
                 .scale(yScale)
                 .innerTickSize(-width)
                 .outerTickSize(0)
-                .orient('left');
+                .orient('left')
+                .tickFormat(function(d){return d+'M';});
 
             var xAxisSvg = svg.append('g')
                 .attr('class', 'axis')
@@ -107,7 +108,7 @@ d3.json('../../json/company.json', function (data) {
                 .attr("text-anchor", "end")
                 .attr("transform", "rotate(-90)")
                 .attr("y", -margin.left + 20)
-                .attr("x", -margin.top - 100)
+                .attr("x", -margin.top - 50)
                 .text("年薪($NT)")
             // create zooming/panning behaviour
             var zoomBehaviour = d3.behavior.zoom()

@@ -10,7 +10,8 @@ const {
 
 
 async function fp_alogrithm(company) {
-        let result_company = [];
+    let result_company = [];
+        result_company.splice(0, result_company.length)
         let dataset = [];
         let hits_result = await query(`SELECT ip , GROUP_CONCAT(company) AS company FROM recommend GROUP BY ip`)
 
@@ -20,22 +21,23 @@ async function fp_alogrithm(company) {
         }
 
         let fpgrowth = new FPGrowth(.6);
-
         fpgrowth.on('data', function (itemset,error) {
             let items = itemset.items;
             let fp_company = Array.from(new Set(items));
-         
+     
             if(fp_company!=null){
             if (fp_company.length > 2 && fp_company.indexOf(company) > 0) {
                 fp_company = fp_company.filter(function (item) {
                     return item !== company
                 });
-                result_company = result_company.concat(fp_company[0], fp_company[1])
+                if(result_company.indexOf(fp_company[0])<0 && result_company.indexOf(fp_company[1])<0)
+                {result_company = result_company.concat(fp_company[0], fp_company[1])}
             } else if (fp_company.length = 2 && fp_company.indexOf(company) > 0) {
                 fp_company = fp_company.filter(function (item) {
                     return item !== company
                 });
-                result_company = result_company.concat(fp_company[0])
+                if(result_company.indexOf(fp_company[0])<0){
+                result_company = result_company.concat(fp_company[0])}
             }}
             if (error) throw error
         });
@@ -45,7 +47,7 @@ async function fp_alogrithm(company) {
         `SELECT company
         FROM recommend WHERE company NOT IN (?)
         GROUP BY company ORDER BY COUNT(company) DESC LIMIT ? `
-        
+      
         switch (result_company.length) {
 
             case 0:
@@ -62,7 +64,7 @@ async function fp_alogrithm(company) {
 
         }
        
-       
+      console.log(result_company)
     return result_company
 }
 module.exports = {

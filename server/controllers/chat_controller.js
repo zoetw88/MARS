@@ -1,5 +1,4 @@
 require('dotenv').config();
-const validator = require('validator');
 const jwt = require('jsonwebtoken')
 const {
     ACCESS_TOKEN_SECRET
@@ -51,11 +50,8 @@ const askQuestion = async (req, res) => {
 const editor = async (req, res) => {
 try {
     let {room} = req.query
-    console.log('__dirname：', __dirname)
+    let {id}=req.query
     res.sendFile(path.join(__dirname,'../../public/api/1.0/editor.html'));
-    
-    
-        
     } catch (error) {
         return {
             error
