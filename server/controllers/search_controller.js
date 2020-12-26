@@ -14,6 +14,9 @@ const {
 const path=require('path')
 const fs = require('fs');
 
+
+
+
 const getSalary = async (req, res) => {
     try {
         let {title} = req.query
@@ -23,7 +26,6 @@ const getSalary = async (req, res) => {
             ip = ip.substr(7)
         }
         let result = await salary(company, title, ip)
-       
         let salary_path=path.join(__dirname, '../../public/json/salary.json')
         let sendJSON = JSON.stringify(result)
         fs.writeFile(salary_path,sendJSON,function(err, result) {
@@ -87,6 +89,8 @@ const getKeywords = async (req, res) => {
             company,
             title
         } = req.query
+
+        
         let result=await keyword(company,title)
   
         // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress

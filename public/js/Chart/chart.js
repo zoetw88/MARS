@@ -5,20 +5,15 @@ var margin = {
     right: 50
 };
 var width = 500 - margin.left - margin.right;
-var height = 410 - margin.top - margin.bottom;
+var height = 435 - margin.top - margin.bottom;
 
 var numberOfPoints = 100;
 var pointRadius = 9;
-// axios.get('../../json/company.json')
-//   .then((res) => {
-//       if (res.data == "no") {
-//         let test = document.querySelector("#message-company")
-//         test.innerHTML = "(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報"
-//       } else {
+
 d3.json('../../json/company.json', function (data) {
         if (data == "no") {
-            let test = document.querySelector("#message-company")
-            test.innerHTML = "(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報"
+            $('<h4 id="message-company">(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報</h4>').appendTo($('.chart-label-1 '));
+         
         } else {
             var labels = d3.set(data.map(function (d) {
                 return d.label;
@@ -86,7 +81,7 @@ d3.json('../../json/company.json', function (data) {
                 .innerTickSize(-width)
                 .outerTickSize(0)
                 .orient('left')
-                .tickFormat(function(d){return d+'M';});
+                .tickFormat(function(d){return d+'\nM';});
 
             var xAxisSvg = svg.append('g')
                 .attr('class', 'axis')
@@ -107,27 +102,32 @@ d3.json('../../json/company.json', function (data) {
             var yAxislabel = svg.append("text")
                 .attr("text-anchor", "end")
                 .attr("transform", "rotate(-90)")
-                .attr("y", -margin.left + 20)
+                .attr("y", -margin.left + 30)
                 .attr("x", -margin.top - 50)
                 .text("年薪($NT)")
             // create zooming/panning behaviour
             var zoomBehaviour = d3.behavior.zoom()
                 .x(xScale)
                 .y(yScale)
-                .scaleExtent([1, 5])
+                .scaleExtent([0.1, 5])
                 .on('zoom', onZoom);
 
             canvas.call(zoomBehaviour);
 
             // add legend
-            var legendWidth = 300;
-            var legendHeight = 85;
-
+            
+            
+            var number_company=parseInt(labels.length);
+            var legendWidth = 260;
+            var legendHeight =  number_company*22;
+           if(labels.length<=3){
+            var legendHeight =  number_company*28
+           }
             var legend = d3.select('#legend').append('svg')
                 .attr('width', legendWidth)
                 .attr('height', legendHeight)
                 .attr("transform", function (d) {
-                    return "translate(105,5)";
+                    return "translate(105,10)";
                 })
 
             legend.append('rect')

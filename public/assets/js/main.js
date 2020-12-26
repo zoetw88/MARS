@@ -45,12 +45,7 @@ $(function() {
     
     
     //===== Counter
-    
-    $('.counter').counterUp({
-        delay: 10,
-        time: 2000,
-    });
-    
+ 
     
     
     //===== Back to top
@@ -73,13 +68,6 @@ $(function() {
             scrollTop: 0,
         }, 1500);
     });
-    
-    
-    
-    //=====  Nice Select
-    
-    $('select').niceSelect();
-    
     
     
     

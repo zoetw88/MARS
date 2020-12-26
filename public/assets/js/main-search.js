@@ -13,9 +13,7 @@ axios.get(`/api/1.0/joblist`)
 
 axios.get(`/api/1.0/companylist`)
   .then((response) => {
-
     let myData = Object.values(response.data).map(item => item.company)
-
     $(function () {
       var availableTags = myData
       $("#company").autocomplete({
@@ -25,6 +23,7 @@ axios.get(`/api/1.0/companylist`)
   })
 
 verify_token()
+
 async function verify_token() {
 
   try {
@@ -63,10 +62,10 @@ async function chart() {
   let title = document.querySelector("#title").value
   window.localStorage.setItem('company', company)
   window.localStorage.setItem('title', title)
-
   axios.get(`/api/1.0/salary?company=${company}&title=${title}`)
   axios.get(`/api/1.0/workinghour?company=${company}&title=${title}`)
-    .then((response) => {
+
+    .then(() => {
 
       window.location.href = "/search_result.html"
     })

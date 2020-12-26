@@ -25,7 +25,7 @@ let id=urlParams.get('id');
       }
 
       
-        const user=myCursorBuilder()
+        myCursorBuilder()
         const ydoc = new Y.Doc()
         const provider = new WebsocketProvider('ws://localhost:1234',`${room}`, ydoc)
         const type = ydoc.getXmlFragment('prosemirror')

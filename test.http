@@ -15,14 +15,14 @@ Content-Type: application/json
 ###
 
 GET http://localhost:5000/api/1.0/chat HTTP/1.1
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTExMjM0NzMsImVtYWlsIjoiem9ldHc4OEBnbWFpbC5jb20iLCJuaWNrbmFtZSI6InpvZSIsImlhdCI6MTYwODEyMzQ3M30.GAxxrH_2F-RBUmXIXzGIlv0LKYZLCOKtIAveLyxTI3o
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTE2NDYwNzYsImVtYWlsIjoiem9lNzc4N3R3QGdtYWlsLmNvbSIsIm5pY2tuYW1lIjoiWk9F6ICB5aq9IiwiaWF0IjoxNjA4NjQ2MDc2fQ.dpcuHH79z8qJMR79ve14IhK942GKfGDf1BJxUyvIoaE
 
 ###
 
-GET http://localhost:5000/api/1.0/salary?company=台達電子工業股份有限公司&title=機構工程師 HTTP/1.1
+GET http://localhost:5000/api/1.0/salary?title=it&company= HTTP/1.1
 ###
 
-GET http://localhost:5000/api/1.0/workinghour?company=和碩&title=機構 HTTP/1.1
+GET http://localhost:5000/api/1.0/workinghour?company=&title=軟體 HTTP/1.1
 
 ###
 POST http://localhost:5000/get_main_messages
@@ -52,11 +52,11 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:5000/api/1.0/comments?company=和碩聯合科技股份有限公司&title=機構工程師 HTTP/1.1
+GET http://localhost:5000/api/1.0/comments?company=廣達&title=機構 HTTP/1.1
 
 ###
 ###
-GET http://localhost:5000/api/1.0/keywords?company=和碩聯合科技股份有限公司&title=軟體工程師 HTTP/1.1
+GET http://localhost:5000/api/1.0/keywords?company=台積電&title= HTTP/1.1
 
 ###
 
@@ -79,5 +79,5 @@ GET http://localhost:5000/api/1.0/companylist
 Content-Type: application/json
 
 ###
-GET http://localhost:5000/api/1.0/joblist
+GET http://localhost:5000/api/1.0/job104list?company=廣達&title=廠務工程師
 Content-Type: application/json

@@ -1274,7 +1274,7 @@ p {
     padding-top: 24px; }
     .single_category .category_content .category_title {
       color: #222;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 600; }
       @media only screen and (min-width: 992px) and (max-width: 1199px) {
         .single_category .category_content .category_title {
@@ -2120,7 +2120,11 @@ p {
 /*===========================
       chart.css 
 ===========================*/
-
+#message-company,#message-salary{
+  text-align:center;
+  margin-top:100px;
+  color:#95b7fa;
+}
 .treding_jobs.axis path,
 .axis line {
     fill:#18bd26;
@@ -2191,4 +2195,26 @@ p {
 }
 .category_area.card.testimonials{
   position: absolute;
+}
+.firstslide{
+  font-size: 25px;
+  font-weight: 700;
+  color:#95b7fa;
+  font-family: "Montserrat";
+  margin:50px;
+}
+
+/*===========================
+      joblist.css 
+===========================*/
+#job-list-message{
+  font-size: 25px;
+  font-weight: 700;
+  color:#95b7fa;
+  font-family: "Montserrat";
+  margin:100px;
+}
+.jb{
+  background-color: white;
+  
 }

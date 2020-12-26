@@ -12,7 +12,6 @@ signInButton.addEventListener('click', () => {
 
 
 async function verify_token() {
-
   try {
     axios.get("/api/1.0/user/logout", {
         headers: {
@@ -21,7 +20,7 @@ async function verify_token() {
         }
       })
       .then((response) => {
-        if (res.data.name == "JsonWebTokenError") {
+        if (response.data.name == "JsonWebTokenError") {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -33,7 +32,8 @@ async function verify_token() {
       })
 
       .catch((error) => {
-        console.log(error.response)
+        let error_message = error.response.data.result
+        console.log(error_message)
         return false
       })
 
@@ -46,7 +46,6 @@ async function verify_token() {
 async function signup(event) {
   event.preventDefault();
   try {
-
     let name = document.getElementById("sing_up_name").value
     let email = document.getElementById("sing_up_email").value
     let password = document.getElementById("sing_up_password").value
@@ -64,7 +63,6 @@ async function signup(event) {
         union: union
       })
       .then((response) => {
-
         if (response.data.data.accessToken) {
           window.localStorage.setItem('nickname', nickname);
           window.localStorage.setItem('id', nickname);
@@ -73,8 +71,8 @@ async function signup(event) {
         }
       })
       .catch((error) => {
-        console.log(error)
         let error_message = error.response.data.result
+        console.log(error_message)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -85,10 +83,6 @@ async function signup(event) {
           }, 1500)
         })
       })
-
-
-
-
   } catch (error) {
     return error
   }
@@ -105,20 +99,15 @@ async function login(event) {
         provider: 'native'
       })
       .then((response) => {
-
-        // if (response.data.data.accessToken) {
         window.localStorage.setItem('nickname', response.data.data.nickname);
         window.localStorage.setItem('token', response.data.data.accessToken);
         window.localStorage.setItem('id', response.data.data.nickname);
         hello(response.data.data.nickname)
 
-
-
       })
       .catch((error) => {
-
         let error_message = error.response.data.result
-        console.log(error)
+        console.log(error_message)
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -148,15 +137,15 @@ function logout(event) {
           Authorization: "Bearer" + " " + localStorage.getItem("token")
         }
       })
-
       .then(() => {
         goodbody()
-          .catch((error) => {
-            console.log(error.response.data)
-
-
-          })
       })
+      .catch((error) => {
+        let error_message = error.response.data.result
+        console.log(error_message)
+     
+      })
+
   } catch (error) {
     return error
   }
@@ -164,8 +153,12 @@ function logout(event) {
 }
 
 function hello(nickname) {
+  Swal.fire({
+    icon: 'success',
+    title: `早安午安晚安 ${nickname}\r\n歡迎來到火星`,
+    text: '你的一小步是改善台灣職場生態的一大步',
 
-  Swal.fire(`早安午安晚安${nickname}歡迎來到火星`, '你的一小步是改善台灣職場生態的一大步', 'success')
+  })
     .then(() => {
       window.location.href = "/index.html"
     });

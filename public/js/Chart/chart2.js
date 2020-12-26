@@ -3,53 +3,29 @@
 
     Plotly.d3.json('../../json/salary.json', function(figure){
       if (figure!="no"){
-
-      
-        var trace1 = {
-          x: figure[0].x,
-          y: figure[0].y,
-          name: figure[0].name,
+       let data=[];
+      for(i=0;i<figure.length;i++){
+        var trace = {
+          x: figure[i].x,
+          y: figure[i].y,
+          name: figure[i].name,
           mode: 'lines+markers',
           connectgaps: true
         }
-
-
-        if (figure[1] && figure[2]) {
-
-          var trace2 = {
-            x: figure[1].x,
-            y: figure[1].y,
-            name: figure[1].name,
-            mode: 'lines+markers',
-            connectgaps: true
-          }
-          var trace3 = {
-            x: figure[2].x,
-            y: figure[2].y,
-            name: figure[2].name,
-            mode: 'lines+markers',
-            connectgaps: true
-          }
-
-          var data = [trace1, trace2, trace3];
-        } else if (figure[1]) {
-
-          var trace2 = {
-            x: figure[1].x,
-            y: figure[1].y,
-            name: figure[1].name,
-            mode: 'lines+markers',
-            connectgaps: true
-          }
-
-
-          var data = [trace1, trace2];
-        } else {
-          var data = [trace1]
-        }
+        data.push(trace)
+        
+      }
+      let y_legend;
+      if(data.length>3){
+        y_legend=-1
+        chart_height=620;
+      }else{
+        y_legend=-0.6;
+        chart_height=520;
+      }
         var layout = {
           width: 520,
-          height:500,
+          height:chart_height,
           plot_bgcolor: "transparent",
           paper_bgcolor: "transparent",
           showlegend: true,
@@ -73,7 +49,7 @@
               size: 16,
               color: '#000'
             },
-            y: -0.6
+            y: y_legend
           },
 
           xaxis: {
@@ -114,8 +90,7 @@
   
    }
   else{
-    let test = document.querySelector("#message-salary")
-    test.innerHTML = "(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報"
+    $('<h4 id="message-salary"> (ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報</h4>').appendTo($('.chart-label-2 '));
   }
   
   });

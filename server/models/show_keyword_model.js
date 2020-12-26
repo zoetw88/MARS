@@ -2,11 +2,12 @@ const nodejieba = require("nodejieba");
 const path = require('path')
 const fs = require('fs');
 const {
-  extract_comments_title,
-  extract_comments_company,
+  extract_comments,
+  extract_allcomments
 } = require("./comment_model")
-
+const validator = require('validator')
 const _ = require('lodash');
+const { ContextExclusionPlugin } = require("webpack");
 
 const dict_path = path.join(__dirname, '../../server/alogrithm/ti-idf/dict.txt')
 const stop_path = path.join(__dirname, '../../server/alogrithm/ti-idf/stop_text')
@@ -25,15 +26,32 @@ async function keyword(company, title) {
     let str;
     let result = [];
     let final_word;
+    let result_comments;
+    let result_total_comments;
+    
+    if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
+   
+      result_comments = await extract_comments(company, title)
+      result_total_comments = await extract_allcomments()
+  
+    }
+    else if(validator.isEmpty(company)) {
 
-    result_comments = await extract_comments_company(company, title)
-    result_total_comments = await extract_comments_title(title)
+      result_comments = await extract_comments(company,title)
+      result_total_comments = await extract_allcomments()
 
-    let combine_comments = result_comments.result.map(comment => {
+    } else if(validator.isEmpty(title)) {
+
+      result_comments = await extract_comments(company,title)
+      
+      result_total_comments = await extract_allcomments()
+    }
+   
+    let combine_comments = result_comments.map(comment => {
       str += comment.interview_experience.toString()
       return str
     })
-
+   
     let afterTokenize = nodejieba.cut(combine_comments.toString())
     afterTokenize.map(word => {
       if (counter[word] === undefined && stop_word.indexOf(word) < 0) {
@@ -49,7 +67,7 @@ async function keyword(company, title) {
       counts = counts + 1;
     })
 
-    let total_wordlist = result_total_comments.result.map(comment => {
+    let total_wordlist = result_total_comments.map(comment => {
       let tempcounts = {};
       let tokens = nodejieba.cut(comment.interview_experience)
       tokens.map(token => {
@@ -71,7 +89,7 @@ async function keyword(company, title) {
     })
 
     single_wordlist.map(word => {
-      counter[word].tfidf = counter[word].tf / counts * Math.log(result_comments.result.length / counter[word].df);
+      counter[word].tfidf = counter[word].tf / counts * Math.log(result_comments.length / counter[word].df);
     })
 
     single_wordlist.sort(compare);
@@ -81,17 +99,18 @@ async function keyword(company, title) {
       let countB = counter[b].tfidf;
       return countB - countA;
     }
-
+    
     single_wordlist.map(word => {
       final_word = {}
       if ((counter[word].tfidf) < 1 && 0.0038 < (counter[word].tfidf)) {
+    
         final_word['keyword'] = word
+        result.push(final_word)
       }
-      result.push(final_word)
-
+     
     })
     
-   return result
+    return result
 
   } catch (error) {
     return error

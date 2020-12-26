@@ -5,5 +5,5 @@
     height: 100vh;
     z-index: 100;
     overflow: visible;
-    background: #fff url('https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/preloader.gif') no-repeat center center;
+    background: transparent url('https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/preloader.gif') no-repeat center center;
 }
