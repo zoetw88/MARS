@@ -24,13 +24,16 @@ const signUp = async (name,nickname, email, password,company,union,title) => {
                 provider: 'native',
                 title:title,
                 company:company,
-                union:union
+                union:union,
+                picture:'https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/no.5.png'
+
               }
           
               access_token = jwt.sign({
                 exp: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
                 email:email,
-                nickname: nickname
+                nickname: nickname,
+                picture:'https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/no.5.png'
             }, ACCESS_TOKEN_SECRET)
             
               data = {
@@ -62,7 +65,8 @@ const nativeSignIn = async (email, password) => {
                 access_token = jwt.sign({
                     exp:Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
                     email:email,
-                    nickname: result[0].nickname
+                    nickname: result[0].nickname,
+                    picture:result[0].picture
                 }, ACCESS_TOKEN_SECRET)
                 data = {
                     nickname: result[0].nickname,

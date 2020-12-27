@@ -1,4 +1,7 @@
 const {
+    data
+} = require('jquery');
+const {
     getSelectedMessages,
     getMainMessages,
     getSideMessages,
@@ -8,7 +11,8 @@ const {
 
 let users = [];
 let sender;
-
+let onlineuser = [];
+let userdata;
 let chatroom = (io) => {
     io.use(function (socket, next) {
         sender = socket.handshake.query.id
@@ -21,18 +25,45 @@ let chatroom = (io) => {
     io.on('connection', (socket) => {
         console.log('socket connected', socket.id)
         users[sender] = socket.id;
+        if (!onlineuser.includes(sender)) {
+                    onlineuser.push(sender)
+                }
+                console.log(onlineuser)
+        userdata = JSON.stringify(onlineuser)
+    
+        io.emit('online',{
+            onlineuser:onlineuser
+        })
         socket.on('disconnect', () => {
+            function getKeyByValue(object, value) {
+                return Object.keys(object).find(key => object[key] === value);
+            }
+
+            let offlineUser = getKeyByValue(users, socket.id)
+            const index = onlineuser.indexOf(offlineUser);
+            if (index > -1) {
+                onlineuser.splice(index, 1);
+            }
+            io.emit('offline',{
+                onlineuser:onlineuser
+            })
+            console.log(socket.id)
             console.log('user disconnected');
+            console.log(onlineuser)
+            console.log(users)
         });
 
         socket.on("getMessages", async function (data) {
+
             let main_messages = await getMainMessages(data.username)
             let side_messages = await getSideMessages(data.username)
+
             var socketId = users[data.username];
 
             io.to(socketId).emit("loadMessages", {
                 messages: main_messages,
-                side_messages: side_messages
+                side_messages: side_messages,
+                onlineuser:onlineuser
             });
         })
         socket.on("selectMessages", async function (data) {
@@ -70,8 +101,8 @@ let chatroom = (io) => {
 
             io.to(socketId).emit("reply_yes", {
                 sender: data.receiver,
-                room:data.room,
-                receiver:data.sender
+                room: data.room,
+                receiver: data.sender
             });
 
         })
@@ -80,7 +111,8 @@ let chatroom = (io) => {
             newMessages(data)
             io.to(socketId).emit("new_message", {
                 sender: data.receiver,
-                message: data.message
+                message: data.message,
+                sender_picture: data.sender_picture
             });
         })
     })

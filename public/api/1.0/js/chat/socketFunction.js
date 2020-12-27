@@ -1,33 +1,37 @@
 function organizeTalk(response, username) {
+
     for (let i = 0; i < response.length; i++) {
-        if (response[i].sender == username) {
+        if (response[i].sender != username) {
+           
             localStorage.setItem('talker', response[i].receiver);
-            $('.receiver-company').find("p").text(response[i].receivercompany)
+            $('.receiver-company').find("p").text(response[i].receiver_company)
             $('.receiver').find("p").text(response[i].receiver)
-            $('<li class="sent"><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
+            $('<li class="sent"><img src='+response[i].sender_picture+'><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
         } else {
-            $('.receiver-company').find("p").text(response[i].sendercompany)
+            $('.receiver-company').find("p").text(response[i].sender_company)
             $('.receiver').find("p").text(response[i].sender)
-            $('<li class="replies"><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
+            $('<li class="replies"><img src='+response[i].sender_picture+'><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
         }
     }
 
 }
-
+let talker = []  
 function organizeTalker(response, username) {
-    let talker = []
+   
     for (let i = 0; i < response.length; i++) {
         if (response[i].sender == username) {
             if (talker.indexOf(response[i].receiver) < 0) {
                 talker.push(response[i].receiver)
-                $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response[i].receiver + '</p>\
-                <p class="company">' + response[i].receivercompany + '</p><p class="preview">' + response[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                $('<li class="contact"><div class="wrap">\
+                <img src='+response[i].receiver_picture+'  ><div class="meta contact-name"  id="talkername"><p class="name username" >' + response[i].receiver + '</p><span class="contact-status"></span>\
+                <p class="company">' + response[i].receiver_company + '</p><p class="preview">' + response[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
             }
         } else {
             if (talker.indexOf(response[i].sender) < 0) {
                 talker.push(response[i].sender)
-                $('<li class="contact"><div class="wrap"><div class="meta"><p class="name">' + response[i].sender + '</p>\
-                <p class="company">' + response[i].sendercompany + '</p><p class="preview">' + response[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
+                $('<li class="contact"><div class="wrap">\
+                <img src="'+response[i].sender_picture+'"><div class="meta contact-name"  id="talkername"><p class="name username" >' + response[i].sender + '</p><span class="contact-status"></span>\
+                <p class="company">' + response[i].sender_company + '</p><p class="preview">' + response[i].message + '</p></div></div></li>').appendTo($('#contacts ul'));
 
             }
         }
@@ -39,12 +43,15 @@ function newMessages() {
     if (receiver == "") {
         return false
     }
-
+    user_pic = $('#profile-img').attr('src')
+    if (user_pic == "") {
+        return false
+    }
     message = $(".message-input input").val();
     if ($.trim(message) == '') {
         return false;
     }
-    $('<li class="sent"><p>' + message + '</p></li>').appendTo($('.messages ul'));
+    $('<li class="replies"><img src='+user_pic+'><p>' + message + '</p></li>').appendTo($('.messages ul'));
     $('.message-input input').val(null);
     $('.contact.active .preview').html('<span>You: </span>' + message);
     $('.messages').stop().animate({
@@ -53,7 +60,8 @@ function newMessages() {
     io.emit("send_message", {
         sender: sender,
         receiver: receiver,
-        message: message
+        message: message,
+        sender_picture:user_pic
     });
 
 }

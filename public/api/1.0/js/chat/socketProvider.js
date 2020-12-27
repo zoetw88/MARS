@@ -9,38 +9,84 @@ if (localStorage.getItem("token")) {
             }
         })
         .then(res => {
-            
-            if(res.data.name=="JsonWebTokenError"){
+
+            if (res.data.name == "JsonWebTokenError") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: '你尚未正式踏入火星領地!',
-                }).then((result) => {
+                }).then(() => {
                     window.location.href = "/login.html"
                 })
-                
-                
-        };
-            
+
+
+            };
+
             sender = res.data.nickname
+            picture = res.data.picture
 
             $('#profile').find('p').text(sender)
 
+            $('#profile-img').attr('src', picture)
             io = io('http://localhost:5000', {
                 query: {
                     id: sender
                 }
             })
-            console.log('okk')
+        
+            io.on('offline',function(data){
+
+                let check=document.querySelectorAll(".username");
+                check.forEach(function(item) {
+                    for(i=0;i<data.onlineuser.length;i++){
+                        if (item.textContent!=data.onlineuser[i]){
+                            var status = item.nextSibling
+                           status.classList.remove("online");
+                          
+                        }
+                    }
+                    
+                  })
+
+            })
+            
+            io.on('online',function(data){
+
+                let check=document.querySelectorAll(".username");
+                check.forEach(function(item) {
+                    for(i=0;i<data.onlineuser.length;i++){
+                        if (item.textContent==data.onlineuser[i]){
+                            var status = item.nextSibling
+                           status.classList.add("online");
+                          
+                        }
+                    }
+                    
+                  })
+
+            })
             io.emit("getMessages", {
                 username: sender
             })
             io.on("loadMessages", function (data) {
-              
+
                 organizeTalk(data.messages, sender)
                 organizeTalker(data.side_messages, sender)
+
+                let check=document.querySelectorAll(".username");
+                check.forEach(function(item) {
+                    for(i=0;i<data.onlineuser.length;i++){
+                        if (item.textContent==data.onlineuser[i]){
+                            var status = item.nextSibling
+                           status.classList.add("online");
+                          
+                        }
+                    }
+                    
+                  })
             });
             io.on("reloadMessages", function (data) {
+
                 organizeTalk(data.messages, sender)
 
             });
@@ -49,7 +95,7 @@ if (localStorage.getItem("token")) {
             });
 
             io.on("reply_no", function (data) {
-            
+
                 say_no(data)
             });
 
@@ -57,9 +103,9 @@ if (localStorage.getItem("token")) {
                 say_yes(data)
             });
             io.on("new_message", function (data) {
-                $('<li class="replies"><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
+                $('<li class="sent"><img src=' + data.sender_picture + '><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
             });
-
+           
 
             $(document).on('click', '.contact', function () {
                 $(".contact.active").removeClass("active");
@@ -97,9 +143,9 @@ if (localStorage.getItem("token")) {
 
         })
         .catch(error => {
-           console.log(error.response);
-           
-          
+            console.log(error.response);
+
+
             return error
         });
 

@@ -160,7 +160,7 @@ body {
 
 #frame #sidepanel #profile .wrap .name  p{
 	float: left;
-	margin-left:150px;
+	margin-left:70px;
 	color:navy;
 }
 
@@ -738,9 +738,11 @@ body {
 
 #frame .content .messages ul li.sent img {
 	margin: 6px 8px 0 0;
+	float: left;
 }
 
 #frame .content .messages ul li.sent p {
+	float: left;
 	background: #a7e4f7;
 
 }
