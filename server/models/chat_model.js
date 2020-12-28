@@ -9,6 +9,8 @@ const {
   sendQuestionMail
 } = require('./email_model');
 
+const  moment = require('moment')
+
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();

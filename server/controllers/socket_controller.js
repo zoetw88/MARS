@@ -47,10 +47,7 @@ let chatroom = (io) => {
             io.emit('offline',{
                 onlineuser:onlineuser
             })
-            console.log(socket.id)
-            console.log('user disconnected');
-            console.log(onlineuser)
-            console.log(users)
+            console.log('user disconnected');  
         });
 
         socket.on("getMessages", async function (data) {
