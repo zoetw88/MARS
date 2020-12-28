@@ -96,7 +96,11 @@ if (localStorage.getItem("token")) {
 
             io.on("reply_no", function (data) {
 
-                say_no(data)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${data.sender}義正嚴辭地拒絕和你協作!`,
+                })
             });
 
             io.on("reply_yes", function (data) {

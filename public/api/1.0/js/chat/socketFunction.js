@@ -66,25 +66,23 @@ function newMessages() {
 
 }
 
+
 async function askCollaborate(data) {
     swal.fire({
-        title: `你想要和${data.info.sender}一起共同編輯嗎?`,
+        title: `你想要和${data.info.sender}一起使用\r\n線上白板嗎?`,
         icon:'question',
-        type: 'question',
-        showCancelButton: true,
+        showDenyButton: true,
+      
         confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        denyButtonColor: '#d33',
         confirmButtonText: '當然好!',
-        cancelButtonText: '現在沒空',
-        confirmButtonClass: 'btn btn-success',
-        cancelButtonClass: 'btn btn-danger',
-        buttonsStyling: false
+        denyButtonText: '現在沒空',
     }).then((result) => {
         if (result.isConfirmed) {
             room = data.info.sender + data.info.receiver
             Swal.fire({
                 icon: 'info',
-                title: "請點開通往共同編輯的大門",
+                title: "請點開通往線上白板的大門",
                 html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${room}&id=${data.info.sender}><b>傳送門</b></a>`,
                 width: 600,
                 padding: '3em',
@@ -121,7 +119,7 @@ function editor() {
     io.emit("ask_to_editor", {
         receiver: receiver,
         sender: sender,
-        message: '是否願意共同協作'
+        message: '是否願意使用線上白板討論'
     })
 };
 
@@ -145,7 +143,6 @@ function say_yes(data){
 
 
 function say_no(data){
-
     Swal.fire({
         icon: 'error',
         title: 'Oops...',

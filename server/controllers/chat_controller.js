@@ -36,8 +36,9 @@ const askQuestion = async (req, res) => {
             company,
             question
         } = req.body
-       await sendQuestion(company,question,nickname)
-     res.status(200).send('ok')
+       let result=await sendQuestion(company,question,nickname)
+       console.log(result)
+     res.status(200).send(result)
     } catch (error) {
         return {
             error

@@ -21,17 +21,18 @@ const sendQuestion = async (company, message, nickname) => {
       sendQuestionMail(user.email, subject);
     })
 
-    let query_sender = `SELECT company FROM user WHERE nickname =? `
-    let sender_company = await query(query_sender, [nickname])
-    let query_question = `INSERT INTO message SET ?`
+
+    let query_question = `INSERT INTO message (sender,receiver,message) VALUES?`
     let ask_sets = []
     members_list.map(user => {
       let combine = []
-      let ask = combine.concat(user.nickname, message, nickname, sender_company[0].company, company)
-      ask_sets.push(ask)
+      combine = combine.concat(nickname, user.nickname, message)
+      ask_sets.push(combine)
     })
 
-    await query(query_question, [ask_sets])
+    let result = await query(query_question, [ask_sets])
+
+    console.log(result)
     await commit();
 
 
@@ -69,7 +70,7 @@ const getMainMessages = async (username, error) => {
     inner join user2_info on message.receiver=user2_info.nickname
 	  WHERE (sender = (select sender from final_speaker )AND receiver =(select receiver from final_speaker) ) OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`
     let result = await query(querystr_main_messages, [username, username])
-      
+
     if (result.length > 0) {
       return result
     } else {
@@ -82,27 +83,25 @@ const getMainMessages = async (username, error) => {
 
 const getSelectedMessages = async (username, chosenName) => {
   try {
-    querystr_selected_messages = `
-        
-WITH final_speaker  AS(
-  SELECT sender,receiver,message
-  FROM message 
-   WHERE (sender = ? AND receiver = ?) 
-OR (sender = ? AND receiver = ?)
-
-),
-user_info AS(
-  SELECT company as sender_company ,picture as sender_picture ,nickname
-  FROM user
-),
-  user2_info AS(
-  SELECT company as receiver_company ,picture as receiver_picture ,nickname
-  FROM user
-)
-SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture
-FROM final_speaker
-inner join user_info on final_speaker.sender=user_info.nickname 
-inner join user2_info on final_speaker.receiver=user2_info.nickname`
+    querystr_selected_messages = `   
+    WITH final_speaker  AS(
+      SELECT sender,receiver,message
+      FROM message 
+      WHERE (sender = ? AND receiver = ?) 
+      OR (sender = ? AND receiver = ?)
+    ),
+    user_info AS(
+      SELECT company as sender_company ,picture as sender_picture ,nickname
+      FROM user
+    ),
+      user2_info AS(
+      SELECT company as receiver_company ,picture as receiver_picture ,nickname
+      FROM user
+    )
+    SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture
+    FROM final_speaker
+    inner join user_info on final_speaker.sender=user_info.nickname 
+    inner join user2_info on final_speaker.receiver=user2_info.nickname`
     let result = await query(querystr_selected_messages, [username, chosenName, chosenName, username])
 
     if (result.length > 0) {

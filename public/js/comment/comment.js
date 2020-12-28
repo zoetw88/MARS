@@ -15,7 +15,8 @@ axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
     console.log(response)
     keyword(response)
   })
-
+.catch((error)=>{console.log(error)}
+)
 
 let add_comments = [];
 
@@ -57,18 +58,26 @@ function comment_extract(response) {
 }
 
 
-function keyword(response) {
+async function keyword(response) {
+ console.log(response.data[0])
   
-  if(response.length>0){
   for (let i = 0; i < 10; i++) {
-    if (response.data[i].keyword == undefined || response.data[i].keyword == "" || response.data[i].keyword.length < 2) {
+    if (response.data[i] == undefined || response.data[i] == "" || response.data[i].length < 2) {
       continue
     }
-    $('<li class="list-inline-item"><a href="#">' + response.data[i].keyword + '</a></li>').appendTo($('ul.list-inline'));
+    
+
+    var newDiv = document.createElement("li");
+    var newContent = document.createTextNode( response.data[i]);
+     newDiv.appendChild(newContent)
+     newDiv.setAttribute('class','list-inline-item keyword')
+    
+    var main= document.getElementById('list-inline')
+    main.appendChild(newDiv)
+   
 
   }
   }
-}
 
 
 

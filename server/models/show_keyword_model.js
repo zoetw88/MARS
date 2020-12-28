@@ -104,7 +104,7 @@ async function keyword(company, title) {
       final_word = {}
       if ((counter[word].tfidf) < 1 && 0.0038 < (counter[word].tfidf)) {
     
-        final_word['keyword'] = word
+        final_word = word
         result.push(final_word)
       }
      

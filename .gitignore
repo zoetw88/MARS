@@ -5,3 +5,4 @@ example
 wepack.config.js
 
 *.http
+test.http
