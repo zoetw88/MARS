@@ -158,22 +158,28 @@ li.ProseMirror-selectednode:after {
 
 .ProseMirror-menu-submenu-wrap:hover .ProseMirror-menu-submenu, .ProseMirror-menu-submenu-wrap-active .ProseMirror-menu-submenu {
 	display: block;
+	color: yellow;
 }
-
+.menutitle{
+	text-align: center;
+	margin-left: 150px;
+}
 .ProseMirror-menubar {
 	border-top-left-radius: inherit;
 	border-top-right-radius: inherit;
 	position: relative;
-	min-height: 1em;
-	color: #666;
+	min-height: 1.5em;
+	color: white;
+	font-size: larger;
 	padding: 1px 6px;
 	top: 0; left: 0; right: 0;
 	border-bottom: 1px solid silver;
-	background: white;
+	background: #007bff;
 	z-index: 10;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	overflow: visible;
+	
 }
 
 .ProseMirror-icon {
@@ -306,6 +312,7 @@ li.ProseMirror-selectednode:after {
 	display: none;
 }
 #editor, .editor {
+	align-items: center;
 	background: white;
 	color: black;
 	background-clip: padding-box;
@@ -313,6 +320,8 @@ li.ProseMirror-selectednode:after {
 	border: 2px solid rgba(0, 0, 0, 0.2);
 	padding: 5px 0;
 	margin-bottom: 23px;
+	text-align: center;
+	
 }
 
 .ProseMirror p:first-child,
@@ -329,6 +338,8 @@ li.ProseMirror-selectednode:after {
 	padding: 4px 8px 4px 14px;
 	line-height: 1.2;
 	outline: none;
+	
+	height:500px;
 }
 
 .ProseMirror p { margin-bottom: 1em }
@@ -342,7 +353,7 @@ li.ProseMirror-selectednode:after {
   .menuicon {
     display: inline-block;
     border-right: 1px solid rgba(0, 0, 0, 0.2);
-    color: #888;
+    color: rgb(12, 10, 119);
     line-height: 1;
     padding: 0 7px;
     margin: 1px;
