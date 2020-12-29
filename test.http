@@ -19,7 +19,7 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTE2NDYwNz
 
 ###
 
-GET http://localhost:5000/api/1.0/salary?title=it&company= HTTP/1.1
+GET http://localhost:5000/api/1.0/salary?title=it&company=和碩 HTTP/1.1
 ###
 
 GET http://localhost:5000/api/1.0/workinghour?company=&title=軟體 HTTP/1.1
@@ -56,7 +56,7 @@ GET http://localhost:5000/api/1.0/comments?company=廣達&title=機構 HTTP/1.1
 
 ###
 ###
-GET http://localhost:5000/api/1.0/keywords?company=台積電&title= HTTP/1.1
+GET http://localhost:5000/api/1.0/keywords?company=廣達電腦股份有限公司&title= HTTP/1.1
 
 ###
 

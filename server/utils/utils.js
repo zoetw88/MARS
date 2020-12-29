@@ -40,8 +40,13 @@ const wrapAsync = (fn) => {
     };
 };
 
+
+const getKeyByValue=(object, value)=> {
+    return Object.keys(object).find((key) => object[key] === value);
+  }
 module.exports = {
     upload,
     getImagePath,
-    wrapAsync
+    wrapAsync,
+    getKeyByValue
 };

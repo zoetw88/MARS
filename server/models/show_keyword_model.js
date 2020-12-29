@@ -1,122 +1,102 @@
-const nodejieba = require("nodejieba");
-const path = require('path')
+const nodejieba = require('nodejieba');
+const path = require('path');
 const fs = require('fs');
-const {
-  extract_comments,
-  extract_allcomments
-} = require("./comment_model")
-const validator = require('validator')
-const _ = require('lodash');
-const { ContextExclusionPlugin } = require("webpack");
-
-const dict_path = path.join(__dirname, '../../server/alogrithm/ti-idf/dict.txt')
-const stop_path = path.join(__dirname, '../../server/alogrithm/ti-idf/stop_text')
+const search = require('./search_model');
+const dictPath = path.join(__dirname, '../../server/alogrithm/ti-idf/dict.txt');
+const stopPath = path.join(__dirname, '../../server/alogrithm/ti-idf/stop_text');
 
 nodejieba.load({
-  dict: dict_path
-})
+  dict: dictPath,
+});
 
-async function keyword(company, title) {
+const searchKeywords = async (company, title) => {
   try {
-    const stop_word = fs.readFileSync(stop_path).toString();
-    let stop_word_list = Array.from(stop_word)
-    let single_wordlist = [];
-    let counter = {};
+    const stopWord = fs.readFileSync(stopPath).toString();
+    const stopWordlist = Array.from(stopWord);
+    const mainWordlist = [];
+    const counter = {};
     let counts = 1;
     let str;
-    let result = [];
-    let final_word;
-    let result_comments;
-    let result_total_comments;
-    
-    if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
-   
-      result_comments = await extract_comments(company, title)
-      result_total_comments = await extract_allcomments()
-  
-    }
-    else if(validator.isEmpty(company)) {
+    const result = [];
 
-      result_comments = await extract_comments(company,title)
-      result_total_comments = await extract_allcomments()
+    const mainComments = await search.extractComments(company, title);
+    const comparedComments = await search.extractAllComments();
 
-    } else if(validator.isEmpty(title)) {
 
-      result_comments = await extract_comments(company,title)
-      
-      result_total_comments = await extract_allcomments()
-    }
-   
-    let combine_comments = result_comments.map(comment => {
-      str += comment.interview_experience.toString()
-      return str
-    })
-   
-    let afterTokenize = nodejieba.cut(combine_comments.toString())
-    afterTokenize.map(word => {
-      if (counter[word] === undefined && stop_word.indexOf(word) < 0) {
-        single_wordlist.push(word)
+    const commentsCombination = mainComments.map((comment) => {
+      str += comment.interview_experience.toString();
+      return str;
+    });
+
+    const afterTokenize = nodejieba.cut(commentsCombination.toString());
+    afterTokenize.map((word) => {
+      if (counter[word] === undefined && stopWord.indexOf(word) < 0) {
+        mainWordlist.push(word);
         counter[word] = {
           tf: 1,
-          df: 0
-        }
+          df: 0,
+        };
       }
       if (counter[word]) {
-        counter[word].tf += 1
+        counter[word].tf += 1;
       }
       counts = counts + 1;
-    })
+    });
 
-    let total_wordlist = result_total_comments.map(comment => {
-      let tempcounts = {};
-      let tokens = nodejieba.cut(comment.interview_experience)
-      tokens.map(token => {
+    const comparedWordlist = comparedComments.map((comment) => {
+      const tempcounts = {};
+      const tokens = nodejieba.cut(comment.interview_experience);
+      tokens.map((token) => {
         if (tempcounts[token] === undefined) {
-          tempcounts[token] = true
+          tempcounts[token] = true;
         }
-      })
-      return tempcounts
-    })
+      });
+      return tempcounts;
+    });
 
-    single_wordlist.map(word => {
-      let check_stop_word = stop_word_list.indexOf(word)
-      let key = word
-      total_wordlist.map(word => {
-        if (word[key] && check_stop_word < 0) {
+    mainWordlist.map((word) => {
+      const checkStopWord = stopWordlist.indexOf(word);
+      const key = word;
+      comparedWordlist.map((word) => {
+        if (word[key] && checkStopWord < 0) {
           counter[key].df++;
         }
-      })
-    })
+      });
+    });
 
-    single_wordlist.map(word => {
-      counter[word].tfidf = counter[word].tf / counts * Math.log(result_comments.length / counter[word].df);
-    })
+    mainWordlist.map((word) => {
+      counter[word].tfidf = counter[word].tf / counts * Math.log(mainComments.length / counter[word].df);
+    });
 
-    single_wordlist.sort(compare);
+    mainWordlist.sort(compare);
 
+    /**
+ * compare word's tiidf
+ * @param {string} a
+ * @param {string} b
+ * @return {int}
+ *
+ */
     function compare(a, b) {
-      let countA = counter[a].tfidf;
-      let countB = counter[b].tfidf;
+      const countA = counter[a].tfidf;
+      const countB = counter[b].tfidf;
       return countB - countA;
     }
-    
-    single_wordlist.map(word => {
-      final_word = {}
-      if ((counter[word].tfidf) < 1 && 0.0038 < (counter[word].tfidf)) {
-    
-        final_word = word
-        result.push(final_word)
-      }
-     
-    })
-    
-    return result
 
+    mainWordlist.map((word) => {
+      finalWordlist = {};
+      if ((counter[word].tfidf) < 1 && 0.0038 < (counter[word].tfidf)) {
+        finalWordlist = word;
+        result.push(finalWordlist);
+      }
+    });
+
+    return result;
   } catch (error) {
-    return error
+    return error;
   }
-}
+};
 
 module.exports = {
-  keyword
-}
+  searchKeywords,
+};
