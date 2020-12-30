@@ -1,16 +1,16 @@
 const router = require('express').Router();
 const {
-    wrapAsync
+  wrapAsync,
 } = require('../utils/utils');
 
 const {
-    getSalary,
-    getWorkingHour,
-    getComments,
-    getKeywords,
-    getJoblist,
-    getCompanylist,
-    getJob104list
+  getSalary,
+  getWorkingHours,
+  getComments,
+  getKeywords,
+  getJoblist,
+  getCompanylist,
+  getJob104list,
 } = require('../controllers/search_controller');
 
 
@@ -18,7 +18,7 @@ router.route('/salary')
     .get(wrapAsync(getSalary));
 
 router.route('/workinghour')
-    .get(wrapAsync(getWorkingHour));
+    .get(wrapAsync(getWorkingHours));
 
 router.route('/keywords')
     .get(wrapAsync(getKeywords));
@@ -34,4 +34,5 @@ router.route('/companylist')
 
 router.route('/joblist')
     .get(wrapAsync(getJoblist));
+
 module.exports = router;

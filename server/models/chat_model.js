@@ -1,4 +1,3 @@
-
 const {
   query,
   transaction,
@@ -9,8 +8,6 @@ const {
 const {
   sendQuestionMail,
 } = require('./email_model');
-
-const  moment = require('moment')
 
 const sendQuestion = async (company, message, nickname) => {
   try {
@@ -24,13 +21,12 @@ const sendQuestion = async (company, message, nickname) => {
       sendQuestionMail(user.email, subject);
     });
 
-
-    const queryQuestion = `INSERT INTO message (sender,receiver,message) VALUES?`;
+    const queryQuestion = `INSERT INTO message(sender,receiver,message)VALUES?`;
     const askSets = [];
     members_list.map((user) => {
-      let combine = [];
-      combine = combine.concat(nickname, user.nickname, message);
-      askSets.push(combine);
+      const askSet = [];
+      askSet.push(nickname, user.nickname, message);
+      askSets.push(askSet);
     });
 
     await query(queryQuestion, [askSets]);
@@ -129,7 +125,6 @@ const getSideMessages = async (username) => {
     FROM message
     INNER JOIN user_info on user_info.nickname=message.sender 
     INNER JOIN user2_info on user2_info.nickname=message.receiver
-     
     WHERE id IN (
       SELECT MAX(id)
       FROM message
@@ -159,8 +154,8 @@ const addNewMessages = async (data) => {
     const result = await query(queryNewMessages, message);
 
     if (result.length > 0) {
-      return result;
       await commit();
+      return result;
     } else {
       return error;
     }

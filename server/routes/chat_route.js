@@ -1,11 +1,12 @@
+// eslint-disable-next-line new-cap
 const router = require('express').Router();
 const {
-    wrapAsync
+  wrapAsync,
 } = require('../utils/utils');
 const {
-    editor,
-    verifyToken,
-    askQuestion
+  editor,
+  verifyToken,
+  askQuestion,
 } = require('../controllers/chat_controller');
 
 

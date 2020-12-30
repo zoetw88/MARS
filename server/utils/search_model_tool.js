@@ -1,47 +1,46 @@
 const {
-  fp_alogrithm,
+  recommendCompany,
   filterTitle,
   filterCompany,
 } = require('../models/filter_model');
+
+const {
+  query,
+} = require('../models/mysql');
+
 /**
- * chart呈現格式需求
+ * organize salary result for chart format
  * @param {array} salaryResult
  * @return {array} avgSalaryResult
  */
 function transInt(salaryResult) {
+  // eslint-disable-next-line max-len
   const avgSalaryResult = [null, null, null, null, null, null, null, null, null, null];
-  if (salaryResult.length > 0) {
-    for (let i = 0; i < salaryResult.length; i++) {
-      if (salaryResult[i].experience < 11) {
-        const order = parseInt(salaryResult[i].experience);
-        avgSalaryResult[order] = parseInt(salaryResult[i].salary);
-      };
-    };
-  };
+  salaryResult.map((company)=>{
+    const order=parseInt(company.experience);
+    avgSalaryResult[order]=parseInt(company.salary);
+  });
   return avgSalaryResult;
 };
 
 /**
- * chart呈現格式需求
+ * organize salary result for chart format
  * @param {array} salaryResult
- * @return {array} salary with compared company
+ * @return {array}  categorized salary result
  */
 function organizeData(salaryResult) {
-  if (salaryResult.length > 0) {
-    const data = [];
-    const company = salaryResult.map((data) => data.company);
-    const companylist = Array.from(new Set(company));
-    companylist.map((company) => {
-      const singleCompany = salaryResult
-          .filter((x) => x.company == company);
-
-      data.push(singleCompany);
-    });
-    return data;
-  }
+  const result = [];
+  const company = salaryResult.map((data) => data.company);
+  const companys = Array.from(new Set(company));
+  companys.map((company) => {
+    const singleCompany = salaryResult
+        .filter((x) => x.company == company);
+    result.push(singleCompany);
+  });
+  return result;
 }
 /**
- * chart呈現需求-
+ *organize salary result for chart format
  * @param {array} salaryData
  * @return {array} data
  */
@@ -64,58 +63,45 @@ function combineData(salaryData) {
  * @return {object} dataForChart
  */
 
-const withTitleAndCompany = async (title, company, query) => {
+const withTitleCompany = async (company, title, querystr) => {
   const titleFiltered = await filterTitle(title);
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no') {
     return 'no';
   }
-  const companylist = await fp_alogrithm(companyFiltered);
-  let companyCombination = [];
-  companyCombination = companyCombination.concat(companyFiltered, companylist[0], companylist[1]);
-  const salaryResult = await query(query, [titleFiltered, companyCombination]);
-  if (salaryResult.length > 0) {
-    const salaryData = organizeData(salaryResult);
-    const dataForChart = combineData(salaryData);
-    return dataForChart;
-  } else {
-    return 'no';
-  }
+  const recommendation = await recommendCompany(companyFiltered, titleFiltered);
+  const companylist = [];
+  companylist.push(companyFiltered, recommendation[0], recommendation[1]);
+  const result = await query(querystr, [titleFiltered, companylist]);
+  return result;
 };
 
-const withTitle = async (title, query) => {
+const withTitle = async (title, querystr) => {
   const titleFiltered = await filterTitle(title);
-  const salaryResult = await query(query, [titleFiltered]);
-  if (salaryResult.length > 0) {
-    const titleResult = organizeData(salaryResult);
-    const resultForChart = combineData(titleResult);
-    return resultForChart;
-  } else {
-    return 'no';
-  }
+  const result = await query(querystr, [titleFiltered]);
+  return result;
 };
 
-const withCompany = async ( company, query) => {
+const withCompany = async (company, querystr) => {
   const companyFiltered = await filterCompany(company);
-  if (companyFiltered=='no') {
+  if (companyFiltered == 'no') {
     return 'no';
   }
-  const companylist = await fp_alogrithm(companyFiltered);
-  let companyCombination = [];
-  companyCombination = companyCombination.concat(companyFiltered, companylist[0], companylist[1]);
-  const salaryResult = await query(query, [companyCombination]);
-  if ( salaryResult.length > 0) {
-    const salaryData = organizeData(salaryResult);
-    const dataForChart = combineData(salaryData);
+  const recommendation = await recommendCompany(companyFiltered, null);
+  const companylist = [];
+  companylist.push(companyFiltered, recommendation[0], recommendation[1]);
+  const result = await query(querystr, [companylist]);
+  return result;
+};
 
-
-    return dataForChart;
-  } else {
-    return 'no';
-  }
+const makesalaryLineChart = async (dataForChart) => {
+  const dataOrganized = organizeData(dataForChart);
+  const result = combineData(dataOrganized);
+  return result;
 };
 module.exports = {
-  withTitleAndCompany,
+  withTitleCompany,
   withTitle,
   withCompany,
+  makesalaryLineChart,
 };

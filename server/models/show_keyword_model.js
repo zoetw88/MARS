@@ -16,7 +16,6 @@ const searchKeywords = async (company, title) => {
     const mainWordlist = [];
     const counter = {};
     let counts = 1;
-    let str;
     const result = [];
 
     const mainComments = await search.extractComments(company, title);
@@ -24,6 +23,7 @@ const searchKeywords = async (company, title) => {
 
 
     const commentsCombination = mainComments.map((comment) => {
+      let str;
       str += comment.interview_experience.toString();
       return str;
     });

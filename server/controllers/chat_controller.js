@@ -1,21 +1,20 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const {
-  ACCESS_TOKEN_SECRET,
-} = process.env;
+const {ACCESS_TOKEN_SECRET} = process.env;
 const {sendQuestion}= require('../models/chat_model');
 const path=require('path');
+
 const verifyToken = async (req, res ) => {
   try {
     const bearerHeader = req.header('authorization');
     if (typeof bearerHeader !== 'undefined') {
       const bearerToken = bearerHeader.split(' ')[1];
-      const jwtDecoded = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
+      const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
         if (error) return error;
         return data;
       });
 
-      res.status(200).send(jwtDecoded);
+      res.status(200).send(userInfo);
     } else {
       res.sendStatus(403);
     };
@@ -34,7 +33,6 @@ const askQuestion = async (req, res) => {
       question,
     } = req.body;
     const result=await sendQuestion(company, question, nickname);
-    console.log(result);
     res.status(200).send(result);
   } catch (error) {
     return {

@@ -19,10 +19,10 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTE2NDYwNz
 
 ###
 
-GET http://localhost:5000/api/1.0/salary?title=it&company=和碩 HTTP/1.1
+GET http://localhost:5000/api/1.0/salary?title=軟體&company=台積電 HTTP/1.1
 ###
 
-GET http://localhost:5000/api/1.0/workinghour?company=&title=軟體 HTTP/1.1
+GET http://localhost:5000/api/1.0/workinghour?company=和碩&title=軟體 HTTP/1.1
 
 ###
 POST http://localhost:5000/get_main_messages
@@ -52,15 +52,15 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:5000/api/1.0/comments?company=廣達&title=機構 HTTP/1.1
+GET http://localhost:5000/api/1.0/comments?company=廣達&title=軟體 HTTP/1.1
 
 ###
 ###
-GET http://localhost:5000/api/1.0/keywords?company=廣達電腦股份有限公司&title= HTTP/1.1
+GET http://localhost:5000/api/1.0/keywords?company=和碩&title= HTTP/1.1
 
 ###
 
-GET http://localhost:5000/api/1.0/job104list?company=和碩聯合科技股份有限公司&title=軟體工程師 HTTP/1.1
+GET http://localhost:5000/api/1.0/job104list?company=和碩聯合科技股份有限公司&title= HTTP/1.1
 
 ###
 POST http://localhost:5000/api/1.0/question

@@ -6,10 +6,12 @@ const salt = parseInt(process.env.BCRYPT_SALT);
 const {query, transaction, commit, rollback} = require('./mysql');
 const {TOKEN_EXPIRE, ACCESS_TOKEN_SECRET} = process.env;
 
+
 const signUp = async (name, nickname, email, password, company, union, title) => {
   try {
     await transaction();
-    const emails = await query('SELECT email FROM user WHERE email = ? FOR UPDATE', [email]);
+    const queryEmail=`SELECT email FROM user WHERE email = ? FOR UPDATE`;
+    const emails = await query(queryEmail, [email]);
 
     if (emails.length > 0) {
       await commit();
@@ -52,11 +54,8 @@ const signUp = async (name, nickname, email, password, company, union, title) =>
 };
 const nativeSignIn = async (email, password) => {
   try {
-    await transaction();
-
     const result = await query('SELECT * FROM user WHERE email = ?', [email]);
     if (result.length > 0) {
-      await commit();
       const auth = await bcrypt.compare(password, result[0].password);
       if (auth) {
         accessToken = jwt.sign({
@@ -79,7 +78,6 @@ const nativeSignIn = async (email, password) => {
       return {error: 'email is wrong'};
     }
   } catch (error) {
-    await rollback();
     return {error};
   }
 };
@@ -93,9 +91,10 @@ const facebookSignIn = async (id, name, email, accessToken) => {
       nickname: name,
       picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
     };
+    const queryFaceBookEmail=`SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE`;
+    const users = await query(queryFaceBookEmail, [email]);
 
-    const users = await query('SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE', [email]);
-    if (users.length === 0) { // Insert new user
+    if (users.length === 0) {
       const queryStr = 'insert into user set ?';
       await query(queryStr, user);
     }
@@ -132,7 +131,6 @@ const getUserProfile = async (email) => {
         provider: results[0].provider,
         nickname: results[0].nickname,
         email: results[0].email,
-
       },
     };
   }

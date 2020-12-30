@@ -29,7 +29,9 @@ const signUp = async (req, res) => {
     return;
   }
   name = validator.escape(name);
+
   let result = await User.signUp(name, nickname, email, password, company, union, title);
+
   if (result.error) {
     result=result.error;
     res.status(403).send({
@@ -50,11 +52,11 @@ const verifyToken = async (req, res, next) => {
 
     if (typeof bearerHeader !== 'undefined') {
       const bearerToken = bearerHeader.split(' ')[1];
-      const jwtDecoded=jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
+      const userInfo=jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
         if (error) return error;
         return data;
       });
-      req.decoded=jwtDecoded;
+      req.decoded=userInfo;
 
       next();
     } else {

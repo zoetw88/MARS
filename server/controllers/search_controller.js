@@ -25,7 +25,7 @@ const getSalary = async (req, res) => {
   }
 };
 
-const getWorkingHour = async (req, res) => {
+const getWorkingHours = async (req, res) => {
   try {
     const {title} = req.query;
     const {company} = req.query;
@@ -52,14 +52,7 @@ const getComments = async (req, res) => {
       company,
       title,
     } = req.query;
-
-    // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    // if (ip.substr(0, 7) == "::ffff:") {
-    //     ip = ip.substr(7)
-    // }
-
     const result = await search.extractComments(company, title);
-
     res.status(200).send(result);
   } catch (error) {
     return {error};
@@ -72,15 +65,7 @@ const getKeywords = async (req, res) => {
       company,
       title,
     } = req.query;
-
-
     const result=await searchKeywords(company, title);
-
-
-    // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    // if (ip.substr(0, 7) == "::ffff:") {
-    //     ip = ip.substr(7)
-    // }
     res.status(200).send(result);
   } catch (error) {
     return {error};
@@ -94,11 +79,6 @@ const getJob104list = async (req, res) => {
       title,
     } = req.query;
     const result=await search.get104jobs(company, title);
-
-    // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-    // if (ip.substr(0, 7) == "::ffff:") {
-    //     ip = ip.substr(7)
-    // }
     res.status(200).send(result);
   } catch (error) {
     return {error};
@@ -125,11 +105,10 @@ const getJoblist = async (req, res) => {
 };
 module.exports = {
   getSalary,
-  getWorkingHour,
+  getWorkingHours,
   getComments,
   getKeywords,
   getJob104list,
   getCompanylist,
   getJoblist,
-
 };
