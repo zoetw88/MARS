@@ -4,7 +4,6 @@ const {FPTree} = require('./fptree');
 
 class FPGrowth extends EventEmitter {
   constructor(support) {
-    super();
     this.support=support;
     this.itemsets = [];
   }
