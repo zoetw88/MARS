@@ -12,7 +12,7 @@ const cors = require('cors');
 const app = express();
 const morgan = require('morgan');
 const http = require('http').createServer(app);
-const {chatroom} = require('./server/controllers/socket_controller');
+const {chatroom} = require('./server/controllers/chatroom_controller');
 
 app.set('trust proxy', 'loopback');
 app.set('json spaces', 2);

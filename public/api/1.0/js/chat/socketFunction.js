@@ -12,7 +12,7 @@ function organizeTalk(response, username) {
     }
   }
 }
-let talker = [];
+const talker = [];
 function organizeTalker(response, username) {
   for (let i = 0; i < response.length; i++) {
     if (response[i].sender == username) {

@@ -1,37 +1,6 @@
 const nodemailer = require('nodemailer');
 const {Email_Address, Email_Password}= process.env;
-// const hbs=require('nodemailer-express-handlebars');
 
-// function send_welcome_email(user_email,subject){
-// var transporter = nodemailer.createTransport({
-//     service: 'Gmail',
-//     auth: {
-//         user: Email_Address,
-//         pass: Email_Password
-//     },
-//     tls: {
-//         rejectUnauthorized: false
-//     }
-// });
-// transporter.use('compile',hbs({
-//     viewEngine:'express-handlebars',
-//     viewPath:'./views/'
-// }))
-// var options = {
-//     from: Email_Address,
-//     to: user_email,
-//     subject: subject,
-//     template:'index',
-// };
-
-// transporter.sendMail(options, function(error, info){
-//     if(error){
-//         throw error
-//     }else{
-//         console.log('訊息發送: ' + info.response);
-//     }
-// })
-// }
 /**
  * sendemails
  * @param {string} userEmail

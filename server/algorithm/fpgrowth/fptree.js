@@ -1,24 +1,20 @@
 const {FPNode} =require('./fpnode');
 class FPTree {
-  constructor(supports, _support) {
+  constructor(supports, support) {
     this.supports = supports;
-    this._support = _support;
-    this._isInit = false;
+    this.support = support;
+    this.isInit = false;
     this.root = new FPNode();
-    this._firstInserted = {};
-    this._lastInserted = {};
+    this.firstInserted = {};
+    this.lastInserted = {};
   }
-  get headers() {
-    return this._headers;
-  }
-
   fromTransactions(transactions) {
-    if (this._isInit) {
-      throw new Error('Error building the FPTree');
+    if (this.isInit) {
+      throw error;
     }
     transactions.forEach((transaction) => {
       const items = transaction
-          .filter((item) => this.supports[JSON.stringify(item)] >= this._support)
+          .filter((item) => this.supports[JSON.stringify(item)] >= this.support)
           .sort((a, b) => {
             const res = this.supports[JSON.stringify(b)] - this.supports[JSON.stringify(a)];
             if (res == 0) {
@@ -26,21 +22,21 @@ class FPTree {
             }
             return res;
           });
-
-      this._addItems(items);
+      this.addItems(items);
     });
-    this._headers = this._getHeaderList();
-    this._isInit = true;
+    this.headers = this.getHeaderList();
+    this.isInit = true;
     return this;
   }
 
   fromPrefixPaths(prefixPaths) {
-    if (this._isInit) {
-      throw new Error('Error building the FPTree');
+    if (this.isInit) {
+      throw error;
     }
+
     prefixPaths.forEach((prefixPath) => {
       const items = prefixPath.path
-          .filter((item) => this.supports[JSON.stringify(item)] >= this._support)
+          .filter((item) => this.supports[JSON.stringify(item)] >= this.support)
           .sort((a, b) => {
             const res = this.supports[JSON.stringify(b)] - this.supports[JSON.stringify(a)];
             if (res == 0) {
@@ -48,14 +44,14 @@ class FPTree {
             }
             return res;
           });
-      this._addItems(items, prefixPath.support);
+      this.addItems(items, prefixPath.support);
     });
-    this._headers = this._getHeaderList();
-    this._isInit = true;
+    this.headers = this.getHeaderList();
+    this.isInit = true;
     return this;
   }
   getConditionalFPTree(item) {
-    const start = this._firstInserted[JSON.stringify(item)];
+    const start = this.firstInserted[JSON.stringify(item)];
     if (!start) {
       return null;
     }
@@ -64,7 +60,7 @@ class FPTree {
     const prefixPaths = this._getPrefixPaths(start, s, (i, count) => {
       conditionalTreeSupports[JSON.stringify(i)] = (conditionalTreeSupports[JSON.stringify(i)] || 0) + count;
     });
-    const ret = new FPTree(conditionalTreeSupports, this._support).fromPrefixPaths(prefixPaths);
+    const ret = new FPTree(conditionalTreeSupports, this.support).fromPrefixPaths(prefixPaths);
     if (ret.root.children.length) {
       return ret;
     }
@@ -72,18 +68,18 @@ class FPTree {
     return null;
   }
   getPrefixPaths(item) {
-    if (!this._isInit) {
-      throw new Error('Error building the FPTree');
+    if (!this.isInit) {
+      throw error;
     }
-    const start = this._firstInserted[JSON.stringify(item)];
+    const start = this.firstInserted[JSON.stringify(item)];
     if (!start) {
       return [];
     }
     return this._getPrefixPaths(start, start.support);
   }
   getPrefixPath(node, onPushingNewItem) {
-    if (!this._isInit) {
-      throw new Error('Error building the FPTree');
+    if (!this.isInit) {
+      throw error;
     }
     const path = this._getPrefixPath(node, node.support, onPushingNewItem);
     if (path.length === 0) {
@@ -95,8 +91,8 @@ class FPTree {
     };
   }
   isSinglePath() {
-    if (!this._isInit) {
-      throw new Error('Error building the FPTree');
+    if (!this.isInit) {
+      throw error;
     }
     if (!this.getSinglePath()) {
       return false;
@@ -104,18 +100,18 @@ class FPTree {
     return true;
   }
   getSinglePath() {
-    if (!this._isInit) {
-      throw new Error('Error building the FPTree');
+    if (!this.isInit) {
+      throw error;
     }
     return this._getSinglePath(this.root);
   }
-  _addItems(items, prefixSupport = 1) {
+  addItems(items, prefixSupport = 1) {
     let current = this.root;
     items.forEach((item) => {
       current = current.upsertChild(item, (child) => {
         const itemKey = JSON.stringify(item);
-        this._updateLastInserted(itemKey, child);
-        this._updateFirstInserted(itemKey, child);
+        this.updateLastInserted(itemKey, child);
+        this.updateFirstInserted(itemKey, child);
       }, prefixSupport);
     });
   }
@@ -152,23 +148,23 @@ class FPTree {
     return this._getSinglePath(node.children[0], currentPath);
   }
 
-  _updateLastInserted(key, child) {
-    const last = this._lastInserted[key];
+  updateLastInserted(key, child) {
+    const last = this.lastInserted[key];
     if (last) {
       last.nextSameItemNode = child;
     }
-    this._lastInserted[key] = child;
+    this.lastInserted[key] = child;
   }
 
-  _updateFirstInserted(key, child) {
-    const first = this._firstInserted[key];
+  updateFirstInserted(key, child) {
+    const first = this.firstInserted[key];
     if (!first) {
-      this._firstInserted[key] = child;
+      this.firstInserted[key] = child;
     }
   }
 
-  _getHeaderList() {
-    return Object.keys(this._firstInserted)
+  getHeaderList() {
+    return Object.keys(this.firstInserted)
         .sort((a, b) => this.supports[a] - this.supports[b])
         .map((key) =>( JSON.parse(key)));
   }

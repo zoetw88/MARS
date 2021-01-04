@@ -3,19 +3,29 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const got = require('got');
 const salt = parseInt(process.env.BCRYPT_SALT);
-const {query, transaction, commit, rollback} = require('./mysql');
-const {TOKEN_EXPIRE, ACCESS_TOKEN_SECRET} = process.env;
+const {
+  query,
+  transaction,
+  commit,
+  rollback,
+} = require('./mysql');
+const {
+  TOKEN_EXPIRE,
+  ACCESS_TOKEN_SECRET,
+} = process.env;
 
 
 const signUp = async (name, nickname, email, password, company, union, title) => {
   try {
     await transaction();
-    const queryEmail=`SELECT email FROM user WHERE email = ? FOR UPDATE`;
+    const queryEmail = `SELECT email FROM user WHERE email = ? FOR UPDATE`;
     const emails = await query(queryEmail, [email]);
 
     if (emails.length > 0) {
       await commit();
-      return {error: 'Email Already Exists'};
+      return {
+        error: 'Email Already Exists',
+      };
     }
     const users = {
       name: name,
@@ -31,7 +41,7 @@ const signUp = async (name, nickname, email, password, company, union, title) =>
     };
 
     accessToken = jwt.sign({
-      exp: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
+      exp: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),
       email: email,
       nickname: nickname,
       picture: 'https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/no.5.png',
@@ -39,17 +49,21 @@ const signUp = async (name, nickname, email, password, company, union, title) =>
 
     data = {
       username: nickname,
-      accessExpired: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
+      accessExpired: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),
       accessToken: accessToken,
       useremail: email,
     };
 
     await query('INSERT INTO user Set?', users);
     await commit();
-    return {data};
+    return {
+      data,
+    };
   } catch (error) {
     await rollback();
-    return {error};
+    return {
+      error,
+    };
   }
 };
 const nativeSignIn = async (email, password) => {
@@ -59,26 +73,34 @@ const nativeSignIn = async (email, password) => {
       const auth = await bcrypt.compare(password, result[0].password);
       if (auth) {
         accessToken = jwt.sign({
-          exp: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
+          exp: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),
           email: email,
           nickname: result[0].nickname,
           picture: result[0].picture,
         }, ACCESS_TOKEN_SECRET);
         data = {
           nickname: result[0].nickname,
-          accessExpired: Math.floor(Date.now() / 1000)+parseInt(TOKEN_EXPIRE),
+          accessExpired: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),
           accessToken: accessToken,
           email: email,
         };
-        return {data};
+        return {
+          data,
+        };
       } else {
-        return {error: 'password is wrong'};
+        return {
+          error: 'password is wrong',
+        };
       }
     } else {
-      return {error: 'email is wrong'};
+      return {
+        error: 'email is wrong',
+      };
     }
   } catch (error) {
-    return {error};
+    return {
+      error,
+    };
   }
 };
 
@@ -91,7 +113,7 @@ const facebookSignIn = async (id, name, email, accessToken) => {
       nickname: name,
       picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
     };
-    const queryFaceBookEmail=`SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE`;
+    const queryFaceBookEmail = `SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE`;
     const users = await query(queryFaceBookEmail, [email]);
 
     if (users.length === 0) {
@@ -103,10 +125,14 @@ const facebookSignIn = async (id, name, email, accessToken) => {
       name: name,
       access_token: accessToken,
     };
-    return {data};
+    return {
+      data,
+    };
   } catch (error) {
     await rollback();
-    return {error};
+    return {
+      error,
+    };
   }
 };
 const getFacebookProfile = async function(accessToken) {
@@ -123,7 +149,9 @@ const getFacebookProfile = async function(accessToken) {
 const getUserProfile = async (email) => {
   const results = await query('SELECT * FROM user WHERE email = ?', [email]);
   if (results.length === 0) {
-    return {error: 'Invalid Access Token'};
+    return {
+      error: 'Invalid Access Token',
+    };
   } else {
     return {
       data: {
@@ -143,4 +171,3 @@ module.exports = {
   facebookSignIn,
   getFacebookProfile,
 };
-

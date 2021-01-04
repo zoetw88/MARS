@@ -44,19 +44,19 @@ const sendQuestion = async (company, message, nickname) => {
 const getMainMessages = async (username, error) => {
   try {
     queryMainMessages = `
-    WITH final_speaker  AS(
-      SELECT MAX(id),sender,receiver
-      FROM message 
-      WHERE (sender =?) OR(receiver=?) 
-      GROUP BY sender ,receiver 
-      ORDER BY max(id) 
-      DESC LIMIT 1
+    WITH final_speaker AS(
+        SELECT MAX(id),sender,receiver
+        FROM message 
+        WHERE (sender =?) OR(receiver=?) 
+        GROUP BY sender ,receiver 
+        ORDER BY max(id) 
+        DESC LIMIT 1
     ),
     user_info AS(
       SELECT company as sender_company ,picture as sender_picture ,nickname
       FROM user
     ),
-      user2_info AS(
+    user2_info AS(
       SELECT company as receiver_company ,picture as receiver_picture ,nickname
       FROM user
     )
@@ -82,10 +82,10 @@ const getSelectedMessages = async (username, chosenName) => {
   try {
     querySelectedMessages = `   
     WITH final_speaker  AS(
-      SELECT sender,receiver,message
-      FROM message 
-      WHERE (sender = ? AND receiver = ?) 
-      OR (sender = ? AND receiver = ?)
+        SELECT sender,receiver,message
+        FROM message 
+        WHERE (sender = ? AND receiver = ?) 
+        OR (sender = ? AND receiver = ?)
     ),
     user_info AS(
       SELECT company as sender_company ,picture as sender_picture ,nickname
@@ -113,24 +113,25 @@ const getSelectedMessages = async (username, chosenName) => {
 const getSideMessages = async (username) => {
   try {
     querySideMessages = `
-    With user_info AS(
-      SELECT company as sender_company ,picture as sender_picture ,nickname
-       FROM user
+    WITH user_info AS(
+        SELECT company as sender_company ,picture as sender_picture ,nickname
+        FROM user
      ),
-     user2_info AS(
-       SELECT company as receiver_company ,picture as receiver_picture ,nickname
-       FROM user
+        user2_info AS(
+        SELECT company as receiver_company ,picture as receiver_picture ,nickname
+        FROM user
      )
     SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture
     FROM message
     INNER JOIN user_info on user_info.nickname=message.sender 
     INNER JOIN user2_info on user2_info.nickname=message.receiver
     WHERE id IN (
-      SELECT MAX(id)
-      FROM message
-      where sender=?OR receiver=?
-      GROUP BY sender,receiver
-      )ORDER BY id DESC`;
+    SELECT MAX(id)
+    FROM message
+    WHERE sender=? OR receiver=?
+    GROUP BY sender,receiver
+    )
+    ORDER BY id DESC`;
     const result = await query(querySideMessages, [username, username]);
     if (result.length > 0) {
       return result;

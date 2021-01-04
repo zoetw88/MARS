@@ -1,5 +1,5 @@
 const search = require('../models/search_model');
-const {searchKeywords} = require('../models/show_keyword_model');
+const {searchKeywords} = require('../algorithm/ti_idf/ti_idf');
 const path=require('path');
 const fs = require('fs');
 
@@ -14,8 +14,8 @@ const getSalary = async (req, res) => {
     }
     const result = await search.getSalary(company, title, ip);
     const salaryChartPath=path.join(__dirname, '../../public/json/salary.json');
-    const sendJSON = JSON.stringify(result);
-    fs.writeFile(salaryChartPath, sendJSON, function(err, result) {
+    const resultJSON = JSON.stringify(result);
+    fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
       if (err) console.log('error', err);
     });
 
@@ -35,8 +35,8 @@ const getWorkingHours = async (req, res) => {
     }
     const result = await search.getWorkinghour(company, title, ip);
     const workChartPath=path.join(__dirname, '../../public/json/company.json');
-    const sendJSON =JSON.stringify(result);
-    fs.writeFile(workChartPath, sendJSON, function(err, result) {
+    const resultJSON =JSON.stringify(result);
+    fs.writeFile(workChartPath, resultJSON, function(err, result) {
       if (err) console.log('error', err);
     });
 

@@ -5,10 +5,12 @@ const {
 } = require('../utils/utils');
 const {
   editor,
-  verifyToken,
   askQuestion,
-} = require('../controllers/chat_controller');
+} = require('../controllers/chatroom_controller');
 
+const {
+  verifyToken,
+} = require('../controllers/user_controller');
 
 router.route('/chat').get(wrapAsync(verifyToken));
 

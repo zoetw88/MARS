@@ -3,45 +3,45 @@ const {FPTree} = require('./fptree');
 
 
 class FPGrowth extends EventEmitter {
-  constructor(_support ) {
+  constructor(support) {
     super();
-    this._support = _support;
-    this._itemsets = [];
+    this.support=support;
+    this.itemsets = [];
   }
 
-  exec(transactions, cb) {
-    this._transactions = transactions;
-    this._support = Math.ceil(this._support * transactions.length);
-    const supports = this._getDistinctItemsCount(this._transactions);
+  exec(transactions, callback) {
+    this.transactions = transactions;
+    this.support = Math.ceil(this.support * transactions.length);
+    const supports = this.getDistinctItemsCount(this.transactions);
     return new Promise((resolve, reject) => {
-      const tree = new FPTree(supports, this._support).fromTransactions(this._transactions);
-      const result = this._fpGrowth(tree, this._transactions.length);
-      if (cb) {
-        cb(result);
+      const tree = new FPTree(supports, this.support).fromTransactions(this.transactions);
+      const result = this.fpGrowth(tree, this.transactions.length);
+      if (callback) {
+        callback(result);
       }
       resolve(result);
     });
   }
 
-  _fpGrowth(tree, prefixSupport, prefix = []) {
+  fpGrowth(tree, prefixSupport, prefix = []) {
     return tree.headers.reduce((itemsets, item) => {
       const support = Math.min(tree.supports[JSON.stringify(item)], prefixSupport);
       const currentPrefix = prefix.slice(0);
       currentPrefix.push(item);
-      itemsets.push(this._getFrequentItemset(currentPrefix, support));
+      itemsets.push(this.getFrequentItemset(currentPrefix, support));
       const childTree = tree.getConditionalFPTree(item);
       if (childTree) {
-        return itemsets.concat(this._fpGrowth(childTree, support, currentPrefix));
+        return itemsets.concat(this.fpGrowth(childTree, support, currentPrefix));
       }
       return itemsets;
     }, []);
   }
 
-  _handleSinglePath(singlePath, prefix) {
+  handleSinglePath(singlePath, prefix) {
     return [];
   }
 
-  _getFrequentItemset(itemset, support) {
+  getFrequentItemset(itemset, support) {
     const ret = {
       items: itemset,
       support: support,
@@ -50,7 +50,7 @@ class FPGrowth extends EventEmitter {
     return ret;
   }
 
-  _getDistinctItemsCount(transactions) {
+  getDistinctItemsCount(transactions) {
     return transactions.reduce((count, arr) => {
       return arr.reduce((count, item) => {
         count[JSON.stringify(item)] = (count[JSON.stringify(item)] || 0) + 1;

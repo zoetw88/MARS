@@ -1,3 +1,9 @@
+require('dotenv').config();
+const {sendQuestion}= require('../models/chat_model');
+const path=require('path');
+const {
+  getKeyByValue,
+} = require('../utils/utils');
 const {
   getSelectedMessages,
   getMainMessages,
@@ -5,14 +11,11 @@ const {
   addNewMessages,
 } = require('../models/chat_model');
 
-const {
-  getKeyByValue,
-} = require('../utils/utils');
-const users = [];
-let sender;
-const onlineuser = [];
 
 const chatroom = (io) => {
+  const users = [];
+  let sender;
+  const onlineuser = [];
   io.use(function(socket, next) {
     sender = socket.handshake.query.id;
     if (socket.handshake.query.id) {
@@ -117,7 +120,36 @@ const chatroom = (io) => {
     });
   });
 };
+const askQuestion = async (req, res) => {
+  try {
+    const {
+      nickname,
+      company,
+      question,
+    } = req.body;
+    const result=await sendQuestion(company, question, nickname);
+    res.status(200).send(result);
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
 
+
+const editor = async (req, res) => {
+  try {
+    const {room} = req.query;
+    const {id}=req.query;
+    res.sendFile(path.join(__dirname, '../../public/api/1.0/editor.html'));
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
 module.exports = {
   chatroom,
+  editor,
+  askQuestion,
 };

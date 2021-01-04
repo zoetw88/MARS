@@ -5,6 +5,8 @@ const {
   ACCESS_TOKEN_SECRET,
 } = process.env;
 const jwt = require('jsonwebtoken');
+
+
 const signUp = async (req, res) => {
   let {
     name,

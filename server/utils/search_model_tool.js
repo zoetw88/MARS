@@ -1,3 +1,5 @@
+
+
 const {
   recommendCompany,
   filterTitle,
@@ -9,12 +11,11 @@ const {
 } = require('../models/mysql');
 
 /**
- * organize salary result for chart format
+ * reformat salary result for chart
  * @param {array} salaryResult
  * @return {array} avgSalaryResult
  */
 function transInt(salaryResult) {
-  // eslint-disable-next-line max-len
   const avgSalaryResult = [null, null, null, null, null, null, null, null, null, null];
   salaryResult.map((company)=>{
     const order=parseInt(company.experience);
@@ -25,36 +26,28 @@ function transInt(salaryResult) {
 
 /**
  * organize salary result for chart format
- * @param {array} salaryResult
- * @return {array}  categorized salary result
+ * @param {array} salaryResult;
+ * @return {array}  data fitted for chart ;
  */
 function organizeData(salaryResult) {
-  const result = [];
+  const salaryData = [];
+  const result=[];
   const company = salaryResult.map((data) => data.company);
   const companys = Array.from(new Set(company));
   companys.map((company) => {
     const singleCompany = salaryResult
         .filter((x) => x.company == company);
-    result.push(singleCompany);
+    salaryData.push(singleCompany);
+  });
+  salaryData.map((data)=>{
+    const dataForChart = {};
+    dataForChart['y'] = transInt(data);
+    dataForChart['name'] = data[0].company;
+    dataForChart['x'] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    result.push(dataForChart);
   });
   return result;
-}
-/**
- *organize salary result for chart format
- * @param {array} salaryData
- * @return {array} data
- */
-function combineData(salaryData) {
-  const data = [];
-  for (i = 0; i < salaryData.length; i++) {
-    const dataForChart = {};
-    dataForChart['y'] = transInt(salaryData[i]);
-    dataForChart['name'] = salaryData[i][0].company;
-    dataForChart['x'] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    data.push(dataForChart);
-  }
-  return data;
-}
+};
 /**
  *
  * @param {string} title
@@ -94,14 +87,10 @@ const withCompany = async (company, querystr) => {
   return result;
 };
 
-const makesalaryLineChart = async (dataForChart) => {
-  const dataOrganized = organizeData(dataForChart);
-  const result = combineData(dataOrganized);
-  return result;
-};
+
 module.exports = {
   withTitleCompany,
   withTitle,
   withCompany,
-  makesalaryLineChart,
+  organizeData,
 };
