@@ -2,46 +2,42 @@ const {
   query,
   transaction,
   commit,
-  rollback
+  rollback,
 } = require('./mysql');
 
 const {
-  sendQuestionMail
+  sendQuestionMail,
 } = require('./email_model');
-
-const  moment = require('moment')
 
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
 
-    let query_members = `SELECT nickname,email FROM user WHERE company =? `
-    let members_list = await query(query_members, [company])
+    const queryMembers = `SELECT nickname,email FROM user WHERE company =? `;
+    const memberslist = await query(queryMembers, [company]);
 
-    await members_list.map(user => {
-      let subject = '有人來敲你門';
+    await memberslist.map((user) => {
+      const subject = '有人來敲你門';
       sendQuestionMail(user.email, subject);
-    })
 
-    let query_question = `INSERT INTO message (sender,receiver,message) VALUES?`
-    let ask_sets = []
 
-    members_list.map(user => {
-      let combine = []
-      combine = combine.concat(nickname, user.nickname, message)
-      ask_sets.push(combine)
-    })
+    });
 
-    let result = await query(query_question, [ask_sets])
+    const queryQuestion = `INSERT INTO message(sender,receiver,message)VALUES?`;
+    const askSets = [];
+    members_list.map((user) => {
+      const askSet = [];
+      askSet.push(nickname, user.nickname, message);
+      askSets.push(askSet);
+    });
 
+    await query(queryQuestion, [askSets]);
 
     await commit();
-
-
   } catch (error) {
     await rollback();
     return {
-      error
+      error,
     };
   }
 };
@@ -49,48 +45,49 @@ const sendQuestion = async (company, message, nickname) => {
 
 const getMainMessages = async (username, error) => {
   try {
-    querystr_main_messages = `
-    WITH final_speaker  AS(
-      SELECT MAX(id),sender,receiver
-      FROM message 
-      WHERE (sender =?) OR(receiver=?) 
-      GROUP BY sender ,receiver 
-      ORDER BY max(id) 
-      DESC LIMIT 1
+    queryMainMessages = `
+    WITH final_speaker AS(
+        SELECT MAX(id),sender,receiver
+        FROM message 
+        WHERE (sender =?) OR(receiver=?) 
+        GROUP BY sender ,receiver 
+        ORDER BY max(id) 
+        DESC LIMIT 1
     ),
     user_info AS(
       SELECT company as sender_company ,picture as sender_picture ,nickname
       FROM user
     ),
-      user2_info AS(
+    user2_info AS(
       SELECT company as receiver_company ,picture as receiver_picture ,nickname
       FROM user
     )
-	  SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture
-	  FROM message 
-	  inner join user_info on message.sender=user_info.nickname 
-    inner join user2_info on message.receiver=user2_info.nickname
-	  WHERE (sender = (select sender from final_speaker )AND receiver =(select receiver from final_speaker) ) OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`
-    let result = await query(querystr_main_messages, [username, username])
+    SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture 
+    FROM message 
+    INNER JOIN user_info on message.sender=user_info.nickname 
+    INNER JOIN user2_info on message.receiver=user2_info.nickname
+    WHERE (sender = (select sender from final_speaker )AND receiver =(select receiver from final_speaker)) 
+    OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`;
+    const result = await query(queryMainMessages, [username, username]);
 
     if (result.length > 0) {
-      return result
+      return result;
     } else {
-      return error
+      return error;
     }
   } catch (error) {
-    return error
+    return error;
   }
-}
+};
 
 const getSelectedMessages = async (username, chosenName) => {
   try {
-    querystr_selected_messages = `   
+    querySelectedMessages = `   
     WITH final_speaker  AS(
-      SELECT sender,receiver,message
-      FROM message 
-      WHERE (sender = ? AND receiver = ?) 
-      OR (sender = ? AND receiver = ?)
+        SELECT sender,receiver,message
+        FROM message 
+        WHERE (sender = ? AND receiver = ?) 
+        OR (sender = ? AND receiver = ?)
     ),
     user_info AS(
       SELECT company as sender_company ,picture as sender_picture ,nickname
@@ -103,58 +100,54 @@ const getSelectedMessages = async (username, chosenName) => {
     SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture
     FROM final_speaker
     inner join user_info on final_speaker.sender=user_info.nickname 
-    inner join user2_info on final_speaker.receiver=user2_info.nickname`
-    let result = await query(querystr_selected_messages, [username, chosenName, chosenName, username])
+    inner join user2_info on final_speaker.receiver=user2_info.nickname`;
+    const result = await query(querySelectedMessages, [username, chosenName, chosenName, username]);
 
     if (result.length > 0) {
-      return result
+      return result;
     } else {
-      return error
+      return error;
     }
-
   } catch (error) {
-    return error
+    return error;
   }
-}
+};
 const getSideMessages = async (username) => {
-
   try {
-    querystr_side_messages = `
-             
-    With user_info AS(
-      SELECT company as sender_company ,picture as sender_picture ,nickname
-       FROM user
+    querySideMessages = `
+    WITH user_info AS(
+        SELECT company as sender_company ,picture as sender_picture ,nickname
+        FROM user
      ),
-     user2_info AS(
-       SELECT company as receiver_company ,picture as receiver_picture ,nickname
-       FROM user
+        user2_info AS(
+        SELECT company as receiver_company ,picture as receiver_picture ,nickname
+        FROM user
      )
     SELECT sender,receiver,message,receiver_company,receiver_picture,sender_company,sender_picture
-     FROM message
-     inner join user_info on user_info.nickname=message.sender 
-     inner join user2_info on user2_info.nickname=message.receiver
-     
+    FROM message
+    INNER JOIN user_info on user_info.nickname=message.sender 
+    INNER JOIN user2_info on user2_info.nickname=message.receiver
     WHERE id IN (
-      SELECT MAX(id)
-      FROM message
-      where sender=?OR receiver=?
-      GROUP BY sender,receiver
-      )ORDER BY id DESC`
-    let result = await query(querystr_side_messages, [username, username])
+    SELECT MAX(id)
+    FROM message
+    WHERE sender=? OR receiver=?
+    GROUP BY sender,receiver
+    )
+    ORDER BY id DESC`;
+    const result = await query(querySideMessages, [username, username]);
     if (result.length > 0) {
-      return result
+      return result;
     } else {
-      return error
+      return error;
     }
-
   } catch (error) {
-    return error
+    return error;
   }
+};
 
-}
-
-const newMessages = async (data) => {
+const addNewMessages = async (data) => {
   try {
+
     let querystr_company = `SELECT company,picture FROM user WHERE nickname IN (?)`
     let data_user = [];
     data_user = data_user.concat(data.sender, data.receiver);
@@ -172,20 +165,25 @@ const newMessages = async (data) => {
 
     let result = await query(querystr_new_message, message);
 
+
     if (result.length > 0) {
-      return result
+      await commit();
+      return result;
     } else {
-      return error
+      return error;
     }
   } catch (error) {
-    return error
+    await rollback();
+    return {
+      error,
+    };
   }
-}
+};
 
 module.exports = {
   sendQuestion,
   getSelectedMessages,
   getMainMessages,
   getSideMessages,
-  newMessages
-}
+  addNewMessages,
+};

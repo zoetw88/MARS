@@ -1,3 +1,4 @@
+
 if (localStorage.getItem("token")) {
   axios.get("/api/1.0/chat", {
       headers: {
@@ -21,25 +22,25 @@ if (localStorage.getItem("token")) {
       return error
 
     })
+
 } else {
   Swal.fire({
     icon: 'error',
     title: 'Oops...',
     text: '你尚未正式踏入火星領地!',
   }).then((result) => {
-    window.location.href = "/login.html"
-  })
-
-
+    window.location.href = '/login.html';
+  });
 }
 
 
-let company = window.localStorage.getItem('company')
-let nickname = window.localStorage.getItem('id')
-document.getElementById('companyname').innerHTML = company
-document.getElementById('username').innerHTML = "Hi，" + nickname
+const company = window.localStorage.getItem('company');
+const nickname = window.localStorage.getItem('id');
+document.getElementById('companyname').innerHTML = company;
+document.getElementById('username').innerHTML = 'Hi，' + nickname;
 
 function ask(event) {
+
   event.preventDefault()
   let message = document.getElementById('askquestion').value
 

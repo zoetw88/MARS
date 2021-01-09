@@ -1,33 +1,30 @@
 
-if ( localStorage.getItem("token")) {
-axios.get("/api/1.0/user/member",
-  {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer" + " " + localStorage.getItem("token")
-      }
-    }
+if ( localStorage.getItem('token')) {
+  axios.get('/api/1.0/user/member',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer' + ' ' + localStorage.getItem('token'),
+        },
+      },
   )
-  .then(res=> {
-    let name = res.data.data.nickname;
-    let email = res.data.data.email;
-    addUserProfile(name, email);
-  })
-  .catch(err => {
-    console.log(err, err.response);
-    alert('尚未登入')
-    window.location.href="/login.html";
-  });
+      .then((res)=> {
+        const name = res.data.data.nickname;
+        const email = res.data.data.email;
+        addUserProfile(name, email);
+      })
+      .catch((err) => {
+        console.log(err, err.response);
+        alert('尚未登入');
+        window.location.href='/login.html';
+      });
   function addUserProfile(name, email) {
-    let userName = document.getElementById("user-profile-name");
-    let userEmail = document.getElementById("user-profile-email");
+    const userName = document.getElementById('user-profile-name');
+    const userEmail = document.getElementById('user-profile-email');
     userName.textContent = `Welcome, ${name}!`;
     userEmail.textContent = `E-mail: ${email}`;
   }
- 
-  
-
+} else {
+  alert('尚未登入');
+  window.location.href='/login.html';
 }
-else {
-  alert('尚未登入')
-  window.location.href="/login.html";}

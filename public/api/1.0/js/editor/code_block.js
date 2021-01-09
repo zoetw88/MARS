@@ -1,7 +1,7 @@
-import{ schema} from'./schema';
-import{ Selection, TextSelection } from 'prosemirror-state';
-import CodeMirror from  'codemirror';
-import { undo, redo } from 'prosemirror-history';
+import {schema} from './schema';
+import {Selection, TextSelection} from 'prosemirror-state';
+import CodeMirror from 'codemirror';
+import {undo, redo} from 'prosemirror-history';
 import 'codemirror/mode/css/css';
 import 'codemirror/mode/dockerfile/dockerfile';
 import 'codemirror/mode/gfm/gfm';
@@ -26,7 +26,7 @@ export class CodeBlockView {
     // Create a CodeMirror instance
     this.cm = new CodeMirror(null, {
       value: this.node.textContent,
-      mode: 'javascript',   //TODO: get mode by node.attrs.params,
+      mode: 'javascript', // TODO: get mode by node.attrs.params,
       lineNumbers: false,
       extraKeys: this.codeMirrorKeymap(),
       scrollbarStyle: null,
@@ -43,7 +43,9 @@ export class CodeBlockView {
     // inner editor
     this.updating = false;
     // Track whether changes are have been made but not yet propagated
-    this.cm.on('beforeChange', () => { this.incomingChanges = true; });
+    this.cm.on('beforeChange', () => {
+      this.incomingChanges = true;
+    });
     // Propagate updates from the code editor to ProseMirror
     this.cm.on('cursorActivity', () => {
       if (!this.updating && !this.incomingChanges) this.forwardSelection();
@@ -60,7 +62,7 @@ export class CodeBlockView {
 
   forwardSelection() {
     if (!this.cm.hasFocus()) return;
-    const { state } = this.view;
+    const {state} = this.view;
     const selection = this.asProseMirrorSelection(state.doc);
     if (!selection.eq(state.selection)) {
       this.view.dispatch(state.tr.setSelection(selection));
@@ -78,7 +80,7 @@ export class CodeBlockView {
     this.cm.focus();
     this.updating = true;
     this.cm.setSelection(this.cm.posFromIndex(anchor),
-      this.cm.posFromIndex(head));
+        this.cm.posFromIndex(head));
     this.updating = false;
   }
 
@@ -88,12 +90,12 @@ export class CodeBlockView {
     while (start < oldEnd && oldVal.charCodeAt(start) === newVal.charCodeAt(start)) {
       ++start;
     }
-    while (oldEnd > start && newEnd > start
-      && oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)) {
+    while (oldEnd > start && newEnd > start &&
+      oldVal.charCodeAt(oldEnd - 1) === newVal.charCodeAt(newEnd - 1)) {
       oldEnd--;
       newEnd--;
     }
-    return { from: start, to: oldEnd, text: newVal.slice(start, newEnd) };
+    return {from: start, to: oldEnd, text: newVal.slice(start, newEnd)};
   }
 
   valueChanged() {
@@ -101,7 +103,7 @@ export class CodeBlockView {
     if (change) {
       const start = this.getPos() + 1;
       const tr = this.view.state.tr.replaceWith(
-        start + change.from, start + change.to,
+          start + change.from, start + change.to,
         change.text ? schema.text(change.text) : null,
       );
       this.view.dispatch(tr);
@@ -109,13 +111,13 @@ export class CodeBlockView {
   }
 
   codeMirrorKeymap() {
-    const { view } = this;
+    const {view} = this;
     const mod = /Mac/.test(navigator.platform) ? 'Cmd' : 'Ctrl';
     return CodeMirror.normalizeKeyMap({
-      Up: () => this.maybeEscape('line', -1),
-      Left: () => this.maybeEscape('char', -1),
-      Down: () => this.maybeEscape('line', 1),
-      Right: () => this.maybeEscape('char', 1),
+      'Up': () => this.maybeEscape('line', -1),
+      'Left': () => this.maybeEscape('char', -1),
+      'Down': () => this.maybeEscape('line', 1),
+      'Right': () => this.maybeEscape('char', 1),
       [`${mod}-Z`]: () => undo(view.state, view.dispatch),
       [`Shift-${mod}-Z`]: () => redo(view.state, view.dispatch),
       [`${mod}-Y`]: () => redo(view.state, view.dispatch),
@@ -127,10 +129,10 @@ export class CodeBlockView {
 
   maybeEscape(unit, dir) {
     const pos = this.cm.getCursor();
-    if (this.cm.somethingSelected()
-      || pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine())
-      || (unit === 'char'
-        && pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))) return CodeMirror.Pass;
+    if (this.cm.somethingSelected() ||
+      pos.line !== (dir < 0 ? this.cm.firstLine() : this.cm.lastLine()) ||
+      (unit === 'char' &&
+        pos.ch !== (dir < 0 ? 0 : this.cm.getLine(pos.line).length))) return CodeMirror.Pass;
     this.view.focus();
     const targetPos = this.getPos() + (dir < 0 ? 0 : this.node.nodeSize);
     const selection = Selection.near(this.view.state.doc.resolve(targetPos), dir);
@@ -145,22 +147,26 @@ export class CodeBlockView {
     if (change) {
       this.updating = true;
       this.cm.replaceRange(change.text, this.cm.posFromIndex(change.from),
-        this.cm.posFromIndex(change.to));
+          this.cm.posFromIndex(change.to));
       this.updating = false;
     }
     return true;
   }
 
-  selectNode() { this.cm.focus(); }
+  selectNode() {
+    this.cm.focus();
+  }
 
-  stopEvent() { return true; }
+  stopEvent() {
+    return true;
+  }
 }
 
 export function arrowHandler(dir) {
   return (state, dispatch, view) => {
     if (state.selection.empty && view.endOfTextblock(dir)) {
       const side = dir === 'left' || dir === 'up' ? -1 : 1;
-      const { $head } = state.selection;
+      const {$head} = state.selection;
       const nextPos = Selection.near(state.doc.resolve(side > 0 ? $head.after() : $head.before()), side);
       if (nextPos.$head && nextPos.$head.parent.type.name === 'code_block') {
         dispatch(state.tr.setSelection(nextPos));

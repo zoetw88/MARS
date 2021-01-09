@@ -8,3 +8,7 @@ test.http
 *.png
 *.gif
 .log
+
+test.http
+test
+
