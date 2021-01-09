@@ -16,7 +16,6 @@ if (localStorage.getItem("token")) {
         })
       };
     })
-
     .catch(err => {
       console.log(error.response);
       return error
@@ -48,7 +47,6 @@ function ask(event) {
       company: company,
       nickname: nickname,
       question: message
-
     })
     .then(res => {
       Swal.fire("Good job! 已成功送出問題", "敬請期待", "success");
@@ -57,5 +55,4 @@ function ask(event) {
     .catch(err => {
       console.log(err, err.response);
     });
-
 }

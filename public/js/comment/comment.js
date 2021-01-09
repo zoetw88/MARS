@@ -1,4 +1,3 @@
-
 let company = window.localStorage.getItem('company')
 let title = window.localStorage.getItem('title')
 
@@ -15,14 +14,15 @@ axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
     console.log(response)
     keyword(response)
   })
-.catch((error)=>{console.log(error)}
-)
+  .catch((error) => {
+    console.log(error)
+  })
 
 let add_comments = [];
 
 function comment_extract(response) {
-  if (response.data!="no"){
-  
+  if (response.data != "no") {
+
     for (let i = 0; i < response.data.length; i++) {
       let split_result = response.data[i].interview_experience.split('\n')
       if (split_result[0] == "wrong" || split_result[0] == "詢問家庭狀況" || split_result[0] == "無") {
@@ -50,7 +50,7 @@ function comment_extract(response) {
 
     }
     $(' <div class="mySlides"><p>謝謝收看</p></div>').appendTo($('div.slideshow-container'));
-}else {
+  } else {
 
     document.querySelector('.firstslide').innerHTML = '(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報'
   }
@@ -59,26 +59,23 @@ function comment_extract(response) {
 
 
 async function keyword(response) {
- console.log(response.data[0])
-  
+ 
   for (let i = 0; i < 10; i++) {
     if (response.data[i] == undefined || response.data[i] == "" || response.data[i].length < 2) {
       continue
     }
-    
 
-    var newDiv = document.createElement("li");
-    var newContent = document.createTextNode( response.data[i]);
-     newDiv.appendChild(newContent)
-     newDiv.setAttribute('class','list-inline-item keyword')
-    
-    var main= document.getElementById('list-inline')
+
+    let newKeyword = document.createElement("li");
+    let newContent = document.createTextNode(response.data[i]);
+    newKeyword.appendChild(newContent)
+    newKeyword.setAttribute('class', 'list-inline-item keyword')
+    let main = document.getElementById('list-inline')
     main.appendChild(newDiv)
-   
+
 
   }
-  }
-
+}
 
 
 

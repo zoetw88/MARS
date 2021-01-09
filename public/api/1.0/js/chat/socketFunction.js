@@ -69,10 +69,9 @@ function newMessages() {
 
 async function askCollaborate(data) {
     swal.fire({
-        title: `你想要和${data.info.sender}一起使用\r\n線上白板嗎?`,
+        title: `你想要和${data.info.sender}一起使用\r\n\r\n線上白板嗎?`,
         icon:'question',
         showDenyButton: true,
-      
         confirmButtonColor: '#3085d6',
         denyButtonColor: '#d33',
         confirmButtonText: '當然好!',

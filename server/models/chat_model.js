@@ -23,9 +23,9 @@ const sendQuestion = async (company, message, nickname) => {
       sendQuestionMail(user.email, subject);
     })
 
-
     let query_question = `INSERT INTO message (sender,receiver,message) VALUES?`
     let ask_sets = []
+
     members_list.map(user => {
       let combine = []
       combine = combine.concat(nickname, user.nickname, message)
@@ -34,7 +34,7 @@ const sendQuestion = async (company, message, nickname) => {
 
     let result = await query(query_question, [ask_sets])
 
-    console.log(result)
+
     await commit();
 
 
@@ -157,14 +157,19 @@ const newMessages = async (data) => {
   try {
     let querystr_company = `SELECT company,picture FROM user WHERE nickname IN (?)`
     let data_user = [];
-    data_user = data_user.concat(data.sender, data.receiver)
-    let company_result = await query(querystr_company, [data_user])
+    data_user = data_user.concat(data.sender, data.receiver);
+    
+    await query(querystr_company, [data_user]);
+
+    let time=moment().format('YYYY-MM-DD HH:mm:ss');
     let querystr_new_message = `INSERT INTO message SET?`
     let message = {
       sender: data.sender,
       receiver: data.receiver,
-      message: data.message
-    }
+      message: data.message,
+      time:time
+    };
+
     let result = await query(querystr_new_message, message);
 
     if (result.length > 0) {

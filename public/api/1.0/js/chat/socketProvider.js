@@ -74,6 +74,7 @@ if (localStorage.getItem("token")) {
                 organizeTalker(data.side_messages, sender)
 
                 let check=document.querySelectorAll(".username");
+                
                 check.forEach(function(item) {
                     for(i=0;i<data.onlineuser.length;i++){
                         if (item.textContent==data.onlineuser[i]){
@@ -95,12 +96,7 @@ if (localStorage.getItem("token")) {
             });
 
             io.on("reply_no", function (data) {
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${data.sender}義正嚴辭地拒絕和你協作!`,
-                })
+               say_no(data)
             });
 
             io.on("reply_yes", function (data) {

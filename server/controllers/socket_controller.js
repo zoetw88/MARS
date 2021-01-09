@@ -1,18 +1,14 @@
 const {
-    data
-} = require('jquery');
-const {
     getSelectedMessages,
     getMainMessages,
     getSideMessages,
     newMessages
 } = require('../models/chat_model');
 
-
 let users = [];
 let sender;
 let onlineuser = [];
-let userdata;
+
 let chatroom = (io) => {
     io.use(function (socket, next) {
         sender = socket.handshake.query.id
@@ -26,13 +22,13 @@ let chatroom = (io) => {
         console.log('socket connected', socket.id)
         users[sender] = socket.id;
         if (!onlineuser.includes(sender)) {
-                    onlineuser.push(sender)
-                }
-                console.log(onlineuser)
+            onlineuser.push(sender)
+        }
+
         userdata = JSON.stringify(onlineuser)
-    
-        io.emit('online',{
-            onlineuser:onlineuser
+
+        io.emit('online', {
+            onlineuser: onlineuser
         })
         socket.on('disconnect', () => {
             function getKeyByValue(object, value) {
@@ -44,10 +40,10 @@ let chatroom = (io) => {
             if (index > -1) {
                 onlineuser.splice(index, 1);
             }
-            io.emit('offline',{
-                onlineuser:onlineuser
+            io.emit('offline', {
+                onlineuser: onlineuser
             })
-            console.log('user disconnected');  
+            console.log('user disconnected');
         });
 
         socket.on("getMessages", async function (data) {
@@ -60,7 +56,7 @@ let chatroom = (io) => {
             io.to(socketId).emit("loadMessages", {
                 messages: main_messages,
                 side_messages: side_messages,
-                onlineuser:onlineuser
+                onlineuser: onlineuser
             });
         })
         socket.on("selectMessages", async function (data) {

@@ -1,8 +1,10 @@
 node_modules
 .env
 example
-
 wepack.config.js
-
 *.http
 test.http
+*.jpg
+*.png
+*.gif
+.log
