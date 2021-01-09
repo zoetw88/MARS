@@ -68,7 +68,6 @@ function comment_extract(response) {
 
 async function keyword(response) {
 
-
   for (let i = 0; i < 10; i++) {
     if (response.data[i] == undefined || response.data[i] == '' || response.data[i].length < 2) {
       continue;
