@@ -65,7 +65,7 @@ const withTitleCompany = async (company, title, querystr) => {
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
   const companylist = [];
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
-  const result = await query(querystr, [titleFiltered, companylist,companylist]);
+  const result = await query(querystr, [titleFiltered, companylist, companylist]);
   return result;
 };
 
@@ -83,10 +83,9 @@ const withCompany = async (company, querystr) => {
   const recommendation = await recommendCompany(companyFiltered, null);
   const companylist = [];
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
-  const result = await query(querystr, [companylist,companylist]);
+  const result = await query(querystr, [companylist, companylist]);
   return result;
 };
-
 
 
 module.exports = {

@@ -37,12 +37,12 @@ d3.json('../../json/company.json', function(data) {
 
     const colourScale = d3.scale.ordinal()
         .domain(labels)
-        .range(['	#00FFFF', '	#FF60AF', '	#FF2D2D','#F9F900','	#FF8000','#9AFF02','	#9999CC','#9D9D9D','#16982b','#6FB7B7','#003366','#b22222']);
+        .range(['	#00FFFF', '	#FF60AF', '	#FF2D2D', '#F9F900', '	#FF8000', '#9AFF02', '	#9999CC', '#9D9D9D', '#16982b', '#6FB7B7', '#003366', '#b22222']);
 
     const shapeScale = d3.scale.ordinal()
         .domain(labels)
         .range([d3_shape.symbolCircle, d3_shape.symbolCross,
-          d3_shape.symbolSquare,d3_shape.symbolStar,d3_shape.symbolTriangle,d3_shape.symbolWye,d3_shape.symbolDiamond
+          d3_shape.symbolSquare, d3_shape.symbolStar, d3_shape.symbolTriangle, d3_shape.symbolWye, d3_shape.symbolDiamond,
         ]);
 
     const svg = d3.select('#scatter_container').append('svg')

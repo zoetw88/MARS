@@ -59,7 +59,7 @@ const verifyToken = async (req, res, next) => {
         return data;
       });
       req.decoded=userInfo;
-     
+
       next();
     } else {
       res.sendStatus(403);
@@ -80,11 +80,11 @@ const signIn = async (req, res) => {
       return;
     }
 
-        result = await User.signIn(data.email, data.password);
-        
+    result = await User.signIn(data.email, data.password);
+
     if (result.error) {
       result=result.error;
-    
+
       res.status(403).send({
         result,
       });

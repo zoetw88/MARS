@@ -98,13 +98,11 @@ const signIn = async (email, password) => {
       };
     }
   } catch (error) {
-    
     return {
       error,
     };
   }
 };
-
 
 
 const getUserProfile = async (email) => {

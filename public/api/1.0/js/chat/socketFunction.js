@@ -62,26 +62,25 @@ function newMessages() {
 
 
 async function askCollaborate(data) {
-
-    swal.fire({
-        title: `你想要和${data.info.sender}一起使用\r\n\r\n線上白板嗎?`,
-        icon:'question',
-        showDenyButton: true,
-        confirmButtonColor: '#3085d6',
-        denyButtonColor: '#d33',
-        confirmButtonText: '當然好!',
-        denyButtonText: '現在沒空',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            room = data.info.sender + data.info.receiver
-            Swal.fire({
-                icon: 'info',
-                title: "請點開通往線上白板的大門",
-                html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${room}&id=${data.info.sender}><b>傳送門</b></a>`,
-                width: 600,
-                padding: '3em',
-                background: '#fff url(/images/trees.png)',
-                backdrop: `
+  swal.fire({
+    title: `你想要和${data.info.sender}一起使用\r\n\r\n線上白板嗎?`,
+    icon: 'question',
+    showDenyButton: true,
+    confirmButtonColor: '#3085d6',
+    denyButtonColor: '#d33',
+    confirmButtonText: '當然好!',
+    denyButtonText: '現在沒空',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      room = data.info.sender + data.info.receiver;
+      Swal.fire({
+        icon: 'info',
+        title: '請點開通往線上白板的大門',
+        html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${room}&id=${data.info.sender}><b>傳送門</b></a>`,
+        width: 600,
+        padding: '3em',
+        background: '#fff url(/images/trees.png)',
+        backdrop: `
                 rgba(0,0,123,0.4)
                 url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
                 top left

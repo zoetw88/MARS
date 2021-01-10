@@ -4,37 +4,46 @@ const {
   commit,
   rollback,
 } = require('./mysql');
-
+const {
+  filterCompany,
+} = require('./filter_model');
 const {
   sendQuestionMail,
 } = require('./email_model');
+const validator = require('validator');
+const moment = require('moment');
 
-const moment =require('moment')
+
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
+    if (!validator.isEmpty(company)) {
+      const companyName = await filterCompany(company);
+      if (companyName.length < 1) {
+        await rollback();
+        throw new Error('找不到公司');
+      }
+      const queryMembers = `SELECT nickname,email FROM user WHERE company =? `;
+      const memberslist = await query(queryMembers, [companyName]);
+      memberslist.map((user) => {
+        const subject = '來自火星的詢問';
+        sendQuestionMail(user.email, subject);
+      });
 
-    const queryMembers = `SELECT nickname,email FROM user WHERE company =? `;
-    const memberslist = await query(queryMembers, [company]);
+      const time = moment().format('YYYY-MM-DD HH:mm:ss');
+      const queryQuestion = `INSERT INTO message(sender,receiver,message,time)VALUES?`;
+      const askSets = [];
+      memberslist.map((user) => {
+        const askSet = [];
+        askSet.push(nickname, user.nickname, message, time);
+        askSets.push(askSet);
+      });
 
-    await memberslist.map((user) => {
-      const subject = '有人來敲你門';
-      sendQuestionMail(user.email, subject);
-
-
-    });
-
-    const queryQuestion = `INSERT INTO message(sender,receiver,message)VALUES?`;
-    const askSets = [];
-    members_list.map((user) => {
-      const askSet = [];
-      askSet.push(nickname, user.nickname, message);
-      askSets.push(askSet);
-    });
-
-    await query(queryQuestion, [askSets]);
-
-    await commit();
+      await query(queryQuestion, [askSets]);
+      await commit();
+    } else {
+      throw new Error('沒有公司名稱');
+    }
   } catch (error) {
     await rollback();
     return {
@@ -70,7 +79,7 @@ const getMainMessages = async (username, error) => {
     WHERE (sender = (select sender from final_speaker )AND receiver =(select receiver from final_speaker)) 
     OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`;
     const result = await query(queryMainMessages, [username, username]);
- 
+
     if (result.length > 0) {
       return result;
     } else {
@@ -148,22 +157,21 @@ const getSideMessages = async (username) => {
 
 const addNewMessages = async (data) => {
   try {
-  
-    await transaction()
-    
-    let time=moment().format('YYYY-MM-DD HH:mm:ss');
-    
-    let querystr_new_message = `INSERT INTO message SET?`
-    let message = {
+    await transaction();
+
+    const time = moment().format('YYYY-MM-DD HH:mm:ss');
+
+    const querystrNewMessage = `INSERT INTO message SET?`;
+    const message = {
       sender: data.sender,
       receiver: data.receiver,
       message: data.message,
-      time:time
+      time: time,
     };
-   
-     await query(querystr_new_message, message, function (error, results, fields) {
+
+    await query(querystrNewMessage, message, function (error, results, fields) {
       if (error) throw error;
-      console.log(results)
+      console.log(results);
     });
 
     if (result.length > 0) {

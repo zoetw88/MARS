@@ -1,6 +1,5 @@
 axios.get(`/api/1.0/joblist`)
     .then((response) => {
-     
       $(function() {
         const availableTags = response.data;
         $('#title').autocomplete({
@@ -11,7 +10,7 @@ axios.get(`/api/1.0/joblist`)
 
 axios.get(`/api/1.0/companylist`)
     .then((response) => {
-      console.log(response)
+      console.log(response);
       $(function() {
         const availableTags = response.data;
         $('#company').autocomplete({
@@ -30,7 +29,6 @@ async function verify_token() {
       },
     })
         .then((response) => {
-          
           if (response.data.name != 'JsonWebTokenError') {
             const nickname = response.data.nickname;
             document.querySelector('#login').innerHTML = `Hi ${nickname}`;

@@ -7,7 +7,6 @@ async function verify_token() {
       },
     })
         .then((response) => {
-          
           if (response.data.name != 'JsonWebTokenError') {
             const nickname = response.data.nickname;
             document.querySelector('#login').innerHTML = `Hi ${nickname}`;
@@ -42,13 +41,6 @@ verify_token();
 $('#logout').on('click', function() {
   logout(event);
 });
-
-
-
-
-
-
-
 
 
 $(document).ready(function() {

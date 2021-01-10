@@ -1,8 +1,8 @@
 
-let company = window.localStorage.getItem('company')
-let title = window.localStorage.getItem('title')
+const company = window.localStorage.getItem('company');
+const title = window.localStorage.getItem('title');
 
-document.querySelector("#companyname").innerHTML = company
+document.querySelector('#companyname').innerHTML = company;
 
 
 axios.get(`/api/1.0/comments?company=${company}&title=${title}`)
@@ -13,23 +13,19 @@ axios.get(`/api/1.0/comments?company=${company}&title=${title}`)
 
 axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
 
-  .then(response => {
-    console.log(response)
-    keyword(response)
-  })
-  .catch((error) => {
-    console.log(error)
-  })
+    .then((response) => {
+      console.log(response);
+      keyword(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
 
 const add_comments = [];
 
 function comment_extract(response) {
-
- 
-
   if (response.data!='no') {
-
     for (let i = 0; i < response.data.length; i++) {
       const split_result = response.data[i].interview_experience.split('\n');
       if (split_result[0] == 'wrong' || split_result[0] == '詢問家庭狀況' || split_result[0] == '無') {
@@ -56,34 +52,25 @@ function comment_extract(response) {
     }
     $(' <div class="mySlides"><p>謝謝收看</p></div>').appendTo($('div.slideshow-container'));
   } else {
-    document.querySelector('.firstslide').innerHTML = '(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報'
+    document.querySelector('.firstslide').innerHTML = '(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報';
   }
-
 }
 
 async function keyword(response) {
-
   for (let i = 0; i < 10; i++) {
     if (response.data[i] == undefined || response.data[i] == '' || response.data[i].length < 2) {
       continue;
     }
 
 
-    let newKeyword = document.createElement("li");
-    let newContent = document.createTextNode(response.data[i]);
-    newKeyword.appendChild(newContent)
-    newKeyword.setAttribute('class', 'list-inline-item keyword')
-    let main = document.getElementById('list-inline')
-    main.appendChild(newKeyword)
-
-
+    const newKeyword = document.createElement('li');
+    const newContent = document.createTextNode(response.data[i]);
+    newKeyword.appendChild(newContent);
+    newKeyword.setAttribute('class', 'list-inline-item keyword');
+    const main = document.getElementById('list-inline');
+    main.appendChild(newKeyword);
   }
 }
-
-
-
-
-
 
 
 var animateButton = function(e) {
@@ -127,36 +114,32 @@ function showSlides(n) {
   }
   for (i = 0; i < slides.length; i++) {
     slides[i].style.display = 'none';
-    slides[i].classList.remove("now");
+    slides[i].classList.remove('now');
   }
   slides[slideIndex - 1].style.display = 'block';
-  slides[slideIndex - 1].classList.add ( 'now');
-  let id 
+  slides[slideIndex - 1].classList.add( 'now');
+  let id;
 }
 
 
+$( '#like-button' ).on('click', function() {
+  $( '#like-button,span' ).toggleClass( 'press', 1000 );
+  const id=document.querySelector('.now').innerHTML;
+
+  const res = id.split(`</p>`);
+  const second = res[0].split(':');
+  const number=second[1];
+  axios.post(`/api/1.0/like`, {id: number})
+
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
 
-  $( "#like-button" ).on('click',function() {
-    $( "#like-button,span" ).toggleClass( "press", 1000 );
-    let id=document.querySelector('.now').innerHTML
-    
-    let res = id.split(`</p>`);
-    let second = res[0].split(':')
-    let number=second[1]
-    axios.post(`/api/1.0/like`,{id:number})
+  console.log(number);
+});
 
-    .then(response => {
-      console.log(response)
-      
-    })
-    .catch((error) => {
-      console.log(error)
-    })
 
-   
-    console.log(number)
-   
-  });
- 
- 

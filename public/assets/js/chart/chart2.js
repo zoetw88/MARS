@@ -17,10 +17,10 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
     if (data.length>3&& data.length<10) {
       y_legend=-1.1;
       chart_height=630;
-    } else if (data.length>10){
+    } else if (data.length>10) {
       y_legend=-1.7;
       chart_height=900;
-    }else {
+    } else {
       y_legend=-0.6;
       chart_height=520;
     }
