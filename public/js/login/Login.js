@@ -97,12 +97,13 @@ async function login(event) {
       provider: 'native',
     })
         .then((response) => {
+          console.log(response)
           window.localStorage.setItem('nickname', response.data.data.nickname);
           window.localStorage.setItem('token', response.data.data.accessToken);
           window.localStorage.setItem('id', response.data.data.nickname);
           hello(response.data.data.nickname);
         })
-        .catch((error) => {
+        .catch((error) => {console.log(error);
           const error_message = error.response.data.result;
           console.log(error_message);
           Swal.fire({

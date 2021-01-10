@@ -40,8 +40,8 @@ const insertRecommendation = async (company, title, ip) => {
 
 const getSalary = async (company, title, ip) => {
   try {
-    insertRecommendation(company, title, ip);
-
+    // insertRecommendation(company, title, ip);
+    let dataForLineChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const queryAvgSalary = `
       WITH salary_avg AS (
@@ -49,11 +49,11 @@ const getSalary = async (company, title, ip) => {
           FROM salary HAVING score > 0.05 order by score DESC
           ) 
           SELECT AVG(salary)as salary ,experience,company
-          FROM salary_avg Where company IN (?) GROUP BY experience `;
-
-      const dataForLineChart = await withTitleCompany(company, title, queryAvgSalary);
-      const result = organizeData(dataForLineChart);
-      return result;
+          FROM salary_avg Where company IN (?) GROUP BY experience ,company`;
+    
+      dataForLineChart = await withTitleCompany(company, title, queryAvgSalary);
+     
+     
     } else if (validator.isEmpty(company)) {
       const queryAvgSalary = `
       WITH company_list AS(
@@ -63,11 +63,10 @@ const getSalary = async (company, title, ip) => {
           SELECT company ,experience ,AVG(salary) AS salary 
           FROM company_list 
           WHERE experience <11
-          GROUP BY experience`;
+          GROUP BY experience ,company`;
 
-      const dataForLineChart = await withTitle(title, queryAvgSalary);
-      const result = organizeData(dataForLineChart);
-      return result;
+      dataForLineChart = await withTitle(title, queryAvgSalary);
+
     } else if (validator.isEmpty(title)) {
       const queryAvgSalary = `
       WITH company_list AS(
@@ -77,21 +76,29 @@ const getSalary = async (company, title, ip) => {
           )
           SELECT company ,experience ,AVG(salary) AS salary 
           FROM company_list
-          GROUP BY company,experience`;
+          GROUP BY company,experience,company`;
 
-      const dataForLineChart = await withCompany(company, queryAvgSalary);
+    dataForLineChart = await withCompany(company, queryAvgSalary);
+
+    }
+
+    if(dataForLineChart.length>0){
       const result = organizeData(dataForLineChart);
       return result;
+    }else{
+      return 'no'
     }
+
   } catch (error) {
     return {
-      error,
+      error
     };
   };
 };
 
 const getWorkinghour = async (company, title) => {
   try {
+    let ScatterChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const queryWorking = `
       WITH hourlist AS (
@@ -101,17 +108,16 @@ const getWorkinghour = async (company, title) => {
           SELECT (salary/1000000) AS y,working_hour AS x,company AS label
           FROM hourlist WHERE company IN (?)`;
 
-      const ScatterChart = await withTitleCompany(company, title, queryWorking);
+      ScatterChart = await withTitleCompany(company, title, queryWorking);
 
-      return ScatterChart;
+    
     } else if (validator.isEmpty(title)) {
       const queryWorking = `
       SELECT (salary/1000000) AS y,working_hour AS x,company AS label
       FROM salary WHERE company IN (?)`;
 
-      const ScatterChart = await withCompany(company, queryWorking);
+      ScatterChart = await withCompany(company, queryWorking);
 
-      return ScatterChart;
     } else if (validator.isEmpty(company)) {
       const queryWorking = `
       WITH hourlist AS (
@@ -125,10 +131,15 @@ const getWorkinghour = async (company, title) => {
           SELECT  y,x,h1.label
           FROM hourlist h1`;
 
-      const ScatterChart = await withTitle(title, queryWorking);
-
-      return ScatterChart;
+      ScatterChart = await withTitle(title, queryWorking);
     }
+    if(ScatterChart.length>0){
+     
+      return ScatterChart;
+    }else{
+      return 'no'
+    }
+
   } catch (error) {
     return {
       error,
@@ -138,6 +149,7 @@ const getWorkinghour = async (company, title) => {
 
 const get104jobs = async (company, title) => {
   try {
+    let dataForChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const query104Job = `
       WITH joblist AS (
@@ -147,7 +159,7 @@ const get104jobs = async (company, title) => {
           SELECT * FROM joblist 
           WHERE company IN (?) `;
 
-      const dataForChart = await withTitleCompany(company, title, query104Job);
+      dataForChart = await withTitleCompany(company, title, query104Job);
 
       return dataForChart;
     } else if (validator.isEmpty(company)) {
@@ -155,7 +167,7 @@ const get104jobs = async (company, title) => {
       SELECT * ,MATCH (title) AGAINST (?) AS score 
       FROM job HAVING score > 0.6 ORDER BY score DESC`;
 
-      const dataForChart = await withTitle(title, query104Job);
+      dataForChart = await withTitle(title, query104Job);
 
       return dataForChart;
     } else if (validator.isEmpty(title)) {
@@ -163,9 +175,15 @@ const get104jobs = async (company, title) => {
       SELECT * 
       FROM job 
       WHERE company IN(?) `;
-      const dataForChart = await withCompany(company, query104Job);
+      dataForChart = await withCompany(company, query104Job);
 
+      
+    }
+    if(dataForChart.length>0){
+     
       return dataForChart;
+    }else{
+      return 'no'
     }
   } catch (error) {
     return {
@@ -177,6 +195,7 @@ const get104jobs = async (company, title) => {
 
 const extractComments = async (company, title) => {
   try {
+   let dataComments;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const queryComments = `
       WITH comments_list AS(
@@ -186,9 +205,8 @@ const extractComments = async (company, title) => {
           SELECT *
           FROM comments_list WHERE company IN (?) 
           ORDER BY useful DESC`;
-      const dataComments = await withTitleCompany(company, title, queryComments);
+      dataComments = await withTitleCompany(company, title, queryComments);
 
-      return dataComments;
     } else if (validator.isEmpty(company)) {
       const queryComments = `
       WITH comments_list AS(
@@ -198,18 +216,24 @@ const extractComments = async (company, title) => {
           SELECT *
           FROM comments_list 
           ORDER BY useful DESC`;
-      const dataComments = await withTitle(title, queryComments);
+      dataComments = await withTitle(title, queryComments);
 
-      return dataComments;
+    
     } else if (validator.isEmpty(title)) {
       const queryComments = `
       SELECT *
       FROM comment WHERE company IN (?) 
       ORDER BY useful DESC`;
 
-      const dataComments = await withCompany(company, queryComments);
+      dataComments = await withCompany(company, queryComments);
 
+      
+    }
+    if(dataComments.length>0){
+     
       return dataComments;
+    }else{
+      return 'no'
     }
   } catch (error) {
     await rollback();

@@ -9,6 +9,7 @@ const {
   sendQuestionMail,
 } = require('./email_model');
 
+const moment =require('moment')
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
@@ -69,7 +70,7 @@ const getMainMessages = async (username, error) => {
     WHERE (sender = (select sender from final_speaker )AND receiver =(select receiver from final_speaker)) 
     OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`;
     const result = await query(queryMainMessages, [username, username]);
-
+ 
     if (result.length > 0) {
       return result;
     } else {
@@ -147,14 +148,11 @@ const getSideMessages = async (username) => {
 
 const addNewMessages = async (data) => {
   try {
-
-    let querystr_company = `SELECT company,picture FROM user WHERE nickname IN (?)`
-    let data_user = [];
-    data_user = data_user.concat(data.sender, data.receiver);
+  
+    await transaction()
     
-    await query(querystr_company, [data_user]);
-
     let time=moment().format('YYYY-MM-DD HH:mm:ss');
+    
     let querystr_new_message = `INSERT INTO message SET?`
     let message = {
       sender: data.sender,
@@ -162,9 +160,11 @@ const addNewMessages = async (data) => {
       message: data.message,
       time:time
     };
-
-    let result = await query(querystr_new_message, message);
-
+   
+     await query(querystr_new_message, message, function (error, results, fields) {
+      if (error) throw error;
+      console.log(results)
+    });
 
     if (result.length > 0) {
       await commit();

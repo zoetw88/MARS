@@ -71,6 +71,7 @@ const withTitleCompany = async (company, title, querystr) => {
 
 const withTitle = async (title, querystr) => {
   const titleFiltered = await filterTitle(title);
+  console.log(titleFiltered)
   const result = await query(querystr, [titleFiltered]);
   return result;
 };

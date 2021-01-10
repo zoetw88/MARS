@@ -10,6 +10,10 @@ const {
   getSideMessages,
   addNewMessages,
 } = require('../models/chat_model');
+const {
+  ACCESS_TOKEN_SECRET,
+} = process.env;
+const jwt = require('jsonwebtoken');
 
 
 const chatroom = (io) => {
@@ -148,8 +152,33 @@ const editor = async (req, res) => {
     };
   }
 };
+
+
+const verifyIdentity= async (req, res ) => {
+  try {
+    const bearerHeader = req.header('authorization');
+    
+    if (typeof bearerHeader !== 'undefined') {
+      const bearerToken = bearerHeader.split(' ')[1];
+      const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
+        if (error) return error;
+        
+        return data;
+      });
+    
+      res.status(200).send(userInfo);
+    } else {
+      res.sendStatus(403);
+    };
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
 module.exports = {
   chatroom,
   editor,
   askQuestion,
+  verifyIdentity
 };

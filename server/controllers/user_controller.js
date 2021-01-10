@@ -59,7 +59,7 @@ const verifyToken = async (req, res, next) => {
         return data;
       });
       req.decoded=userInfo;
-
+     
       next();
     } else {
       res.sendStatus(403);
@@ -79,19 +79,12 @@ const signIn = async (req, res) => {
       });
       return;
     }
-    switch (data.provider) {
-      case 'native':
-        result = await User.nativeSignIn(data.email, data.password);
 
-        break;
-
-      case 'facebook':
-        result = await facebookSignIn(data.access_token);
-
-        break;
-    }
+        result = await User.signIn(data.email, data.password);
+        
     if (result.error) {
       result=result.error;
+    
       res.status(403).send({
         result,
       });

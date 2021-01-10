@@ -32,7 +32,7 @@ async function verify_token() {
       },
     })
         .then((response) => {
-          console.log(response);
+          
           if (response.data.name != 'JsonWebTokenError') {
             const nickname = response.data.nickname;
             document.querySelector('#login').innerHTML = `Hi ${nickname}`;

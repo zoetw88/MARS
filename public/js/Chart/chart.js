@@ -122,7 +122,7 @@ d3.json('../../json/company.json', function(data) {
     const legendWidth = 260;
     var legendHeight = companyQuantity*22;
     if (labels.length<=3) {
-      var legendHeight = companyQuantity*28;
+      var legendHeight = companyQuantity*28.5;
     }
     const legend = d3.select('#legend').append('svg')
         .attr('width', legendWidth)

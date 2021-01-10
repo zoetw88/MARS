@@ -1,6 +1,8 @@
 let sender = '';
 
-if (localStorage.getItem('token')) {
+userToken=localStorage.getItem('token')
+if (userToken!=null || userToken!=undefined) {
+  console.log('yes')
   axios.get('/api/1.0/chat', {
     headers: {
       'Content-Type': 'application/json',
@@ -8,6 +10,7 @@ if (localStorage.getItem('token')) {
     },
   })
       .then((res) => {
+     
         if (res.data.name == 'JsonWebTokenError') {
           Swal.fire({
             icon: 'error',

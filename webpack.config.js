@@ -10,16 +10,16 @@ module.exports = {
   entry: {
  
     'note': [
-      path.join(__dirname, 'public/js/editor/code_block.js'),
-      path.join(__dirname, 'public/js/editor/icons.js'),
-      path.join(__dirname, 'public/js/editor/editor.js'),
-      path.join(__dirname, 'public/js/editor/index.js'),
-      path.join(__dirname, 'public/js/editor/inputrules.js'),
-      path.join(__dirname, 'public/js/editor/keymap.js'),
-      path.join(__dirname, 'public/js/editor/menu.js'),
-      path.join(__dirname, 'public/js/editor/prompt.js'),
-      path.join(__dirname, 'public/js/editor/prosemirror-menu.js'),
-      path.join(__dirname, 'public/js/editor/schema.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/code_block.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/icons.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/editor.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/index.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/inputrules.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/keymap.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/menu.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/prompt.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/prosemirror-menu.js'),
+      path.join(__dirname, 'public/api/1.0/js/editor/schema.js'),
     ]
     
   },
@@ -47,8 +47,8 @@ module.exports = {
    plugins: [
 
      new HtmlWebpackPlugin({
-      template: './public/index.html',
-       filename: path.join(__dirname, 'public/index.html'),
+      template: './public/api/1.0/editor.html',
+       filename: path.join(__dirname, 'public/api/1.0/editor.html'),
       chunks: ['note'],
       chunksSortMode: 'manual',
     }),

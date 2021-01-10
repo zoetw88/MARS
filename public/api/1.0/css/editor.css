@@ -162,7 +162,7 @@ li.ProseMirror-selectednode:after {
 }
 .menutitle{
 	text-align: center;
-	margin-left: 150px;
+	margin:10 auto;
 }
 .ProseMirror-menubar {
 	border-top-left-radius: inherit;

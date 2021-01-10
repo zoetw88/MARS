@@ -13,7 +13,7 @@ const {
  * @return {array} companylist recommendation
  */
 const recommendCompany = async (company, title) => {
-  const companylist = [];
+  let companylist = [];
   const dataset = [];
   const queryHit = `
   WITH titlelist AS(
@@ -33,21 +33,21 @@ const recommendCompany = async (company, title) => {
     dataset.push(array);
   });
   const fpgrowth = new FPGrowth(.7);
-  fpgrowth.on('data', function(itemset, error) {
+  fpgrowth.on('data', function (itemset, error) {
     const items = itemset.items;
     let fpCompany = Array.from(new Set(items));
-    if (fpCompany.length >=2 && fpCompany[0]==company) {
-      fpCompany = fpCompany.filter(function(item) {
+    if (fpCompany.length >= 2 && fpCompany[0] == company) {
+      fpCompany = fpCompany.filter(function (item) {
         return item !== company;
       });
       switch (fpCompany.length) {
         case 1:
-          companylist[0]=fpCompany[0];
+          companylist[0] = fpCompany[0];
           break;
 
         case 2:
-          companylist[0]=fpCompany[0];
-          companylist[1]=fpCompany[1];
+          companylist[0] = fpCompany[0];
+          companylist[1] = fpCompany[1];
           break;
       }
     }
@@ -55,8 +55,73 @@ const recommendCompany = async (company, title) => {
   });
 
   fpgrowth.exec(dataset);
+  if (title != null || title != undefined) {
+    queryCompany =
+      ` WITH titlelist AS(
+          SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
+              FROM recommend 
+              HAVING score >0.0003
+              ORDER BY score 
+             )
+        SELECT search_company
+        FROM recommend 
+        WHERE search_company NOT IN (?) AND title IN(select title from titlelist)
+        GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
+
+    switch (companylist.length) {
+      case 0:
+        let companySelect = await query(queryCompany, [title, company, 2]);
+      
+        if (companySelect.length > 1) {
+          companylist[0] = companySelect[0].search_company;
+          companylist[1] = companySelect[1].search_company;
+          break;
+        } else if (companySelect.length > 0) {
+          companylist[0] = companySelect[0].search_company;
+        } else {
+          companylist = await topSearchCompany(company, companylist)
+        }
+      case 1:
+        let companyCombination = [];
+        companyCombination = companyCombination.concat(company, companylist[0]);
+        companySelect = await query(queryCompany, [title, companyCombination, 1]);
+        if (companySelect.length > 0) {
+          companylist[1] = companySelect[0].search_company;
+          break;
+        } else {
+          companylist = await topSearchCompany(company, companylist)
+        }
+    }
+  } else {
+    companylist = await topSearchCompany(company, companylist)
+  }
+ 
   return companylist;
 };
+
+
+const topSearchCompany= async(company,companylist)=>{
+  queryCompany = `
+SELECT search_company
+FROM recommend 
+WHERE search_company NOT IN (?) 
+GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
+
+switch (companylist.length) {
+  case 0:
+    let companySelect = await query(queryCompany, [company, 2]);
+    companylist[0] = companySelect[0].search_company;
+    companylist[1] = companySelect[1].search_company;
+    break;
+  case 1:
+    let companyCombination = [];
+    companyCombination = companyCombination.concat(company, companylist[0]);
+    companyS = await query(queryCompany, [companyCombination, 1]);
+    companylist[1] = companyS[0].search_company;
+    break;
+}
+return companylist
+}
 
 const filterCompany = async (company) => {
   const queryCompany = `
@@ -70,7 +135,7 @@ const filterCompany = async (company) => {
   WHERE another_name= ?)`;
   const companyResult = await query(queryCompany, [company, company]);
 
-  if (companyResult.length>0) {
+  if (companyResult.length > 0) {
     companyFiltered = companyResult[0].company;
     return companyFiltered;
   } else {
@@ -82,7 +147,7 @@ const filterTitle = async (title) => {
   if (title.indexOf('工程師')) {
     titleSplit = title.split('工程師')[0].toString();
     title = titleSplit;
-  } else (title.indexOf('')); {
+  } else(title.indexOf('')); {
     titleSplit = title.split(' ').toString();
     title = titleSplit;
   }
@@ -99,8 +164,8 @@ const filterTitle = async (title) => {
       titlesCombination.push(title.career, title.category);
     });
     titlesCombination.push(title);
-
-    const titleFiltered = titlesCombination.join();
+    let titlelist= Array.from(new Set(titlesCombination));
+    const titleFiltered = titlelist.join();
 
     return titleFiltered;
   } else {

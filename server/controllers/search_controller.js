@@ -13,6 +13,7 @@ const getSalary = async (req, res) => {
       ip = ip.substr(7);
     }
     const result = await search.getSalary(company, title, ip);
+    
     const salaryChartPath=path.join(__dirname, '../../public/json/salary.json');
     const resultJSON = JSON.stringify(result);
     fs.writeFile(salaryChartPath, resultJSON, function(err, result) {

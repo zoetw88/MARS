@@ -60,11 +60,11 @@ function comment_extract(response) {
 
     document.querySelector('.firstslide').innerHTML = '(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報'
 
-    document.querySelector('.firstslide').innerHTML = '(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報';
+   
 
   }
 }
-
+}
 
 async function keyword(response) {
 
@@ -79,7 +79,7 @@ async function keyword(response) {
     newKeyword.appendChild(newContent)
     newKeyword.setAttribute('class', 'list-inline-item keyword')
     let main = document.getElementById('list-inline')
-    main.appendChild(newDiv)
+   
 
 
   }

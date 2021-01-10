@@ -66,7 +66,7 @@ const signUp = async (name, nickname, email, password, company, union, title) =>
     };
   }
 };
-const nativeSignIn = async (email, password) => {
+const signIn = async (email, password) => {
   try {
     const result = await query('SELECT * FROM user WHERE email = ?', [email]);
     if (result.length > 0) {
@@ -98,53 +98,14 @@ const nativeSignIn = async (email, password) => {
       };
     }
   } catch (error) {
+    
     return {
       error,
     };
   }
 };
 
-const facebookSignIn = async (id, name, email, accessToken) => {
-  try {
-    await transaction();
-    const user = {
-      provider: 'facebook',
-      email: email,
-      nickname: name,
-      picture: 'https://graph.facebook.com/' + id + '/picture?type=large',
-    };
-    const queryFaceBookEmail = `SELECT id FROM user WHERE email = ? AND provider = \'facebook\' FOR UPDATE`;
-    const users = await query(queryFaceBookEmail, [email]);
 
-    if (users.length === 0) {
-      const queryStr = 'insert into user set ?';
-      await query(queryStr, user);
-    }
-    await commit();
-    data = {
-      name: name,
-      access_token: accessToken,
-    };
-    return {
-      data,
-    };
-  } catch (error) {
-    await rollback();
-    return {
-      error,
-    };
-  }
-};
-const getFacebookProfile = async function(accessToken) {
-  try {
-    const res = await got('https://graph.facebook.com/me?fields=id,name,email&access_token=' + accessToken, {
-      responseType: 'json',
-    });
-    return res.body;
-  } catch (error) {
-    throw new Error('Permissions Error: facebook access token is wrong');
-  }
-};
 
 const getUserProfile = async (email) => {
   const results = await query('SELECT * FROM user WHERE email = ?', [email]);
@@ -166,8 +127,6 @@ const getUserProfile = async (email) => {
 
 module.exports = {
   signUp,
-  nativeSignIn,
+  signIn,
   getUserProfile,
-  facebookSignIn,
-  getFacebookProfile,
 };
