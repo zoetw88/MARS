@@ -22,13 +22,13 @@ We do our best to provide job seeker's needs
 - [Technologies](#Technologies)
 - [Contact](#Contact)
 
->## Features
+> ## Features
 >
->-Salary and Working hour Comparative Report
+> - Salary and Working hour Comparative Report
 >
->-Instant Interviews Coaching Messenger
+> - Instant Interviews Coaching Messenger
 >
->-Realtime Collaborative Whiteboard
+> - Realtime Collaborative Whiteboard
  
 
 ## Technologies
