@@ -1,4 +1,4 @@
- :star: # MARS 
+ # MARS  :planet:
 
 To improve workplace transparency in Taiwan
 
