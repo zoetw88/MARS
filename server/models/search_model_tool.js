@@ -66,7 +66,6 @@ const withTitleCompany = async (company, title, querystr) => {
   const companylist = [];
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
   const result = await query(querystr, [titleFiltered, companylist,companylist]);
-  console.log(result)
   return result;
 };
 

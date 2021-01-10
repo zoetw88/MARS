@@ -93,19 +93,27 @@ const getJob104list = async (req, res) => {
 const getCompanylist = async (req, res) => {
   try {
     const result=await search.getCompanylist();
-    res.status(200).send(result);
+    const companylist=Object.values(result).map((item) => item.company);
+    res.status(200).send(companylist);
   } catch (error) {
     return {error};
   }
 };
 
-
 const getJoblist = async (req, res) => {
   try {
-    const result=await search.getJobslist();
-    res.status(200).send(result);
+    let joblist = [];
+    const result = await search.getJobslist();
+    Object.values(result).map((item) => {
+      let job = item.title.split(" ")
+      joblist.push(job[0])
+    });
+    joblist = Array.from(new Set(joblist));
+    res.status(200).send(joblist);
   } catch (error) {
-    return {error};
+    return {
+      error
+    };
   }
 };
 

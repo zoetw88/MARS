@@ -1,9 +1,8 @@
 axios.get(`/api/1.0/joblist`)
     .then((response) => {
-      const myData = Object.values(response.data).map((item) => item.title);
-
+     
       $(function() {
-        const availableTags = myData;
+        const availableTags = response.data;
         $('#title').autocomplete({
           source: availableTags,
         });
@@ -12,9 +11,9 @@ axios.get(`/api/1.0/joblist`)
 
 axios.get(`/api/1.0/companylist`)
     .then((response) => {
-      const myData = Object.values(response.data).map((item) => item.company);
+      console.log(response)
       $(function() {
-        const availableTags = myData;
+        const availableTags = response.data;
         $('#company').autocomplete({
           source: availableTags,
         });
