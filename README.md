@@ -1,4 +1,4 @@
- # MARS  :start:
+ # MARS  :star:
 
 To improve workplace transparency in Taiwan
 
