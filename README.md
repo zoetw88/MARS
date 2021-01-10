@@ -1,4 +1,4 @@
- # MARS  :Rocket:
+ # MARS  :rocket:
 
 To improve workplace transparency in Taiwan
 
