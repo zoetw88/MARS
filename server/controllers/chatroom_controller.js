@@ -34,7 +34,6 @@ const chatroom = (io) => {
     if (!onlineuser.includes(sender)) {
       onlineuser.push(sender);
     }
-
     userdata = JSON.stringify(onlineuser);
 
     io.emit('online', {
