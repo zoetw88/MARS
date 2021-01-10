@@ -62,8 +62,7 @@ We do our best to provide job seeker's needs
 ### Database
 
 - **RDS** + **MySQL**
-- Schema:
-  ![](https://i.imgur.com/wx0hN4T.png)
+
 
 
 ### Tools
