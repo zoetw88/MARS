@@ -76,9 +76,9 @@ $('#logout').on('click', function() {
 });
 
 
-const nickname = window.localStorage.getItem('id');
+let nickname = window.localStorage.getItem('id');
 
-const company = window.localStorage.getItem('company');
+let company = window.localStorage.getItem('company');
 
 document.getElementById('companyname').innerHTML = company;
 document.getElementById('username').innerHTML = 'Hi，' + nickname;

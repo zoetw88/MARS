@@ -1,6 +1,5 @@
-
-const company = window.localStorage.getItem('company');
-const title = window.localStorage.getItem('title');
+company = window.localStorage.getItem('company');
+let title = window.localStorage.getItem('title');
 
 document.querySelector('#companyname').innerHTML = company;
 
@@ -22,7 +21,7 @@ axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
     });
 
 
-const add_comments = [];
+let add_comments = [];
 
 function comment_extract(response) {
   if (response.data!='no') {
