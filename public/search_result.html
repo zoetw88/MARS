@@ -35,7 +35,7 @@
     <!--====== Comments CSS ======-->
     <link rel="stylesheet" href="./assets/css/comment_form.css">
 
-
+    <!--====== loader ======-->
     <link rel = "stylesheet" type = "text/css" href = "./assets/css/loader.css" />
     
     <script type="text/javascript" src="./assets/js/loader.js"></script>
@@ -73,7 +73,8 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
                             <li class="active"><a href="index.html">Home</a></li>
-                            <li><a href="login.html">Log In</a></li>
+                            <li><a href="/login.html" id="login">Log In</a></li>
+                            <li><a id="logout"></a></li>
                             <li><a class="main-btn" href="/api/1.0/chat.html">Messenger</a></li>
                         </ul> <!-- navbar nav -->
                     </div>
@@ -219,7 +220,7 @@
                         <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center ">
                             <div class="card-body">
                                 <div class="comment-keyword ">
-                                    <h4 class="job_details_title text-center">全部面試心得關鍵字</h4>
+                                    <h4 class="job_details_title text-center">搜尋公司面試心得關鍵字</h4>
                                     <div class="row d-flex justify-content-center">
                                         <div class="job_skills mt-20">
                                             <ul class="list-inline"id="list-inline">
@@ -242,7 +243,9 @@
     
                                                             <!-- Full-width slides/quotes -->
                                                             <div class="mySlides ">
-                                                                <P class="firstslide">哈囉親愛的使用者，如果有看到寫得好的面試心得，請幫忙按個讚!</P>
+                                                                <P class="firstslide">哈囉，親愛的火星居民<br><br>如果讀完面試心得，需要更多面試內幕<br><br>請按右邊紅色圓點，詢問站內會員
+                                                                </P>
+                                                           
                                                             </div>    
     
     
@@ -250,12 +253,13 @@
                                                             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                                                             <a class="next" onclick="plusSlides(1)">&#10095;</a>
                                                         </div>
-    
+                                                       
                                                     </div><!-- cd-testimonials-wrapper -->
-    
+                                                    
                                                 </div>
-    
+                                              
                                             </div>
+                                          
                                         </div>
                                     </div>
     

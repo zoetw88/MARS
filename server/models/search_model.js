@@ -40,7 +40,7 @@ const insertRecommendation = async (company, title, ip) => {
 
 const getSalary = async (company, title, ip) => {
   try {
-    // insertRecommendation(company, title, ip);
+    insertRecommendation(company, title, ip);
     let dataForLineChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const queryAvgSalary = `
@@ -161,7 +161,7 @@ const get104jobs = async (company, title) => {
 
       dataForChart = await withTitleCompany(company, title, query104Job);
 
-      return dataForChart;
+     
     } else if (validator.isEmpty(company)) {
       const query104Job = `
       SELECT * ,MATCH (title) AGAINST (?) AS score 
@@ -169,7 +169,6 @@ const get104jobs = async (company, title) => {
 
       dataForChart = await withTitle(title, query104Job);
 
-      return dataForChart;
     } else if (validator.isEmpty(title)) {
       const query104Job = `
       SELECT * 
@@ -180,7 +179,6 @@ const get104jobs = async (company, title) => {
       
     }
     if(dataForChart.length>0){
-     
       return dataForChart;
     }else{
       return 'no'

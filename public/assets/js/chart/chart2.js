@@ -14,10 +14,13 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
       data.push(trace);
     }
     let y_legend;
-    if (data.length>3) {
+    if (data.length>3&& data.length<10) {
       y_legend=-1;
       chart_height=620;
-    } else {
+    } else if (data.length>10){
+      y_legend=-1.7;
+      chart_height=900;
+    }else {
       y_legend=-0.6;
       chart_height=520;
     }

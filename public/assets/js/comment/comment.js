@@ -26,7 +26,7 @@ const add_comments = [];
 
 function comment_extract(response) {
 
-  if (response.data != "no") {
+ 
 
   if (response.data!='no') {
 
@@ -56,14 +56,9 @@ function comment_extract(response) {
     }
     $(' <div class="mySlides"><p>謝謝收看</p></div>').appendTo($('div.slideshow-container'));
   } else {
-
-
     document.querySelector('.firstslide').innerHTML = '(ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報'
-
-   
-
   }
-}
+
 }
 
 async function keyword(response) {
@@ -79,7 +74,7 @@ async function keyword(response) {
     newKeyword.appendChild(newContent)
     newKeyword.setAttribute('class', 'list-inline-item keyword')
     let main = document.getElementById('list-inline')
-   
+    main.appendChild(newKeyword)
 
 
   }

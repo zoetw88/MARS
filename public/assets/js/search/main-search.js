@@ -21,7 +21,6 @@ axios.get(`/api/1.0/companylist`)
       });
     });
 
-verify_token();
 
 async function verify_token() {
   try {
@@ -48,6 +47,8 @@ async function verify_token() {
     return error;
   }
 }
+
+verify_token();
 
 $('#logout').on('click', function() {
   logout(event);
