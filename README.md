@@ -1,8 +1,10 @@
 # MARS  :tophat:
 
-To improve workplace transparency in Taiwan, MARS provides salary & working hour comparative reports , interview reviews and online interview coaching service.
+To improve workplace transparency in Taiwan
 
->We do our best to provide job seeker's needs 
+MARS provides salary & working hour comparative reports , interview reviews and online interview coaching service.
+
+We do our best to provide job seeker's needs 
 
 [Homepage](https://mars-interviews.club) 
 
@@ -20,13 +22,13 @@ To improve workplace transparency in Taiwan, MARS provides salary & working hour
 - [Technologies](#Technologies)
 - [Contact](#Contact)
 
-## Features
-
-### Salary and Working hour Comparative Report
-
-### Instant Interviews Coaching Messenger
- 
-### Realtime Collaborative Whiteboard
+>## Features
+>
+>### Salary and Working hour Comparative Report
+>
+>### Instant Interviews Coaching Messenger
+>
+>### Realtime Collaborative Whiteboard
  
 
 ## Technologies
