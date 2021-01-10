@@ -1,7 +1,7 @@
 let sender = '';
 
-userToken=localStorage.getItem('token');
-if (userToken!=null || userToken!=undefined) {
+userToken = localStorage.getItem('token');
+if (userToken != null || userToken != undefined) {
   console.log('yes');
   axios.get('/api/1.0/chat', {
     headers: {
@@ -9,6 +9,7 @@ if (userToken!=null || userToken!=undefined) {
       'Authorization': 'Bearer' + ' ' + localStorage.getItem('token'),
     },
   })
+
       .then((res) => {
         if (res.data.name == 'JsonWebTokenError') {
           Swal.fire({
@@ -41,131 +42,9 @@ if (userToken!=null || userToken!=undefined) {
                 status.classList.remove('online');
               }
             }
-          })
-              .then((res) => {
-                if (res.data.name == 'JsonWebTokenError') {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: '你尚未正式踏入火星領地!',
-                  }).then(() => {
-                    window.location.href = '/login.html';
-                  });
-                };
-
-                sender = res.data.nickname;
-                picture = res.data.picture;
-
-                $('#profile').find('p').text(sender);
-
-                $('#profile-img').attr('src', picture);
-                io = io('http://localhost:5000', {
-                  query: {
-                    id: sender,
-                  },
-                });
-
-                io.on('offline', function(data) {
-                  const check=document.querySelectorAll('.username');
-                  check.forEach(function(item) {
-                    for (i=0; i<data.onlineuser.length; i++) {
-                      if (item.textContent!=data.onlineuser[i]) {
-                        const status = item.nextSibling;
-                        status.classList.remove('online');
-                      }
-                    }
-                  });
-                });
-
-                io.on('online', function(data) {
-                  const check=document.querySelectorAll('.username');
-                  check.forEach(function(item) {
-                    for (i=0; i<data.onlineuser.length; i++) {
-                      if (item.textContent==data.onlineuser[i]) {
-                        const status = item.nextSibling;
-                        status.classList.add('online');
-                      }
-                    }
-                  });
-                });
-                io.emit('getMessages', {
-                  username: sender,
-                });
-                io.on('loadMessages', function(data) {
-                  organizeTalk(data.messages, sender);
-                  organizeTalker(data.side_messages, sender);
-
-                  const check=document.querySelectorAll('.username');
-
-                  check.forEach(function(item) {
-                    for (i=0; i<data.onlineuser.length; i++) {
-                      if (item.textContent==data.onlineuser[i]) {
-                        const status = item.nextSibling;
-                        status.classList.add('online');
-                      }
-                    }
-                  });
-                });
-                io.on('reloadMessages', function(data) {
-                  organizeTalk(data.messages, sender);
-                });
-                io.on('reply_editor', function(data) {
-                  askCollaborate(data);
-                });
-
-                io.on('reply_no', function(data) {
-                  say_no(data);
-                });
-
-                io.on('reply_yes', function(data) {
-                  say_yes(data);
-                });
-                io.on('new_message', function(data) {
-                  $('<li class="sent"><img src=' + data.sender_picture + '><p>' + data.message + '</p></li>').appendTo($('.messages ul'));
-                });
-
-
-                $(document).on('click', '.contact', function() {
-                  $('.contact.active').removeClass('active');
-                  $(this).addClass('active');
-                  $('li').remove('.sent');
-                  $('li').remove('.replies');
-
-                  const chosenName = $(this).find('.name').text();
-
-                  io.emit('selectMessages', {
-                    chosenName: chosenName,
-                    sender: sender,
-                  });
-                });
-
-                $('.submit').on('click', function() {
-                  newMessages();
-                });
-
-                $('.editor').on('click', function() {
-                  editor();
-                });
-
-                $('.messages').animate({
-                  scrollTop: $(document).height(),
-                }, 'fast');
-
-
-                $(window).on('keydown', function(e) {
-                  if (e.which == 13) {
-                    newMessages();
-                    return false;
-                  }
-                });
-              })
-              .catch((error) => {
-                console.log(error.response);
-
-
-                return error;
-              });
+          });
         });
+
 
         io.on('online', function(data) {
           const check = document.querySelectorAll('.username');
@@ -201,12 +80,33 @@ if (userToken!=null || userToken!=undefined) {
         io.on('reply_editor', function(data) {
           askCollaborate(data);
         });
-
+        io.on('editor_alone', function(data) {
+          room = data.info.receiver + data.info.sender;
+          Swal.fire({
+            icon: 'info',
+            title: `${data.info.receiver}現在沒上線。\r\n\r\n不過你還是可以自己使用`,
+            html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${room}&id=${data.info.receiver}><b>傳送門</b></a>`,
+            width: 600,
+            padding: '3em',
+            backdrop: `
+                rgba(0,0,123,0.4)
+                url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
+                top left
+                no-repeat`,
+          });
+        });
         io.on('reply_no', function(data) {
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: `${data.sender}義正嚴辭地拒絕和你協作!`,
+            icon: 'info',
+            title: `${data.sender}現在沒空。\r\n\r\n不過你還是可以自己使用`,
+            html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${data.room}&id=${data.sender}><b>傳送門</b></a>`,
+            width: 600,
+            padding: '3em',
+            backdrop: `
+                rgba(0,0,123,0.4)
+                url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
+                top left
+                no-repeat`,
           });
         });
 

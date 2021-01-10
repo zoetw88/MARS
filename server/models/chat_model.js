@@ -19,7 +19,7 @@ const sendQuestion = async (company, message, nickname) => {
     await transaction();
     if (!validator.isEmpty(company)) {
       const companyName = await filterCompany(company);
-      if (companyName.length < 1) {
+      if (companyName.length<1) {
         await rollback();
         throw new Error('找不到公司');
       }
@@ -169,7 +169,7 @@ const addNewMessages = async (data) => {
       time: time,
     };
 
-    await query(querystrNewMessage, message, function (error, results, fields) {
+    await query(querystrNewMessage, message, function(error, results, fields) {
       if (error) throw error;
       console.log(results);
     });

@@ -10,8 +10,49 @@ const {
   query,
 } = require('./mysql');
 
+
 /**
- * reformat salary result for chart
+ *for three type search request:
+ *1.have title and company 2.only have title 3.only have company
+ * @param {string} title
+ * @param {string} company
+ * @param {string} querystr
+ * @return {object} dataForChart
+ */
+
+const withTitleCompany = async (company, title, querystr) => {
+  const titleFiltered = await filterTitle(title);
+  const companyFiltered = await filterCompany(company);
+  if (companyFiltered == 'no') {
+    return 'no';
+  }
+  const recommendation = await recommendCompany(companyFiltered, titleFiltered);
+  const companylist = [];
+  companylist.push(companyFiltered, recommendation[0], recommendation[1]);
+  const result = await query(querystr, [titleFiltered, companylist, companylist]);
+  return result;
+};
+
+const withTitle = async (title, querystr) => {
+  const titleFiltered = await filterTitle(title);
+  const result = await query(querystr, [titleFiltered]);
+  return result;
+};
+
+const withCompany = async (company, querystr) => {
+  const companyFiltered = await filterCompany(company);
+  if (companyFiltered == 'no') {
+    return 'no';
+  }
+  const recommendation = await recommendCompany(companyFiltered, null);
+  const companylist = [];
+  companylist.push(companyFiltered, recommendation[0], recommendation[1]);
+  const result = await query(querystr, [companylist, companylist]);
+  return result;
+};
+
+/**
+ * reformat salary result for chart format
  * @param {array} salaryResult
  * @return {array} avgSalaryResult
  */
@@ -48,45 +89,6 @@ function organizeData(salaryResult) {
   });
   return result;
 };
-/**
- *
- * @param {string} title
- * @param {string} company
- * @param {string} queryAvgSalary
- * @return {object} dataForChart
- */
-
-const withTitleCompany = async (company, title, querystr) => {
-  const titleFiltered = await filterTitle(title);
-  const companyFiltered = await filterCompany(company);
-  if (companyFiltered == 'no') {
-    return 'no';
-  }
-  const recommendation = await recommendCompany(companyFiltered, titleFiltered);
-  const companylist = [];
-  companylist.push(companyFiltered, recommendation[0], recommendation[1]);
-  const result = await query(querystr, [titleFiltered, companylist, companylist]);
-  return result;
-};
-
-const withTitle = async (title, querystr) => {
-  const titleFiltered = await filterTitle(title);
-  const result = await query(querystr, [titleFiltered]);
-  return result;
-};
-
-const withCompany = async (company, querystr) => {
-  const companyFiltered = await filterCompany(company);
-  if (companyFiltered == 'no') {
-    return 'no';
-  }
-  const recommendation = await recommendCompany(companyFiltered, null);
-  const companylist = [];
-  companylist.push(companyFiltered, recommendation[0], recommendation[1]);
-  const result = await query(querystr, [companylist, companylist]);
-  return result;
-};
-
 
 module.exports = {
   withTitleCompany,

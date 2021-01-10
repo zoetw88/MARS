@@ -882,11 +882,14 @@ body {
 	color: #cfe5ff;
   }
 
+
+
+
   #editor-pic{
-	  font-size: 24px;
+	  font-size: 20px;
 	  z-index: 1;
 	  text-shadow: none;
-	  color:white;
+	  color:navy;
 	  box-shadow:none;
   }
 
@@ -916,7 +919,7 @@ body{
   font-size:1.5rem;
   outline:none;
   border-color: transparent;
-  margin-left:140px;
+  margin-left:10px;
   margin-bottom:80px;
   font-size: large;
 }

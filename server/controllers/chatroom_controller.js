@@ -68,7 +68,6 @@ const chatroom = (io) => {
     socket.on('selectMessages', async function(data) {
       socketId = users[data.sender];
       const selectMessages = await getSelectedMessages(data.sender, data.chosenName);
-
       io.to(socketId).emit('reloadMessages', {
         messages: selectMessages,
       });
@@ -90,18 +89,26 @@ const chatroom = (io) => {
       });
     });
     socket.on('ask_to_editor', async function(data) {
+      console.log(onlineuser.indexOf(data.receiver))
+      if(onlineuser.indexOf(data.receiver)==0){
       socketId = users[data.receiver];
       info = data;
-
       io.to(socketId).emit('reply_editor', {
         info,
-      });
+      });}
+      else{
+        socketId = users[data.sender];
+        info = data;
+        io.to(socketId).emit('editor_alone', {
+          info,
+        });}
+
     });
     socket.on('no_collaborate', async function(data) {
       socketId = users[data.sender];
-
       io.to(socketId).emit('reply_no', {
         sender: data.receiver,
+        room: data.room,
       });
     });
     socket.on('yes_collaborate', async function(data) {
@@ -162,7 +169,6 @@ const verifyIdentity= async (req, res ) => {
       const bearerToken = bearerHeader.split(' ')[1];
       const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
         if (error) return error;
-
         return data;
       });
 

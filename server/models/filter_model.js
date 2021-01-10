@@ -7,7 +7,7 @@ const {
 
 
 /**
- * recommend company based on user search request
+ * recommend company based on another users search history
  * @param {String} company
  * @param {String} title
  * @return {array} companylist recommendation
@@ -56,17 +56,17 @@ const recommendCompany = async (company, title) => {
 
   fpgrowth.exec(dataset);
   if (title != null || title != undefined) {
-    queryCompany =
-      ` WITH titlelist AS(
-          SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
-              FROM recommend 
-              HAVING score >0.0003
-              ORDER BY score 
-             )
-        SELECT search_company
-        FROM recommend 
-        WHERE search_company NOT IN (?) AND title IN(select title from titlelist)
-        GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
+    queryCompany =`
+    WITH titlelist AS(
+      SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
+      FROM recommend 
+      HAVING score >0.0003
+      ORDER BY score 
+      )
+    SELECT search_company
+    FROM recommend 
+    WHERE search_company NOT IN (?) AND title IN(select title from titlelist)
+    GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
 
     switch (companylist.length) {
       case 0:
@@ -102,10 +102,10 @@ const recommendCompany = async (company, title) => {
 
 const topSearchCompany= async (company, companylist)=>{
   queryCompany = `
-SELECT search_company
-FROM recommend 
-WHERE search_company NOT IN (?) 
-GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
+  ELECT search_company
+  FROM recommend 
+  WHERE search_company NOT IN (?) 
+  GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
 
   switch (companylist.length) {
     case 0:

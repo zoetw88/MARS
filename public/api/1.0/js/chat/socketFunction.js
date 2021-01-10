@@ -2,12 +2,12 @@ function organizeTalk(response, username) {
   for (let i = 0; i < response.length; i++) {
     if (response[i].sender != username) {
       localStorage.setItem('talker', response[i].receiver);
-      $('.receiver-company').find('p').text(response[i].receiver_company);
-      $('.receiver').find('p').text(response[i].receiver);
-      $('<li class="sent"><img src='+response[i].sender_picture+'><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
-    } else {
       $('.receiver-company').find('p').text(response[i].sender_company);
       $('.receiver').find('p').text(response[i].sender);
+      $('<li class="sent"><img src='+response[i].sender_picture+'><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
+    } else {
+      $('.receiver-company').find('p').text(response[i].receiver_company);
+      $('.receiver').find('p').text(response[i].receiver);
       $('<li class="replies"><img src='+response[i].sender_picture+'><p>' + response[i].message + '</p></li>').appendTo($('.messages ul'));
     }
   }
@@ -79,7 +79,6 @@ async function askCollaborate(data) {
         html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${room}&id=${data.info.sender}><b>傳送門</b></a>`,
         width: 600,
         padding: '3em',
-        background: '#fff url(/images/trees.png)',
         backdrop: `
                 rgba(0,0,123,0.4)
                 url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
@@ -93,10 +92,11 @@ async function askCollaborate(data) {
       });
     } else if (result.isDenied) {
       swal.fire(`${data.info.sender}已哭哭!`);
-
+      room = data.info.sender + data.info.receiver;
       io.emit('no_collaborate', {
         receiver: data.info.receiver,
         sender: data.info.sender,
+        room: room,
       });
     }
   });
@@ -122,7 +122,6 @@ function say_yes(data) {
     html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${data.room}&id=${data.sender}><b>傳送門</b></a>`,
     width: 600,
     padding: '3em',
-    background: '#fff url(/images/trees.png)',
     backdrop: `
         rgba(0,0,123,0.4)
         url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
