@@ -15,7 +15,7 @@ MARS provides salary & working hour comparative reports , interview reviews and 
 
 \*\*Password:123
 
-💡 Tips: Online interview coaching service are view only for anonymous user, please sign in to test collaboration features!
+💡 Tips: Online interview coaching service are only provided for anonymous user, please sign in and enjoy!
 
 ## Table of Content
 
