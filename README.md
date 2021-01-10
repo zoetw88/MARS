@@ -4,10 +4,9 @@ To improve workplace transparency in Taiwan
 
 MARS provides salary & working hour comparative reports , interview reviews and online interview coaching service.
 
-> “You want to wake up in the morning and think the future is going to be great and that’s what being a spacefaring civilization is all about. <br>
-> It’s about believing in the future and thinking that the future will be better than the past. <br>
-> And I can’t think of anything more exciting than going out there and being among the stars.”<br>
->                                       quotes from Elon Musk 
+>When something is important enough, you do it even if the odds are not in your favor <br>
+>   Elon Musk 
+                                    
 
 [Homepage](https://mars-interviews.club) 
 
