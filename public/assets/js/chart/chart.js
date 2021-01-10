@@ -32,7 +32,7 @@ d3.json('../../json/company.json', function(data) {
         .range([0, width]);
 
     const yScale = d3.scale.linear()
-        .domain([yExtent[0] - yRange * 0.1, yExtent[1] + yRange * 0.1])
+        .domain([yExtent[0] - yRange * 0.4, yExtent[1] + yRange * 0.2])
         .range([height, 0]);
 
     const colourScale = d3.scale.ordinal()

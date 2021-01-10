@@ -4,11 +4,11 @@ const {
   recommendCompany,
   filterTitle,
   filterCompany,
-} = require('../models/filter_model');
+} = require('./filter_model');
 
 const {
   query,
-} = require('../models/mysql');
+} = require('./mysql');
 
 /**
  * reformat salary result for chart
@@ -65,13 +65,13 @@ const withTitleCompany = async (company, title, querystr) => {
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
   const companylist = [];
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
-  const result = await query(querystr, [titleFiltered, companylist]);
+  const result = await query(querystr, [titleFiltered, companylist,companylist]);
+  console.log(result)
   return result;
 };
 
 const withTitle = async (title, querystr) => {
   const titleFiltered = await filterTitle(title);
-  console.log(titleFiltered)
   const result = await query(querystr, [titleFiltered]);
   return result;
 };
@@ -84,9 +84,10 @@ const withCompany = async (company, querystr) => {
   const recommendation = await recommendCompany(companyFiltered, null);
   const companylist = [];
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
-  const result = await query(querystr, [companylist]);
+  const result = await query(querystr, [companylist,companylist]);
   return result;
 };
+
 
 
 module.exports = {

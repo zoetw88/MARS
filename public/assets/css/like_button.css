@@ -1,0 +1,68 @@
+
+ .like_button  {
+    margin-top: 25px;
+  }
+  .like_button div {
+    height:100px;
+    margin:0 auto;
+    position: relative;
+  }
+  
+  .like_button i {
+    cursor:pointer;
+    padding:10px 12px 8px;
+    background:#fff;
+    border-radius:50%;
+    display:inline-block;
+    margin:0 0 15px;
+    color:#aaa;
+    transition:.2s;
+  }
+  
+  .like_button i:hover {
+    color:#666;
+  }
+  
+  .like_button i:before {
+    font-family:fontawesome;
+    content:'\f004';
+    font-style:normal;
+  }
+  
+  
+  .like_button span {
+    position: absolute;
+    bottom:70px;
+    left:0;
+    right:0;
+    visibility: hidden;
+    transition:.6s;
+    z-index:-2;
+    font-size:2px;
+    color:transparent;
+    font-weight:700;
+  }
+  
+  .like_button i.press {
+    animation:fadeicon 2s;
+    
+  }
+  
+  .like_button span.press {
+    bottom:120px;
+    font-size:20px;
+    visibility:visible;
+    animation: fade 2s;
+  }
+  
+  @keyframes fade {
+    0% {color:transparent;}
+    50% {color:#56b7e4;}
+    100% {color:transparent;}
+  }
+  @keyframes fadeicon {
+    0% {color:transparent;}
+    50% {color:#db6618;}
+    100% {color:transparent;}
+  }
+ 

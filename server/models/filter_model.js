@@ -84,9 +84,9 @@ const recommendCompany = async (company, title) => {
       case 1:
         let companyCombination = [];
         companyCombination = companyCombination.concat(company, companylist[0]);
-        companySelect = await query(queryCompany, [title, companyCombination, 1]);
-        if (companySelect.length > 0) {
-          companylist[1] = companySelect[0].search_company;
+        companySecond = await query(queryCompany, [title, companyCombination, 1]);
+        if (companySecond .length > 0) {
+          companylist[1] = companySecond [0].search_company;
           break;
         } else {
           companylist = await topSearchCompany(company, companylist)

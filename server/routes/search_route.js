@@ -11,6 +11,7 @@ const {
   getJoblist,
   getCompanylist,
   getJob104list,
+  saveCommentLike,
 } = require('../controllers/search_controller');
 
 
@@ -34,5 +35,8 @@ router.route('/companylist')
 
 router.route('/joblist')
     .get(wrapAsync(getJoblist));
+
+router.route('/like')
+    .post(wrapAsync(saveCommentLike));
 
 module.exports = router;

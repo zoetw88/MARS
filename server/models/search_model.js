@@ -14,7 +14,7 @@ const {
   withTitle,
   withCompany,
   organizeData,
-} = require('../utils/search_model_tool');
+} = require('./search_model_tool');
 
 const moment = require('moment');
 const validator = require('validator');
@@ -49,11 +49,12 @@ const getSalary = async (company, title, ip) => {
           FROM salary HAVING score > 0.05 order by score DESC
           ) 
           SELECT AVG(salary)as salary ,experience,company
-          FROM salary_avg Where company IN (?) GROUP BY experience ,company`;
+          FROM salary_avg Where company IN (?) GROUP BY experience ,company
+          ORDER BY FIELD(company,?)`;
     
       dataForLineChart = await withTitleCompany(company, title, queryAvgSalary);
      
-     
+     console.log(dataForLineChart)
     } else if (validator.isEmpty(company)) {
       const queryAvgSalary = `
       WITH company_list AS(
@@ -76,7 +77,8 @@ const getSalary = async (company, title, ip) => {
           )
           SELECT company ,experience ,AVG(salary) AS salary 
           FROM company_list
-          GROUP BY company,experience,company`;
+          GROUP BY company,experience,company
+          ORDER BY FIELD(company,?)`;
 
     dataForLineChart = await withCompany(company, queryAvgSalary);
 
@@ -106,7 +108,8 @@ const getWorkinghour = async (company, title) => {
           FROM salary HAVING score > 0.05 order by score DESC
           ) 
           SELECT (salary/1000000) AS y,working_hour AS x,company AS label
-          FROM hourlist WHERE company IN (?)`;
+          FROM hourlist WHERE company IN (?)
+          ORDER BY FIELD(company,?)`;
 
       ScatterChart = await withTitleCompany(company, title, queryWorking);
 
@@ -114,7 +117,8 @@ const getWorkinghour = async (company, title) => {
     } else if (validator.isEmpty(title)) {
       const queryWorking = `
       SELECT (salary/1000000) AS y,working_hour AS x,company AS label
-      FROM salary WHERE company IN (?)`;
+      FROM salary WHERE company IN (?)
+      ORDER BY FIELD(company,?)`;
 
       ScatterChart = await withCompany(company, queryWorking);
 
@@ -157,7 +161,8 @@ const get104jobs = async (company, title) => {
           FROM job HAVING score > 0.05 ORDER BY score DESC
           ) 
           SELECT * FROM joblist 
-          WHERE company IN (?) `;
+          WHERE company IN (?) 
+          ORDER BY FIELD(company,?)`;
 
       dataForChart = await withTitleCompany(company, title, query104Job);
 
@@ -173,7 +178,8 @@ const get104jobs = async (company, title) => {
       const query104Job = `
       SELECT * 
       FROM job 
-      WHERE company IN(?) `;
+      WHERE company IN(?)
+      ORDER BY FIELD(company,?) `;
       dataForChart = await withCompany(company, query104Job);
 
       
@@ -202,7 +208,7 @@ const extractComments = async (company, title) => {
           )
           SELECT *
           FROM comments_list WHERE company IN (?) 
-          ORDER BY useful DESC`;
+          ORDER BY FIELD(company,?) ,useful DESC;`;
       dataComments = await withTitleCompany(company, title, queryComments);
 
     } else if (validator.isEmpty(company)) {
@@ -212,8 +218,8 @@ const extractComments = async (company, title) => {
           FROM comment having score>0.05  order by score DESC
           )
           SELECT *
-          FROM comments_list 
-          ORDER BY useful DESC`;
+          FROM comments_list
+          ORDER BY useful DESC `;
       dataComments = await withTitle(title, queryComments);
 
     
@@ -221,7 +227,7 @@ const extractComments = async (company, title) => {
       const queryComments = `
       SELECT *
       FROM comment WHERE company IN (?) 
-      ORDER BY useful DESC`;
+      ORDER BY FIELD(company,?),useful DESC`;
 
       dataComments = await withCompany(company, queryComments);
 
@@ -286,7 +292,20 @@ const getJobslist = async () => {
     };
   }
 };
-
+const saveLike = async (id) => {
+  try {
+    const querylike = `
+    UPDATE comment
+    SET useful = useful + 1
+    WHERE id = ?`;
+   await query(querylike,id);
+    
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
 module.exports = {
   getSalary,
   getWorkinghour,
@@ -295,4 +314,5 @@ module.exports = {
   getJobslist,
   extractComments,
   extractAllComments,
+  saveLike
 };

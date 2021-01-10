@@ -52,7 +52,7 @@ function comment_extract(response) {
           split_result[1] = '';
         }
       }
-      $(' <div class="mySlides"><a class="id">ID:' + response.data[i].id + '</a><p class="date">評論日期：' + response.data[i].comment_date + '</p><p class="first-interview text-left">' + split_result[0] + '</p><p class="second-interview text-left">' + split_result[1] + '</p><p class="author">' + response.data[i].company + '<br>應徵職位：' + response.data[i].title + '</p></div>').appendTo($('div.slideshow-container'));
+      $(' <div class="mySlides" value='+response.data[i].id+'><p class="id" id="number" >ID:' + response.data[i].id + '</p><p class="date">評論日期：' + response.data[i].comment_date + '</p><p class="first-interview text-left">' + split_result[0] + '</p><p class="second-interview text-left">' + split_result[1] + '</p><p class="author">' + response.data[i].company + '<br>應徵職位：' + response.data[i].title + '</p></div>').appendTo($('div.slideshow-container'));
     }
     $(' <div class="mySlides"><p>謝謝收看</p></div>').appendTo($('div.slideshow-container'));
   } else {
@@ -127,6 +127,36 @@ function showSlides(n) {
   }
   for (i = 0; i < slides.length; i++) {
     slides[i].style.display = 'none';
+    slides[i].classList.remove("now");
   }
   slides[slideIndex - 1].style.display = 'block';
+  slides[slideIndex - 1].classList.add ( 'now');
+  let id 
 }
+
+
+
+
+  $( "#like-button" ).on('click',function() {
+    $( "#like-button,span" ).toggleClass( "press", 1000 );
+    let id=document.querySelector('.now').innerHTML
+    
+    let res = id.split(`</p>`);
+    let second = res[0].split(':')
+    let number=second[1]
+    axios.post(`/api/1.0/like`,{id:number})
+
+    .then(response => {
+      console.log(response)
+      
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
+   
+    console.log(number)
+   
+  });
+ 
+ 

@@ -2,7 +2,7 @@ const search = require('../models/search_model');
 const {searchKeywords} = require('../algorithm/ti_idf/ti_idf');
 const path=require('path');
 const fs = require('fs');
-
+const validator = require('validator');
 
 const getSalary = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ const getSalary = async (req, res) => {
       ip = ip.substr(7);
     }
     const result = await search.getSalary(company, title, ip);
-    
+    console.log(result)
     const salaryChartPath=path.join(__dirname, '../../public/json/salary.json');
     const resultJSON = JSON.stringify(result);
     fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
@@ -66,8 +66,12 @@ const getKeywords = async (req, res) => {
       company,
       title,
     } = req.query;
+    if(!validator.isEmpty(company)){
     const result=await searchKeywords(company, title);
-    res.status(200).send(result);
+    res.status(200).send(result);}
+    else{
+      return 'no'
+    }
   } catch (error) {
     return {error};
   }
@@ -104,6 +108,20 @@ const getJoblist = async (req, res) => {
     return {error};
   }
 };
+
+
+
+const saveCommentLike = async (req, res) => {
+  try {
+    let {id}=req.body
+ 
+    let number= parseInt(id)
+    
+    await search.saveLike(number);
+  } catch (error) {
+    return {error};
+  }
+};
 module.exports = {
   getSalary,
   getWorkingHours,
@@ -112,4 +130,5 @@ module.exports = {
   getJob104list,
   getCompanylist,
   getJoblist,
+  saveCommentLike
 };

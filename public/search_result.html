@@ -34,10 +34,10 @@
 
     <!--====== Comments CSS ======-->
     <link rel="stylesheet" href="./assets/css/comment_form.css">
-
+    <link rel="stylesheet" href="./assets/css/like_button.css">
     <!--====== loader ======-->
-    <link rel = "stylesheet" type = "text/css" href = "./assets/css/loader.css" />
-    
+    <link rel="stylesheet" type="text/css" href="./assets/css/loader.css" />
+
     <script type="text/javascript" src="./assets/js/loader.js"></script>
 
 </head>
@@ -47,9 +47,9 @@
 
     <!--====== PRELOADER PART START ======-->
     <div class="preloader">
-    
+
         <div id="loader"></div>
-    
+
     </div>
 
     <!--====== PRELOADER PART ENDS ======-->
@@ -92,7 +92,7 @@
                                 <br>
                                 <br>
                                 <br>
-                                <h1 class="title-4"id="companyname">廣達電腦</h1>
+                                <h1 class="title-4" id="companyname">廣達電腦</h1>
                                 <hr class="line-seprate">
                             </div>
                         </div>
@@ -108,7 +108,7 @@
             <div class="container ">
                 <div class="row">
                     <div class="col-md-3 col-sm-6">
-                        
+
                         <div class="counter">
                             <div class="counter-icon">
                                 <i class="fa fa-users"></i>
@@ -162,7 +162,7 @@
     </div>
 
     <hr class="line-seprate">
-    
+
     <section class="category_area pt-35 pb-80 gray-bg">
         <div class="container ">
             <div class="row d-flex justify-content-center">
@@ -170,26 +170,26 @@
                     <div class="mb-3 card ">
                         <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center ">
                             <div class="card-body  ">
-                            <div class="scatter-chart">
-                                <h2 class="chart-label-1 text-center"> 工時與薪水</h2>
-                               
-                                <div id="scatter_container" class="chart1"></div>
-                                <div id="legend"></div>
+                                <div class="scatter-chart">
+                                    <h2 class="chart-label-1 text-center"> 工時與薪水</h2>
+
+                                    <div id="scatter_container" class="chart1"></div>
+                                    <div id="legend"></div>
+                                </div>
                             </div>
                         </div>
-                        </div>
                     </div>
-    
+
                 </div>
                 <div class="col-md-12 col-lg-6 col-sm-12">
                     <div class="mb-3 card ">
                         <div class="card-header-tab card-header-tab-animation card-header d-flex align-items-center">
                             <div class="card-body ">
-                            <div class="line-chart">
-                                <h2 class="chart-label-2 text-center">年資與薪水</h2>
-                                
-                                <div id='pie' class="chart2"></div>
-                            </div>
+                                <div class="line-chart">
+                                    <h2 class="chart-label-2 text-center">年資與薪水</h2>
+
+                                    <div id='pie' class="chart2"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,7 +210,7 @@
             </div>
         </div>
     </div>
-    
+
     <hr class="line-seprate">
     <section class="trending_jobs pt-35 pb-80 gray-bg">
         <div class="container">
@@ -223,50 +223,58 @@
                                     <h4 class="job_details_title text-center">搜尋公司面試心得關鍵字</h4>
                                     <div class="row d-flex justify-content-center">
                                         <div class="job_skills mt-20">
-                                            <ul class="list-inline"id="list-inline">
-    
+                                            <ul class="list-inline" id="list-inline">
+
                                             </ul>
                                             <br>
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div class="row d-flex justify-content-center">
                                     <div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 testimonials-card">
                                         <div class="mb-3 card  ">
                                             <div
                                                 class="card-header-tab card-header-tab-animation card-header d-flex align-items-center ">
                                                 <div class="card-body">
-    
+
                                                     <div class="testimonials">
                                                         <div class="slideshow-container" id="testimonials-container">
-    
+
                                                             <!-- Full-width slides/quotes -->
                                                             <div class="mySlides ">
-                                                                <P class="firstslide">哈囉，親愛的火星居民<br><br>如果讀完面試心得，需要更多面試內幕<br><br>請按右邊紅色圓點，詢問站內會員
+                                                                <P class="firstslide">
+                                                                    哈囉，親愛的火星居民<br><br>如果讀完面試心得，需要更多面試內幕<br><br>請按右邊紅色圓點，詢問站內會員
                                                                 </P>
-                                                           
-                                                            </div>    
-    
-    
+
+                                                            </div>
+
+
                                                             <!-- Next/prev buttons -->
                                                             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                                                             <a class="next" onclick="plusSlides(1)">&#10095;</a>
                                                         </div>
-                                                       
+
                                                     </div><!-- cd-testimonials-wrapper -->
-                                                    
+
                                                 </div>
-                                              
+
                                             </div>
-                                          
+
                                         </div>
                                     </div>
-    
+
                                 </div>
-                                <div class="row">
-                                    <button class="bubbly-button"> <i class="fa fa-thumbs-o-up like-btn"
-                                            aria-hidden="true"></i></button>
+                                <div class="row like_button">
+                                    
+                                    <div>
+                                        <i id="like-button"></i>
+                                        <span>棒!</span>
+                                      </div>
+
+                                           
+                                  
+
                                 </div>
                             </div> <!-- container -->
     </section>
@@ -304,20 +312,11 @@
         </a>
         </li>
         <li>
-            <span class="fab-label" ></a>聊天室</span>
-           
+            <span class="fab-label" ></a>Messenger</span>
             <div class="fab-icon-holder" onClick="window.open('./api/1.0/chat.html');">
             <i class="fa fa-comments"></i>
             </div>
     
-        </li>
-        <li>
-            <span class="fab-label">Feedback</span>
-            <a href="./member.html">
-            <div class="fab-icon-holder">
-                <i class="fa fa-cogs"></i>
-            </div>
-        </a>
         </li>
     </ul>
 </div>
@@ -338,7 +337,7 @@
             <div class="container">
                 <div class="copyright_content text-center d-sm-flex justify-content-between align-items-center">
                     <a href="#" class="logo"><img src="assets/images/logo.png" alt="Logo"></a>
-                    <p class="copyright">JobMate © 2024 All Right Reserved</p>
+                    <p class="copyright">MARS © 2024 All Right Reserved</p>
                 </div> <!-- copyright content -->
             </div> <!-- container -->
         </div> <!-- footer copyright -->
