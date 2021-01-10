@@ -47,7 +47,7 @@ MARS provides salary & working hour comparative reports , interview reviews and 
 
 - Environment: Linux + **Node.js**
 - Framework: **Express.js**
-- Real-time Chatroom: **Socket.io**
+- Real-time Chatroom: **Socket.IO**
 - User Authorization: **JWT**
 - Protocol: **HTTP & HTTPs**
 - Proxy server: **Nginx**
