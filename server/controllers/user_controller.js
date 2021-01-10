@@ -81,7 +81,7 @@ const signIn = async (req, res) => {
     }
 
     result = await User.signIn(data.email, data.password);
-
+ 
     if (result.error) {
       result=result.error;
 
