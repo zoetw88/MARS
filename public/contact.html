@@ -65,7 +65,7 @@
 
     <!--====== HEADER PART START ======-->
 
-  
+
     <header class="header-area header_shadow">
         <div class="header-navbar">
             <div class="container">
@@ -83,13 +83,10 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
                             <li class="active"><a href="index.html">Home</a></li>
-                            <li>
-                                <a href="/member.html">會員中心</a>
-                            </li>
 
                             <li><a href="login.html">Log In</a></li>
 
-                            <li><a class="main-btn" href="post-job.html">寫面試心得</a></li>
+                            <li><a class="main-btn" href="/api/1.0/chat.html">Messenger</a></li>
                         </ul> <!-- navbar nav -->
                     </div>
 
@@ -125,51 +122,37 @@
                     <h1 class="contact_title text-center" id="username"></h1>
                     <br>
                     <div class="row justify-content-center">
-                    <p id="questiontitle">今天想來點什麼問題呢 <i class="fa fa-question-circle question-mark text-center" aria-hidden="true"></i> </p><br>
-                
+                        <p id="questiontitle">今天想來點什麼問題呢 <i class="fa fa-question-circle question-mark text-center"
+                                aria-hidden="true"></i> </p><br>
+
                     </div>
                     <p class=" text-center" id="companyname"></p>
                     <div class="contact_form mt-30 ">
-                        <form  id="tickForm"  >
+                        <form id="tickForm">
                             <div class="row justify-content-center">
                                 <div class="col-md-12 ">
-                                    <div class="single_form" >
-                                        <textarea form="ticketForm" value="" placeholder="Your Message" id="askquestion"  ></textarea>
+                                    <div class="single_form">
+                                        <textarea form="ticketForm" value="" placeholder="Your Message"
+                                            id="askquestion"></textarea>
                                         <label>請盡量詳述自己的提問，好讓其他會員能夠有效回答</label>
                                     </div> <!-- single form -->
                                 </div>
                                 <div class="col-md-12">
                                     <div class="single_form text-center">
-                                        <button class="main-btn"  onclick="ask(event)">送出</button>
+                                        <button class="main-btn" onclick="ask(event)">送出</button>
                                     </div> <!-- single form -->
                                 </div>
                             </div> <!-- row -->
                         </form>
-                        
+
                     </div> <!-- contact form -->
                 </div>
-        </div> <!-- container -->
+            </div> <!-- container -->
     </section>
-
 
 
     <!--====== CONTACT PART ENDS ======-->
 
-    <!--====== PART START ======-->
-
-    <!--
-    <section class="">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-">
-                    
-                </div>
-            </div>
-        </div>
-    </section>
--->
-
-    <!--====== PART ENDS ======-->
 
     <!--====== FOOTER PART START ======-->
 
@@ -177,74 +160,7 @@
         <div class="footer_widget pt-30 pb-80">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer_link mt-45">
-                            <div class="footer_title">
-                                <h5 class="title">Quick Links</h5>
-                            </div>
-                            <ul class="link">
-                                <li><a href="#">Job Packages</a></li>
-                                <li><a href="#">Post New Job</a></li>
-                                <li><a href="#">Jobs Listing</a></li>
-                                <li><a href="#">Jobs Style Grid</a></li>
-                                <li><a href="#">Employer Listing</a></li>
-                                <li><a href="#">Employers Grid</a></li>
-                            </ul>
-                        </div> <!-- footer link -->
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer_link mt-45">
-                            <div class="footer_title">
-                                <h5 class="title">For Candidade</h5>
-                            </div>
-                            <ul class="link">
-                                <li><a href="#">Job Packages</a></li>
-                                <li><a href="#">Post New Job</a></li>
-                                <li><a href="#">Jobs Listing</a></li>
-                                <li><a href="#">Jobs Style Grid</a></li>
-                                <li><a href="#">Employer Listing</a></li>
-                                <li><a href="#">Employers Grid</a></li>
-                            </ul>
-                        </div> <!-- footer link -->
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer_link mt-45">
-                            <div class="footer_title">
-                                <h5 class="title">For Employee</h5>
-                            </div>
-                            <ul class="link">
-                                <li><a href="#">Job Packages</a></li>
-                                <li><a href="#">Post New Job</a></li>
-                                <li><a href="#">Jobs Listing</a></li>
-                                <li><a href="#">Jobs Style Grid</a></li>
-                                <li><a href="#">Employer Listing</a></li>
-                                <li><a href="#">Employers Grid</a></li>
-                            </ul>
-                        </div> <!-- footer link -->
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="footer_contact mt-45">
-                            <div class="footer_title">
-                                <h5 class="title">Contact Us</h5>
-                            </div>
-                            <ul class="contact">
-                                <li>
-                                    <p><span>Location: </span> 2750 Quadra Street Victoria, Canada</p>
-                                </li>
-                                <li>
-                                    <p><span>Email: </span> info.jobs@example.com</p>
-                                </li>
-                                <li>
-                                    <p><span>Phone: </span> +880-1234-515</p>
-                                </li>
-                            </ul>
-                            <ul class="social">
-                                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            </ul>
-                        </div> <!-- footer link -->
-                    </div>
+
                 </div> <!-- row -->
             </div> <!-- container -->
         </div> <!-- footer widget -->
@@ -273,27 +189,13 @@
 
     <!--====== OVERLAY PART ENDS ======-->
 
-    <!--====== PART START ======-->
 
-    <!--
-    <section class="">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-">
-                    
-                </div>
-            </div>
-        </div>
-    </section>
--->
+    <!--axios-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <!--====== PART ENDS ======-->
-   <!--axios-->
-   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  
-   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!--====== Jquery js ======-->
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
@@ -312,8 +214,8 @@
     <!--====== Main js ======-->
     <script src="assets/js/main.js"></script>
 
-      <!-- contact.js -->
-      <script src="./js/contact/contact.js"></script>
+    <!-- contact.js -->
+    <script src=assets/js/contact/contact.js"></script>
 
 </body>
 

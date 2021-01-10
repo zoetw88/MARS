@@ -9,16 +9,5 @@ test.http
 *.gif
 .log
 
-test.http
 test
-post-job.html
-pricing.html
-resume.html
-bookmarked.html
-change-password.html
-faq.html
-about.html
-job-list.html
-notifications.html
-member.html
-member_manage.html
+public/images
