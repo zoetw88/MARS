@@ -1,4 +1,4 @@
-# MARS  :tophat:
+# MARS  :star:
 
 To improve workplace transparency in Taiwan
 
@@ -22,8 +22,8 @@ We do our best to provide job seeker's needs
 - [Technologies](#Technologies)
 - [Contact](#Contact)
 
-> ## Features
->
+ ## Features
+
 > - Salary and Working hour Comparative Report
 >
 > - Instant Interviews Coaching Messenger
