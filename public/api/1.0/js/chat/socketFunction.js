@@ -133,8 +133,31 @@ function say_yes(data) {
 
 function say_no(data) {
   Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: `${data.sender}義正嚴辭地拒絕和你協作!`,
+    icon: 'info',
+    title: `${data.sender}現在沒空。\r\n\r\n不過你還是可以自己使用`,
+    html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${data.room}&id=${data.sender}><b>傳送門</b></a>`,
+    width: 600,
+    padding: '3em',
+    backdrop: `
+        rgba(0,0,123,0.4)
+        url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
+        top left
+        no-repeat`,
   });
+}
+
+function edit_alone(data) {
+room = data.info.receiver + data.info.sender;
+Swal.fire({
+  icon: 'info',
+  title: `${data.info.receiver}現在沒上線。\r\n\r\n不過你還是可以自己使用`,
+  html: `<a target='_blank' href=http://localhost:5000/api/1.0/editor?room=${room}&id=${data.info.receiver}><b>傳送門</b></a>`,
+  width: 600,
+  padding: '3em',
+  backdrop: `
+      rgba(0,0,123,0.4)
+      url("https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/nyan-cat.gif")
+      top left
+      no-repeat`,
+});
 }
