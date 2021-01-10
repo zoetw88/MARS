@@ -74,16 +74,11 @@ for x in['和碩聯合科技股份有限公司','仁寶電腦工業股份有限�
                 else:
                     compound.append(str(tag.string))
 
-            # sql_insert_query = "INSERT INTO comment(company, address) VALUES (%s, %s)"
-
-            # cursor.execute(sql_insert_query, [compound[0], compound[1]])
-            # mydb.commit()
             for tag2 in divTagss:
                 if tag2.string is not None:
 
                     compound.append(str(tag2.string))
 
-                    # print(compound)
             print(compound)
             if len(compound)>8:
                 if(compound[3].find('到')>0):
@@ -134,8 +129,3 @@ for x in['和碩聯合科技股份有限公司','仁寶電腦工業股份有限�
                                                         compound[3], compound[4], compound[5], compound[7], compound[7]])
 
                     mydb.commit()
-
-    # compound=[]
-    # compound.append(tag.string)
-    # compound.append(tag2.string)
-    # print(compound)

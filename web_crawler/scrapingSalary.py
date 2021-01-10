@@ -78,38 +78,3 @@ for x in ['和碩集團_和碩聯合科技股份有限公司']:
             cursor = mydb.cursor()
             cursor.execute(sql_insert_query, ['和碩聯合科技股份有限公司',data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8],data[9]])
             mydb.commit()
-        #         if compound[8] == 'wrong':
-                    # cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
-                    #                                   compound[3], compound[4], compound[5], compound[9], compound[10]])
-        #             mydb.commit()
-
-        #         elif compound[4] == '錄取':
-        #             cursor.execute(sql_insert_query, [
-        #                            compound[0], compound[1], compound[2], 'wrong', compound[3], 'wrong', compound[7], compound[8]])
-        #             mydb.commit()
-
-        #         elif compound[8] == '詢問家庭狀況':
-        #             cursor.execute(sql_insert_query, [
-        #                            compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-        #             mydb.commit()
-        #         elif compound[8] == '未錄取':
-        #             cursor.execute(sql_insert_query, [
-        #                            compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-        #             mydb.commit()
-        #         elif compound[8] == '未通知':
-        #             cursor.execute(sql_insert_query, [
-        #                            compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-        #             mydb.commit()
-        #         elif compound[8] == '沒通知':
-        #             cursor.execute(sql_insert_query, [
-        #                            compound[0], compound[1], compound[2], compound[3], compound[4], compound[5], compound[9], compound[10]])
-        #             mydb.commit()
-        #         else:
-        #             try:
-        #                 cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
-        #                                                   compound[3], compound[4], compound[5], compound[8], compound[9]])
-        #             except:
-        #                 cursor.execute(sql_insert_query, [compound[0], compound[1], compound[2],
-        #                                                   compound[3], compound[4], compound[5], compound[7], compound[7]])
-
-        #             mydb.commit()
