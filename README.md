@@ -28,7 +28,7 @@ Password:123
 - Salary and Working hour Comparative Report
   -  Provided **AutoComplete Wiht Ajax** function while typing into the search field
   -  Enhanced Searches Function with **MYSQL Full-Text Search** 
-  -  Implemented recommendation system by applying **Frequent Pattern Growth Algorithm** to find the most frequent and relevant company to users 
+  -  Implemented recommendation system by applying **Frequent Pattern Growth Algorithm** to find the most frequent and relevant company
 ![](https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/searchResult.gif)
 - Instant Interviews Coaching Messenger
 - Realtime Collaborative Whiteboard
