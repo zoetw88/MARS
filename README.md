@@ -76,7 +76,8 @@ Password:123
 ### Database
 
 - **RDS** + **MySQL**
-
+-  Schema
+![](https://github.com/zoetw88/MARS_README/blob/master/schema.png)
 
 
 ### Tools
