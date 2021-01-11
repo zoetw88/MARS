@@ -38,7 +38,7 @@ MARS provides salary & working hour comparative reports , interview reviews and 
 - Redirects 443 port requests by **NGINX** after receiving request from clients
 - Scraped job information ,interview reviews , salary & working hour data through **Web Crawler**
 - Segmented interview reviews by **Jieba** and used **TF-IDF Algorithm** to extract keywords 
-- Applied **Frequent Pattern Growth Algorithm** to recommend relevant company and give salay & working hour comparative reports to users
+- Applied **Frequent Pattern Growth Algorithm** to give salay & working hour comparative reports to users
 - Provided instant interviews coaching service which is constructed by **Socket.IO** 
 - Supported realtime collaborative whiteboard which is established on **Yjs** and **ProseMirror Collab** Module.
 
