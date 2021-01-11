@@ -102,7 +102,7 @@ const recommendCompany = async (company, title) => {
 
 const topSearchCompany= async (company, companylist)=>{
   queryCompany = `
-  ELECT search_company
+  SELECT search_company
   FROM recommend 
   WHERE search_company NOT IN (?) 
   GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
