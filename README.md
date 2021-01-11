@@ -39,7 +39,7 @@ Password:123
   - Created a one-to-one anomymously interview coaching messaging application using **Socket.IO** 
 ![](https://github.com/zoetw88/MARS_README/blob/master/askQuestion.gif)
 ### Realtime Collaborative Whiteboard
-  -built a collaborative whiteboard established on **ProseMirror** editor and **Yjs**
+  - built a collaborative whiteboard established on **ProseMirror** editor and **Yjs**
 ![](https://github.com/zoetw88/MARS_README/blob/master/whiteboard.gif)
 
 ## Technologies
