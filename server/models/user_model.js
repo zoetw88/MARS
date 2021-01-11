@@ -69,7 +69,7 @@ const signIn = async (email, password) => {
   try {
     const result = await query('SELECT * FROM user WHERE email = ?', [email]);
     if (result.length > 0) {
-      const auth = await bcrypt.compare(password, result[0].password)
+      const auth = await bcrypt.compare(password, result[0].password);
 
       if (auth) {
         accessToken = jwt.sign({
@@ -78,15 +78,15 @@ const signIn = async (email, password) => {
           nickname: result[0].nickname,
           picture: result[0].picture,
         }, ACCESS_TOKEN_SECRET);
-        
+
         data = {
           nickname: result[0].nickname,
           accessExpired: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),
           accessToken: accessToken,
-          email: email
+          email: email,
         };
         return {
-          data
+          data,
         };
       } else {
         return {

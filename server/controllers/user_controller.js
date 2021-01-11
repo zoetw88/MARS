@@ -1,9 +1,7 @@
 require('dotenv').config();
 const validator = require('validator');
 const User = require('../models/user_model');
-const {
-  ACCESS_TOKEN_SECRET,
-} = process.env;
+const {ACCESS_TOKEN_SECRET} = process.env;
 const jwt = require('jsonwebtoken');
 
 
@@ -81,7 +79,7 @@ const signIn = async (req, res) => {
     }
 
     result = await User.signIn(data.email, data.password);
- 
+
     if (result.error) {
       result=result.error;
 

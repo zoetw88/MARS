@@ -6,7 +6,6 @@ const margin = {
 };
 const width = 500 - margin.left - margin.right;
 const height = 435 - margin.top - margin.bottom;
-
 const numberOfPoints = 100;
 const pointRadius = 9;
 

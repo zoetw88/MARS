@@ -1,20 +1,15 @@
 require('dotenv').config();
 const {sendQuestion}= require('../models/chat_model');
 const path=require('path');
-const {
-  getKeyByValue,
-} = require('../utils/utils');
+const {getKeyByValue} = require('../utils/utils');
+const {ACCESS_TOKEN_SECRET} = process.env;
+const jwt = require('jsonwebtoken');
 const {
   getSelectedMessages,
   getMainMessages,
   getSideMessages,
   addNewMessages,
 } = require('../models/chat_model');
-const {
-  ACCESS_TOKEN_SECRET,
-} = process.env;
-const jwt = require('jsonwebtoken');
-
 
 const chatroom = (io) => {
   const users = [];
@@ -63,7 +58,7 @@ const chatroom = (io) => {
         onlineuser: onlineuser,
       });
     });
-    
+
     socket.on('selectMessages', async function(data) {
       socketId = users[data.sender];
       selectMessages = await getSelectedMessages(data.sender, data.chosenName);
@@ -72,20 +67,20 @@ const chatroom = (io) => {
       });
     });
     socket.on('ask_to_editor', async function(data) {
-      console.log(onlineuser.indexOf(data.receiver))
-      if(onlineuser.indexOf(data.receiver)==0){
-      socketId = users[data.receiver];
-      info = data;
-      io.to(socketId).emit('reply_editor', {
-        info,
-      });}
-      else{
+      console.log(onlineuser.indexOf(data.receiver));
+      if (onlineuser.indexOf(data.receiver)==0) {
+        socketId = users[data.receiver];
+        info = data;
+        io.to(socketId).emit('reply_editor', {
+          info,
+        });
+      } else {
         socketId = users[data.sender];
         info = data;
         io.to(socketId).emit('editor_alone', {
           info,
-        });}
-
+        });
+      }
     });
     socket.on('no_collaborate', async function(data) {
       socketId = users[data.sender];
