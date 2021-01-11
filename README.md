@@ -45,7 +45,7 @@ Password:123
 
 ### Backend
 
-- Environment: Linux + **Node.js**
+- Environment: **Linux** + **Node.js**
 - Framework: **Express.js**
 - Real-time Chatroom: **Socket.IO**
 - User Authorization: **JWT**
