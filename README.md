@@ -26,6 +26,7 @@ Password:123
 ## Features
 
 - Salary and Working hour Comparative Report
+![](https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/search.gif)
 - Instant Interviews Coaching Messenger
 - Realtime Collaborative Whiteboard
  
