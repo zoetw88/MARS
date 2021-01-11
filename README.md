@@ -34,7 +34,7 @@ Password:123
   -  Applied **TF-IDF Algorithm** and **jieba** to extract keywords from interview reviews
   -  Showed interview reviews ordered by user like counts
   -  Gived users latest job information with using **web crawler**
-![](https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/interviewReviews.gif)
+![](https://github.com/zoetw88/MARS_README/blob/master/interviewReviews.gif)
 ### Instant Interviews Coaching Messenger
 ### Realtime Collaborative Whiteboard
  
