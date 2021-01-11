@@ -63,23 +63,7 @@ const chatroom = (io) => {
         onlineuser: onlineuser,
       });
     });
-
-    socket.on('selectMessages', async function(data) {
-      socketId = users[data.sender];
-      const selectMessages = await getSelectedMessages(data.sender, data.chosenName);
-      io.to(socketId).emit('reloadMessages', {
-        messages: selectMessages,
-      });
-    });
-    socket.on('ask_to_editor', async function(data) {
-      socketId = users[data.receiver];
-      const info = data;
-
-      io.to(socketId).emit('reply_editor', {
-        info,
-      });
-    });
-
+    
     socket.on('selectMessages', async function(data) {
       socketId = users[data.sender];
       selectMessages = await getSelectedMessages(data.sender, data.chosenName);
