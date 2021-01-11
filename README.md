@@ -25,9 +25,18 @@ Password:123
 
 ## Features
 
-- Salary and Working hour Comparative Report
-- Instant Interviews Coaching Messenger
-- Realtime Collaborative Whiteboard
+### Salary and Working hour Comparative Report
+  -  Provided **AutoComplete Wiht Ajax** function while typing into the search field
+  -  Enhanced Searches Function with **MYSQL Full-Text Search** 
+  -  Implemented recommendation system by applying **Frequent Pattern Growth Algorithm** to find most frequent and relevant company
+![](https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/searchResult.gif)
+### Interview reviews and Job information
+  -  Applied **TF-IDF Algorithm** and **jieba** to extract keywords from interview reviews
+  -  Showed interview reviews ordered by user like counts
+  -  Gived users latest job information with using **web crawler**
+![](https://github.com/zoetw88/MARS_README/blob/master/interviewReviews.gif)
+### Instant Interviews Coaching Messenger
+### Realtime Collaborative Whiteboard
  
 
 ## Technologies
