@@ -26,6 +26,7 @@ Password:123
 ## Features
 
 - Salary and Working hour Comparative Report
+  -  Enhanced Searches Function with **MYSQL Full-Text Search** 
 ![](https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/searchResult.gif)
 - Instant Interviews Coaching Messenger
 - Realtime Collaborative Whiteboard
