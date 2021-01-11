@@ -68,7 +68,6 @@ Password:123
 
 
 ### Tools
-- Test: **Artillery**
 - Agile: **Trello (Scrum)**
 - Linter: **ESLint**
 
