@@ -2,18 +2,18 @@
 
 To improve workplace transparency in Taiwan
 
-MARS provides salary & working hour comparative reports , interview reviews and online interview coaching service.
+MARS provides salary & working hour comparative reports, interview reviews and online interview coaching service.
 
->“When something is important enough, you do it even if the odds are not in your favor” <br>
+>“When something is important enough, you do it even if the odds are not in your favor.” <br>
 > -Elon Musk 
 
 [Homepage](https://mars-interviews.club) 
 
 ## Test User:
 
-\*\*Email:123@gmail.com
+Email:123@gmail.com
 
-\*\*Password:123
+Password:123
 
 💡 Tips: Online interview coaching service are only provided for anonymous user, please sign in and enjoy!
 
