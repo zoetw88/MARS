@@ -9,7 +9,7 @@ MARS provides salary & working hour comparative reports, interview reviews and o
 
 [Homepage](https://mars-interviews.club) 
 
-## Test User:
+## Test User
 
 Email:123@gmail.com
 
