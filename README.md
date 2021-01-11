@@ -69,7 +69,7 @@ Password:123
 
 ### Tools
 - Test: **Artillery**
-- Agile:**Trello (Scrum)**
+- Agile: **Trello (Scrum)**
 - Linter: **ESLint**
 
 ### AWS Cloud Services
@@ -77,12 +77,12 @@ Password:123
 - Compute: **EC2**
 - Storage: **S3**
 - Database: **RDS**
-- Network:**CloudFront**
+- Network: **CloudFront**
 
 ### Others
-- Design Pattern:**MVC**
+- Design Pattern: **MVC**
 - NLP: **Jieba**
-- Web Crawler:**Python-selenium and BeautifulSoup**
+- Web Crawler: **Python-selenium and BeautifulSoup**
 
 ## Contact
 
