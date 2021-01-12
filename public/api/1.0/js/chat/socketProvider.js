@@ -34,6 +34,7 @@ if (userToken != null || userToken != undefined) {
         io.emit('hello',{message:'thanks'})
         io.on('thanks',function(data){
           console.log(data)
+          console.log(sender)
         })
         io.on('offline', function(data) {
           const check = document.querySelectorAll('.username');
@@ -63,6 +64,7 @@ if (userToken != null || userToken != undefined) {
           username: sender,
         });
         io.on('loadMessages', function(data) {
+          console.log(data)
           organizeTalk(data.messages, sender);
           organizeTalker(data.side_messages, sender);
 
