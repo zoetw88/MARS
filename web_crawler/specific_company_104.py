@@ -22,8 +22,12 @@ mydb = mysql.connector.connect(
     password=DB_PASSWORD,
     database='wenChang'
 )
+j=-1
 
-for x in['和碩聯合科技股份有限公司']:
+# '華碩電腦股份有限公司','群創光電股份有限公司','瑞昱半導體股份有限公司','力成科技股份有限公司','晨星半導體股份有限公司','啟碁科技股份有限公司','日月光半導體製造股份有限公司','泰金寶電通股份有限公司','台灣美光記憶體股份有限公司'
+a=['台灣美光記憶體股份有限公司','緯創資通股份有限公司']
+for x in a:
+    j=j+1
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'}
     company_key=x
@@ -77,7 +81,7 @@ for x in['和碩聯合科技股份有限公司']:
         exp=content.find('li',{"class":"job-mode__exp"})
         
         data=  (
-                    '和碩聯合科技股份有限公司',
+                    a[j],
                     title.a.get('title'),
                     edu.text,
                     exp.text,

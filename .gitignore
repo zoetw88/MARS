@@ -11,3 +11,5 @@ test.http
 
 test
 public/images
+web_crawler/debug.log
+web_crawler/xx.html
