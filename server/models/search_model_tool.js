@@ -28,6 +28,10 @@ const withTitleCompany = async (company, title, querystr) => {
   }
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
   const companylist = [];
+  const mainResult=await query(querystr,[titleFiltered,companyFiltered,companyFiltered])
+  if(mainResult.length ==0){
+    return 'no';
+  }
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
   const result = await query(querystr, [titleFiltered, companylist, companylist]);
   return result;
@@ -42,6 +46,11 @@ const withTitle = async (title, querystr) => {
 const withCompany = async (company, querystr) => {
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no') {
+    return 'no';
+  }
+  const mainResult=await query(querystr,[companyFiltered,companyFiltered])
+  console.log(mainResult)
+  if(mainResult.length==0){
     return 'no';
   }
   const recommendation = await recommendCompany(companyFiltered, null);
