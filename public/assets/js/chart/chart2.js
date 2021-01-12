@@ -14,18 +14,27 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
       data.push(trace);
     }
     let y_legend;
-    if (data.length>3&& data.length<10) {
+    if (data.length<4) {
       y_legend=-1.1;
       chart_height=630;
-    } else if (data.length>10&&data.length<13) {
+    } else if (data.length>4&&data.length<11) {
+      y_legend=-1.3;
+      chart_height=670; } 
+      else if (data.length>10&&data.length<13) {
       y_legend=-1.3;
       chart_height=700; } 
-      else if (data.length>13) {
+      else if (data.length>13&& data.length<15) {
         y_legend=-1.7;
         chart_height=900;
-    } else {
-      y_legend=-0.6;
-      chart_height=520;
+    }  else if (data.length=15) {
+      y_legend=-1.7;
+      chart_height=780;
+  } else if (data.length>=16) {
+      y_legend=-1.9;
+      chart_height=800;
+    }else{
+      y_legend=-0.9;
+      chart_height=545;
     }
     const layout = {
       width: 520,
@@ -93,5 +102,7 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
     $('<h4 id="message-salary"> (ఠ్ఠ ˓̭ ఠ్ఠ)尚未有人提供相關情報</h4>').appendTo($('.chart-label-2 '));
   }
 });
+
+
 
 
