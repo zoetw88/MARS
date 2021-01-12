@@ -27,7 +27,7 @@ if (userToken != null || userToken != undefined) {
         $('#profile').find('p').text(sender);
 
         $('#profile-img').attr('src', picture);
-        io = io('https://mars-interviews.club:5000', {
+        io = io('https://mars-interviews.club/api/1.0/chat.html', {
           query: {
             id: sender,
           },
