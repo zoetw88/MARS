@@ -125,14 +125,14 @@ const topSearchCompany= async (company, companylist)=>{
 
 const filterCompany = async (company) => {
   const queryCompany = `
+  (SELECT main_company AS company ,another_name
+    FROM company_connection 
+    WHERE another_name= ?)
+  UNION 
   (SELECT company ,MATCH (company) AGAINST (?) AS score 
   FROM salary 
-  HAVING score >10
-  ORDER BY score DESC limit 1)
-  UNION 
-  (SELECT main_company AS company ,another_name
-  FROM company_connection 
-  WHERE another_name= ?)`;
+  HAVING score >0.2
+  ORDER BY score DESC limit 1)`;
   const companyResult = await query(queryCompany, [company, company]);
 
   if (companyResult.length > 0) {
