@@ -53,8 +53,6 @@ const getSalary = async (company, title, ip) => {
           ORDER BY FIELD(company,?)`;
 
       dataForLineChart = await withTitleCompany(company, title, queryAvgSalary);
-
-      console.log(dataForLineChart);
     } else if (validator.isEmpty(company)) {
       const queryAvgSalary = `
       WITH company_list AS(
@@ -221,11 +219,40 @@ const extractComments = async (company, title) => {
       return 'no';
     }
   } catch (error) {
-    await rollback();
     return error;
   }
 };
 
+const getCounts = async (company) => {
+  try {
+    if (validator.isEmpty(company)) {
+      return 'no';
+    } else {
+      const companyFiltered=await filterCompany(company);
+      console.log(companyFiltered);
+      const queryCounts = `
+      (SELECT COUNT(id) as counts FROM user where company=?)
+      UNION ALL
+      (SELECT COUNT(id) FROM comment where company=?)     
+      UNION ALL
+      (SELECT COUNT(id) FROM job where company=?) 
+      UNION ALL
+      (SELECT COUNT(id) FROM recommend where search_company=?) `;
+      const totalCounts = await query(queryCounts, [companyFiltered, companyFiltered, companyFiltered, companyFiltered]);
+
+      const result=[];
+      result.push(totalCounts[0].counts,totalCounts[1].counts,totalCounts[2].counts,totalCounts[3].counts)
+      
+      if (totalCounts.length>0 ) {
+        return result;
+      } else {
+        return 'no';
+      }
+    }
+  } catch (error) {
+    return error;
+  }
+};
 const extractAllComments = async () => {
   try {
     const queryAllComments = `SELECT * FROM comment `;
@@ -295,5 +322,6 @@ module.exports = {
   extractComments,
   extractAllComments,
   saveLike,
+  getCounts,
 };
 

@@ -26,17 +26,16 @@ const chatroom = (io) => {
   io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
     users[sender] = socket.id;
-    console.log(users)
     if (!onlineuser.includes(sender)) {
       onlineuser.push(sender);
     }
     userdata = JSON.stringify(onlineuser);
-   
+
     io.emit('online', {
       onlineuser: onlineuser,
     });
 
-   
+
     socket.on('disconnect', () => {
       const offlineUser = getKeyByValue(users, socket.id);
       const removeUserIndex = onlineuser.indexOf(offlineUser);
@@ -53,9 +52,6 @@ const chatroom = (io) => {
       const mainMessages = await getMainMessages(data.username);
       const sideMessages = await getSideMessages(data.username);
       const socketId = users[data.username];
-      console.log(mainMessages)
-      console.log(users)
-      console.log(socketId)
       io.to(socketId).emit('loadMessages', {
         messages: mainMessages,
         side_messages: sideMessages,
@@ -71,7 +67,6 @@ const chatroom = (io) => {
       });
     });
     socket.on('ask_to_editor', async function(data) {
-      console.log(onlineuser.indexOf(data.receiver));
       if (onlineuser.indexOf(data.receiver)==0) {
         socketId = users[data.receiver];
         info = data;

@@ -8,9 +8,10 @@
     <title>MARS | Home</title>
 
     <meta name="description" content="">
-
+  
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <!--axios-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--====== Favicon Icon ======-->
     <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/png">
 
@@ -102,7 +103,7 @@
 
     <!--====== HEADER PART ENDS ======-->
     <!--====== COUNTER PART START ======-->
-
+   
     <section class="counter_area gray-bg pt-50 pb-80">
         <div class="container">
             <div class="container ">
@@ -113,8 +114,8 @@
                             <div class="counter-icon">
                                 <i class="fa fa-users"></i>
                             </div>
-                            <span class="counter-value">22</span>
-                            <h3>會員人數</h3>
+                            <span id='users' class="counter-value">1</span>
+                            <h3 >會員人數</h3>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -122,8 +123,8 @@
                             <div class="counter-icon">
                                 <i class="fa fa-pencil-square-o"></i>
                             </div>
-                            <span class="counter-value">30</span>
-                            <h3>面試心得</h3>
+                            <h5 id='reviews'class="counter-value">1</h5>
+                            <h3 >面試心得</h3>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -131,8 +132,8 @@
                             <div class="counter-icon">
                                 <i class="fa fa-briefcase"></i>
                             </div>
-                            <span class="counter-value">21</span>
-                            <h3>現有職缺</h3>
+                            <span  id='jobs' class="counter-value">1</span>
+                            <h3 >現有職缺</h3>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
@@ -140,14 +141,14 @@
                             <div class="counter-icon">
                                 <i class="fa fa-search"></i>
                             </div>
-                            <span class="counter-value">72</span>
-                            <h3>搜尋人數</h3>
+                            <span id='search' class="counter-value">1</span>
+                            <h3 >搜尋人數</h3>
                         </div>
                     </div>
                 </div>
             </div>
     </section>
-
+    <script src="./assets/js/counters.js"></script>
     <!--====== COUNTER PART ENDS ======-->
 
     <!--====== Chaart PART START ======-->
@@ -279,6 +280,7 @@
                             </div> <!-- container -->
     </section>
 <!---===joblist-->
+
 <section class="category_area pt-75">
     <div class="category_shape"><img src="assets/images/shape-2.png" alt="shape"></div>
     <div class="container">
@@ -297,6 +299,7 @@
         
     </div>
 </section>
+
 <!---chat button-->
 <div class="fab-container">
     <div class="fab fab-icon-holder">
@@ -354,8 +357,7 @@
 
     <!-- row -->
     
-    <!--axios-->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
 
     <!--salary-chart-->
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>

@@ -97,7 +97,7 @@ async function login(event) {
       provider: 'native',
     })
         .then((response) => {
-          console.log(response);
+         
           window.localStorage.setItem('nickname', response.data.data.nickname);
           window.localStorage.setItem('token', response.data.data.accessToken);
           window.localStorage.setItem('id', response.data.data.nickname);

@@ -10,7 +10,6 @@ axios.get(`/api/1.0/joblist`)
 
 axios.get(`/api/1.0/companylist`)
     .then((response) => {
-      console.log(response);
       $(function() {
         const availableTags = response.data;
         $('#company').autocomplete({
