@@ -107,9 +107,9 @@ Password:123
 
 ## Future Features
  - New messages alert
- - member center
+ - Member center
  - Points system to read interview reviews at no charge
- - payment mechanism
+ - Payment mechanism
 
 ## Contact
 
