@@ -82,7 +82,7 @@ const getSalary = async (company, title, ip) => {
       dataForLineChart = await withCompany(company, queryAvgSalary);
     }
 
-    if (dataForLineChart.length>0) {
+    if (dataForLineChart.length>0 && dataForLineChart!='no') {
       const result = organizeData(dataForLineChart);
       return result;
     } else {
@@ -131,7 +131,7 @@ const getWorkinghour = async (company, title) => {
 
       ScatterChart = await withTitle(title, queryWorking);
     }
-    if (ScatterChart.length>0) {
+    if (ScatterChart.length>0 && ScatterChart!='no') {
       return ScatterChart;
     } else {
       return 'no';
@@ -171,7 +171,7 @@ const get104jobs = async (company, title) => {
       ORDER BY FIELD(company,?) `;
       dataForChart = await withCompany(company, query104Job);
     }
-    if (dataForChart.length>0) {
+    if (dataForChart.length>0 && dataForChart!='no') {
       return dataForChart;
     } else {
       return 'no';
@@ -215,7 +215,7 @@ const extractComments = async (company, title) => {
 
       dataComments = await withCompany(company, queryComments);
     }
-    if (dataComments.length>0) {
+    if (dataComments.length>0 && dataComments!='no') {
       return dataComments;
     } else {
       return 'no';
@@ -296,3 +296,4 @@ module.exports = {
   extractAllComments,
   saveLike,
 };
+
