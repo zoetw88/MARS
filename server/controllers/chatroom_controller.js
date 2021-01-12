@@ -15,7 +15,16 @@ const chatroom = (io) => {
   const users = [];
   let sender;
   const onlineuser = [];
-
+  // io.use(function(socket, next) {
+  //   sender = socket.handshake.query.id;
+  //   if (socket.handshake.query.id) {
+  //     return next();
+  //   }
+  //   next(new Error('Authentication error'));
+  // });
+  io.on('hello',function(data){
+    console.log(data)
+  })
   io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
     users[sender] = socket.id;

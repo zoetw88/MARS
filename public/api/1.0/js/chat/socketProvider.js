@@ -28,7 +28,7 @@ if (userToken != null || userToken != undefined) {
 
         $('#profile-img').attr('src', picture);
         io = io()
-
+        io.emit('hello',{message:'thanks'})
 
         io.on('offline', function(data) {
           const check = document.querySelectorAll('.username');
