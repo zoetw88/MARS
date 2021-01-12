@@ -106,13 +106,10 @@ Password:123
 
 
 ## Future Features
- -New messages alert
-
- -member center
-
- -Points system to read interview reviews at no charge
-
- -payment mechanism
+ - New messages alert
+ - member center
+ - Points system to read interview reviews at no charge
+ - payment mechanism
 
 ## Contact
 
