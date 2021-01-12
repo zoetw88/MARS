@@ -1,3 +1,5 @@
+import { io } from "socket.io-client";
+
 let sender = '';
 
 userToken = localStorage.getItem('token');
@@ -28,8 +30,11 @@ if (userToken != null || userToken != undefined) {
 
         $('#profile-img').attr('src', picture);
         io = io()
-        io.emit('hello',{message:'thanks'})
 
+        io.emit('hello',{message:'thanks'})
+        io.on('thanks',function(data){
+          console.log(data)
+        })
         io.on('offline', function(data) {
           const check = document.querySelectorAll('.username');
           check.forEach(function(item) {

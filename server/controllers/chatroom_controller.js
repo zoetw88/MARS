@@ -22,9 +22,7 @@ const chatroom = (io) => {
   //   }
   //   next(new Error('Authentication error'));
   // });
-  io.on('hello',function(data){
-    console.log(data)
-  })
+
   io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
     users[sender] = socket.id;
@@ -32,11 +30,17 @@ const chatroom = (io) => {
       onlineuser.push(sender);
     }
     userdata = JSON.stringify(onlineuser);
-
+   
     io.emit('online', {
       onlineuser: onlineuser,
     });
 
+    socket.on('hello',function(data){
+      console.log(data)
+      socket.emit('thanks',{
+        message:'good'
+      })
+    })
     socket.on('disconnect', () => {
       const offlineUser = getKeyByValue(users, socket.id);
       const removeUserIndex = onlineuser.indexOf(offlineUser);
