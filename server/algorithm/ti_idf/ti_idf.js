@@ -16,6 +16,7 @@ const searchKeywords = async (company, title, counts = 1) => {
   const counter = {};
   const result = [];
   const mainComments = await search.extractComments(company, title);
+
   const comparedComments = await search.extractAllComments();
 
 
@@ -61,7 +62,7 @@ const searchKeywords = async (company, title, counts = 1) => {
     });
     counter[word].tfidf = counter[word].tf / counts * Math.log(mainComments.length / counter[word].df);
     finalWordlist = {};
-    if ((counter[word].tfidf) < 1 && 0.0038 < (counter[word].tfidf)) {
+    if ((counter[word].tfidf) < 1 && 0.001 < (counter[word].tfidf)) {
       finalWordlist = word;
       result.push(finalWordlist);
     }

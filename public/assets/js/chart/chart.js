@@ -36,7 +36,7 @@ d3.json('../../json/company.json', function(data) {
 
     const colourScale = d3.scale.ordinal()
         .domain(labels)
-        .range(['	#00FFFF', '	#FF60AF', '	#FF2D2D', '#F9F900', '	#FF8000', '#9AFF02', '	#9999CC', '#9D9D9D', '#16982b', '#6FB7B7', '#003366', '#b22222']);
+        .range(['	#30A9DE', '	#EFDC05', '	#E53A40', '#F9F900', '	#FF8000', '#9AFF02', '	#9999CC', '#9D9D9D', '#16982b', '#6FB7B7', '#003366', '#b22222']);
 
     const shapeScale = d3.scale.ordinal()
         .domain(labels)
