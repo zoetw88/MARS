@@ -127,7 +127,7 @@ const filterCompany = async (company) => {
   const queryCompany = `
   (SELECT company ,MATCH (company) AGAINST (?) AS score 
   FROM salary 
-  HAVING score >0.2 
+  HAVING score >10
   ORDER BY score DESC limit 1)
   UNION 
   (SELECT main_company AS company ,another_name
