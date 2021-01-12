@@ -26,6 +26,7 @@ const chatroom = (io) => {
   io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
     users[sender] = socket.id;
+    console.log(users)
     if (!onlineuser.includes(sender)) {
       onlineuser.push(sender);
     }
@@ -53,6 +54,7 @@ const chatroom = (io) => {
       const sideMessages = await getSideMessages(data.username);
       const socketId = users[data.username];
       console.log(mainMessages)
+      console.log(users)
       console.log(socketId)
       io.to(socketId).emit('loadMessages', {
         messages: mainMessages,
