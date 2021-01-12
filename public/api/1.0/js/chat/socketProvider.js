@@ -27,8 +27,11 @@ if (userToken != null || userToken != undefined) {
         $('#profile').find('p').text(sender);
 
         $('#profile-img').attr('src', picture);
-
-        io = io();
+        io = io('http://localhost:5000', {
+          query: {
+            id: sender,
+          },
+        });
 
 
         io.on('offline', function(data) {
