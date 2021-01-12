@@ -27,7 +27,7 @@ if (userToken != null || userToken != undefined) {
         $('#profile').find('p').text(sender);
 
         $('#profile-img').attr('src', picture);
-        io = io('https://127.0.0.1:5000', {
+        io = io('http://127.0.0.1:5000', {
           query: {
             id: sender,
           },
