@@ -29,7 +29,7 @@ Password:123
 - [Features](#Features)
 - [Technologies](#Technologies)
 - [Contact](#Contact)
-- [FutureFeatures](#FutureFeatures)
+- [Future Features](#Future Features)
 ## Features
 
 ### Salary and Working hour Comparative Report
@@ -105,10 +105,11 @@ Password:123
 - Web Crawler: **Python-selenium and BeautifulSoup**
 
 
-## FutureFeatures
+## Future Features
 -New messages alert
 -member center
--Points system to read interviews reviews at no charge.
+-Points system to read interview reviews at no charge
+-payment mechanism
 
 ## Contact
 
