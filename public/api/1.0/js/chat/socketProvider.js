@@ -1,5 +1,3 @@
-
-
 let sender = '';
 
 userToken = localStorage.getItem('token');
@@ -29,13 +27,13 @@ if (userToken != null || userToken != undefined) {
         $('#profile').find('p').text(sender);
 
         $('#profile-img').attr('src', picture);
-        io = io()
+        io = io( {
+          query: {
+            id: sender
+          }
+        });
 
-        io.emit('hello',{message:'thanks'})
-        io.on('thanks',function(data){
-          console.log(data)
-          console.log(sender)
-        })
+
         io.on('offline', function(data) {
           const check = document.querySelectorAll('.username');
           check.forEach(function(item) {
@@ -64,7 +62,6 @@ if (userToken != null || userToken != undefined) {
           username: sender,
         });
         io.on('loadMessages', function(data) {
-          console.log(data)
           organizeTalk(data.messages, sender);
           organizeTalker(data.side_messages, sender);
 

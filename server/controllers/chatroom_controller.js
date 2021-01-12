@@ -57,7 +57,8 @@ const chatroom = (io) => {
       const mainMessages = await getMainMessages(data.username);
       const sideMessages = await getSideMessages(data.username);
       const socketId = users[data.username];
-
+      console.log(mainMessages)
+      console.log(socketId)
       io.to(socketId).emit('loadMessages', {
         messages: mainMessages,
         side_messages: sideMessages,
