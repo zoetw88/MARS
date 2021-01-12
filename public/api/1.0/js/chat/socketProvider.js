@@ -27,7 +27,9 @@ if (userToken != null || userToken != undefined) {
         $('#profile').find('p').text(sender);
 
         $('#profile-img').attr('src', picture);
+
         io = io();
+
 
         io.on('offline', function(data) {
           const check = document.querySelectorAll('.username');

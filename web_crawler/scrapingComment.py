@@ -25,6 +25,8 @@ mydb = mysql.connector.connect(
     database='wenChang'
 )
 '鴻海精密工業股份有限公司'
+
+#,'仁寶電腦工業股份有限公司','群聯電子股份有限公司','英業達股份有限公司','台達電子工業股份有限公司','GARMIN','台灣積體電路製造股份有限公司','緯創資通股份有限公司','廣達電腦股份有限公司'
 # engine = sqlalchemy.create_engine(f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:3306/{DB_DATABASE}')
 Links = []
 if(mydb):
@@ -32,7 +34,7 @@ if(mydb):
 else:
     print("Oops, connect to mysql unsuccessfully.")
 cursor = mydb.cursor()
-for x in['和碩聯合科技股份有限公司','仁寶電腦工業股份有限公司','群聯電子股份有限公司','英業達股份有限公司','台達電子工業股份有限公司','GARMIN','台灣積體電路製造股份有限公司','緯創資通股份有限公司','廣達電腦股份有限公司']:
+for x in['17直播']:
     for i in range(1, 15):
         company = urllib.parse.quote(x)
         converted_num = str(i)
@@ -82,6 +84,7 @@ for x in['和碩聯合科技股份有限公司','仁寶電腦工業股份有限�
             print(compound)
             if len(compound)>8:
                 if(compound[3].find('到')>0):
+                    
                     compound[3]=compound[3].lstrip('不到')
            
                 if(compound[3].rfind('年')>0):
@@ -89,6 +92,7 @@ for x in['和碩聯合科技股份有限公司','仁寶電腦工業股份有限�
 
             if len(compound)>8:
                 sql_insert_query = "INSERT INTO comment(company, address,title,length,comment_date,hire_status,interview_experience,interview_prepare) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+                compound[0]="英屬維京群島商藝啟股份有限公司臺灣分公司"
                 cursor = mydb.cursor()
                 if compound[8]=='wrong':
                     if len(compound)>10:
