@@ -27,8 +27,7 @@ function myCursorBuilder(user) {
 
 myCursorBuilder();
 const ydoc = new Y.Doc();
-const provider = new WebsocketProvider('ws://localhost
-:1234', `${room}`, ydoc);
+const provider = new WebsocketProvider('wss://mars-interviews.club', `${room}`, ydoc);
 const type = ydoc.getXmlFragment('prosemirror');
 window.view = new EditorView(document.querySelector('#editor'), {
   state: EditorState.create({
