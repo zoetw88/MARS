@@ -103,7 +103,7 @@ async function askCollaborate(data) {
 }
 
 function editor() {
-  receiver = $('.active').find('.name').text();
+  receiver = $('.receiver').find('p').text();
   if (receiver == '') {
     return false;
   }
@@ -160,4 +160,13 @@ Swal.fire({
       top left
       no-repeat`,
 });
+}
+function relocate() {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: '親愛的火星居民，你還沒有向其他人詢問面試或公司等問題!!               先搜尋公司再使用發問功能詢問其他居民。',
+  }).then(() => {
+    window.location.href = '/index.html';
+  });
 }

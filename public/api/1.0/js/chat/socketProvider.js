@@ -79,6 +79,9 @@ if (userToken != null || userToken != undefined) {
         io.on('reloadMessages', function(data) {
           organizeTalk(data.messages, sender);
         });
+        io.on('research', function(data) {
+          relocate(data)
+        });
         io.on('reply_editor', function(data) {
           askCollaborate(data);
         });

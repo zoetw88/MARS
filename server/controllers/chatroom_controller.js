@@ -52,12 +52,15 @@ const chatroom = (io) => {
       const mainMessages = await getMainMessages(data.username);
       const sideMessages = await getSideMessages(data.username);
       const socketId = users[data.username];
-      io.to(socketId).emit('loadMessages', {
-        messages: mainMessages,
-        side_messages: sideMessages,
-        onlineuser: onlineuser,
-      });
-    });
+      if(mainMessages){
+        io.to(socketId).emit('loadMessages', {
+          messages: mainMessages,
+          side_messages: sideMessages,
+          onlineuser: onlineuser,
+        });}
+      else{
+        io.to(socketId).emit('research');
+    }});
 
     socket.on('selectMessages', async function(data) {
       socketId = users[data.sender];
