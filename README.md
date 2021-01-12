@@ -11,11 +11,18 @@ MARS provides salary & working hour comparative reports, interview reviews and o
 
 ## Test User
 
+test 1:
 Email:123@gmail.com
 
 Password:123
 
-💡 Tips: Online interview coaching service are only provided for anonymous user, please sign in and enjoy!
+test 2:
+Email:zoetw88@gmail.com
+
+Password:123
+
+💡 Tips: Online interview coaching service are only provided for anonymous user, please sign in.
+         If you want to use realtime collaborative white board ,please use test 1 account and test 2 account to sign in.
 
 ## Table of Content
 
