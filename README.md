@@ -29,7 +29,7 @@ Password:123
 - [Features](#Features)
 - [Technologies](#Technologies)
 - [Contact](#Contact)
-- [FutureFeatures](#Future Features)
+- [FutureFeatures](#FutureFeatures)
 ## Features
 
 ### Salary and Working hour Comparative Report
