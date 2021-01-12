@@ -35,12 +35,7 @@ const chatroom = (io) => {
       onlineuser: onlineuser,
     });
 
-    socket.on('hello',function(data){
-      console.log(data)
-      socket.emit('thanks',{
-        message:'good'
-      })
-    })
+   
     socket.on('disconnect', () => {
       const offlineUser = getKeyByValue(users, socket.id);
       const removeUserIndex = onlineuser.indexOf(offlineUser);

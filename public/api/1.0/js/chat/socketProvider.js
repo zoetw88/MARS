@@ -62,6 +62,7 @@ if (userToken != null || userToken != undefined) {
           username: sender,
         });
         io.on('loadMessages', function(data) {
+          console.log(data)
           organizeTalk(data.messages, sender);
           organizeTalker(data.side_messages, sender);
 
