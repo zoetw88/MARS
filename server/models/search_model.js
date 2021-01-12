@@ -226,7 +226,8 @@ const extractComments = async (company, title) => {
 const getCounts = async (company) => {
   try {
     if (validator.isEmpty(company)) {
-      return 'no';
+      let cantCounts=[0,0,0,0]
+      return cantCounts;
     } else {
       const companyFiltered=await filterCompany(company);
       console.log(companyFiltered);
