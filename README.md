@@ -105,7 +105,7 @@ Password:123
 - Web Crawler: **Python-selenium and BeautifulSoup**
 
 
-## Future Features
+## FutureFeatures
  - New messages alert
  - Member center
  - Points system to read interview reviews at no charge
