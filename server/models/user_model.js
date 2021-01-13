@@ -19,7 +19,6 @@ const signUp = async (name, nickname, email, password, company, union, title) =>
     await transaction();
     const queryEmail = `SELECT email FROM user WHERE email = ? FOR UPDATE`;
     const emails = await query(queryEmail, [email]);
-
     if (emails.length > 0) {
       await commit();
       return {
@@ -36,16 +35,13 @@ const signUp = async (name, nickname, email, password, company, union, title) =>
       company: company,
       union: union,
       picture: 'https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/no.5.png',
-
     };
-
     accessToken = jwt.sign({
       exp: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),
       email: email,
       nickname: nickname,
       picture: 'https://zoesandbox.s3-ap-southeast-1.amazonaws.com/img/no.5.png',
     }, ACCESS_TOKEN_SECRET);
-
     data = {
       username: nickname,
       accessExpired: Math.floor(Date.now() / 1000) + parseInt(TOKEN_EXPIRE),

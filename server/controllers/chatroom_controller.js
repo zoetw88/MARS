@@ -31,12 +31,10 @@ const chatroom = (io) => {
       onlineuser.push(sender);
     }
     userdata = JSON.stringify(onlineuser);
-   
     io.emit('online', {
       onlineuser: onlineuser,
     });
-
-   
+    
     socket.on('disconnect', () => {
       const offlineUser = getKeyByValue(users, socket.id);
       const removeUserIndex = onlineuser.indexOf(offlineUser);

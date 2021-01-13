@@ -27,10 +27,10 @@ function comment_extract(response) {
   if (response.data!='no') {
     for (let i = 0; i < response.data.length; i++) {
       const split_result = response.data[i].interview_experience.split('\n');
-      if (split_result[0] == 'wrong' || split_result[0] == '詢問家庭狀況' || split_result[0] == '無') {
+      if (split_result[0] == 'wrong' || split_result[0] == '詢問家庭狀況' || split_result[0] == '無'|| split_result[0] == undefined || split_result[0] == null) {
         continue;
       }
-      if (split_result[0] && split_result[0].indexOf('第一次面試') < 0) {
+      if (split_result[0] && split_result[0].indexOf('第一次面試') < 0 ) {
         split_result[0] = '第一次面試 : ' + split_result[0];
       }
       if (split_result[1] == undefined || split_result[1] == '') {
@@ -42,7 +42,6 @@ function comment_extract(response) {
 
       if (split_result[1]) {
         const check_content = split_result[1].split('第二次面試');
-
         if (check_content[1] && check_content[1].length < 2) {
           split_result[1] = '';
         }

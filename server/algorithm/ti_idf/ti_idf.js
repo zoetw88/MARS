@@ -67,8 +67,6 @@ const searchKeywords = async (company, title, counts = 1) => {
       result.push(finalWordlist);
     }
   });
-
-
   return result;
 };
 

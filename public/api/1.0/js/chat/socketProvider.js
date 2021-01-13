@@ -2,7 +2,6 @@ let sender = '';
 
 userToken = localStorage.getItem('token');
 if (userToken != null || userToken != undefined) {
-  console.log('yes');
   axios.get('/api/1.0/chat', {
     headers: {
       'Content-Type': 'application/json',
