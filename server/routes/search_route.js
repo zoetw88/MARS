@@ -2,7 +2,6 @@ const router = require('express').Router();
 const {
   wrapAsync,
 } = require('../utils/utils');
-
 const {
   getSalary,
   getWorkingHours,
@@ -12,6 +11,7 @@ const {
   getCompanylist,
   getJob104list,
   saveCommentLike,
+  getCounts,
 } = require('../controllers/search_controller');
 
 
@@ -38,5 +38,8 @@ router.route('/joblist')
 
 router.route('/like')
     .post(wrapAsync(saveCommentLike));
+
+router.route('/counts')
+    .get(wrapAsync(getCounts));
 
 module.exports = router;

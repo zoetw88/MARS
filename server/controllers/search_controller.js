@@ -13,7 +13,6 @@ const getSalary = async (req, res) => {
       ip = ip.substr(7);
     }
     const result = await search.getSalary(company, title, ip);
-    console.log(result);
     const salaryChartPath=path.join(__dirname, '../../public/json/salary.json');
     const resultJSON = JSON.stringify(result);
     fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
@@ -121,10 +120,19 @@ const getJoblist = async (req, res) => {
 const saveCommentLike = async (req, res) => {
   try {
     const {id}=req.body;
-
     const number= parseInt(id);
-
     await search.saveLike(number);
+  } catch (error) {
+    return {error};
+  }
+};
+
+
+const getCounts = async (req, res) => {
+  try {
+    const {company}=req.query;
+    const result= await search.getCounts(company);
+    res.status(200).send(result);
   } catch (error) {
     return {error};
   }
@@ -138,4 +146,5 @@ module.exports = {
   getCompanylist,
   getJoblist,
   saveCommentLike,
+  getCounts,
 };

@@ -56,22 +56,20 @@ const recommendCompany = async (company, title) => {
 
   fpgrowth.exec(dataset);
   if (title != null || title != undefined) {
-    queryCompany =`
-    WITH titlelist AS(
+    queryCompany =
+    `WITH titlelist AS(
       SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
       FROM recommend 
-      HAVING score >0.0003
-      ORDER BY score 
+      HAVING score >0.0003  ORDER BY score 
       )
     SELECT search_company
     FROM recommend 
     WHERE search_company NOT IN (?) AND title IN(select title from titlelist)
-    GROUP BY search_company ORDER BY COUNT(search_company) DESC LIMIT ? `;
+    GROUP BY search_company ORDER BY COUNT(search_company) LIMIT ? `;
 
     switch (companylist.length) {
       case 0:
         const companySelect = await query(queryCompany, [title, company, 2]);
-
         if (companySelect.length > 1) {
           companylist[0] = companySelect[0].search_company;
           companylist[1] = companySelect[1].search_company;

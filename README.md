@@ -29,7 +29,7 @@ Password:123
 - [Features](#Features)
 - [Technologies](#Technologies)
 - [Contact](#Contact)
-
+- [FutureFeatures](#FutureFeatures)
 ## Features
 
 ### Salary and Working hour Comparative Report
@@ -103,6 +103,13 @@ Password:123
 - Design Pattern: **MVC**
 - NLP: **Jieba**
 - Web Crawler: **Python-selenium and BeautifulSoup**
+
+
+## FutureFeatures
+ - New messages alert
+ - Member center
+ - Points system to read interview reviews at no charge
+ - Payment mechanism
 
 ## Contact
 

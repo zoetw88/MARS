@@ -171,7 +171,6 @@ const addNewMessages = async (data) => {
 
     await query(querystrNewMessage, message, function(error, results, fields) {
       if (error) throw error;
-      console.log(results);
     });
 
     if (result.length > 0) {

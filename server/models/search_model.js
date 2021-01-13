@@ -53,8 +53,6 @@ const getSalary = async (company, title, ip) => {
           ORDER BY FIELD(company,?)`;
 
       dataForLineChart = await withTitleCompany(company, title, queryAvgSalary);
-
-      console.log(dataForLineChart);
     } else if (validator.isEmpty(company)) {
       const queryAvgSalary = `
       WITH company_list AS(
@@ -82,7 +80,7 @@ const getSalary = async (company, title, ip) => {
       dataForLineChart = await withCompany(company, queryAvgSalary);
     }
 
-    if (dataForLineChart.length>0) {
+    if (dataForLineChart.length>0 && dataForLineChart!='no') {
       const result = organizeData(dataForLineChart);
       return result;
     } else {
@@ -131,7 +129,7 @@ const getWorkinghour = async (company, title) => {
 
       ScatterChart = await withTitle(title, queryWorking);
     }
-    if (ScatterChart.length>0) {
+    if (ScatterChart.length>0 && ScatterChart!='no') {
       return ScatterChart;
     } else {
       return 'no';
@@ -171,7 +169,7 @@ const get104jobs = async (company, title) => {
       ORDER BY FIELD(company,?) `;
       dataForChart = await withCompany(company, query104Job);
     }
-    if (dataForChart.length>0) {
+    if (dataForChart.length>0 && dataForChart!='no') {
       return dataForChart;
     } else {
       return 'no';
@@ -215,17 +213,47 @@ const extractComments = async (company, title) => {
 
       dataComments = await withCompany(company, queryComments);
     }
-    if (dataComments.length>0) {
+    if (dataComments.length>0 && dataComments!='no') {
       return dataComments;
     } else {
       return 'no';
     }
   } catch (error) {
-    await rollback();
     return error;
   }
 };
 
+const getCounts = async (company) => {
+  try {
+    if (validator.isEmpty(company)) {
+      let cantCounts=[0,0,0,0]
+      return cantCounts;
+    } else {
+      const companyFiltered=await filterCompany(company);
+      console.log(companyFiltered);
+      const queryCounts = `
+      (SELECT COUNT(id) as counts FROM user where company=?)
+      UNION ALL
+      (SELECT COUNT(id) FROM comment where company=?)     
+      UNION ALL
+      (SELECT COUNT(id) FROM job where company=?) 
+      UNION ALL
+      (SELECT COUNT(id) FROM recommend where search_company=?) `;
+      const totalCounts = await query(queryCounts, [companyFiltered, companyFiltered, companyFiltered, companyFiltered]);
+
+      const result=[];
+      result.push(totalCounts[0].counts,totalCounts[1].counts,totalCounts[2].counts,totalCounts[3].counts)
+      
+      if (totalCounts.length>0 ) {
+        return result;
+      } else {
+        return 'no';
+      }
+    }
+  } catch (error) {
+    return error;
+  }
+};
 const extractAllComments = async () => {
   try {
     const queryAllComments = `SELECT * FROM comment `;
@@ -295,4 +323,6 @@ module.exports = {
   extractComments,
   extractAllComments,
   saveLike,
+  getCounts,
 };
+
