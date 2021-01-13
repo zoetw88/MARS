@@ -23,7 +23,7 @@ const {
 const withTitleCompany = async (company, title, querystr) => {
   const titleFiltered = await filterTitle(title);
   const companyFiltered = await filterCompany(company);
-  if (companyFiltered == 'no') {
+  if (companyFiltered == 'no'||titleFiltered=='no') {
     return 'no';
   }
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
@@ -39,6 +39,9 @@ const withTitleCompany = async (company, title, querystr) => {
 
 const withTitle = async (title, querystr) => {
   const titleFiltered = await filterTitle(title);
+  if (titleFiltered=='no') {
+    return 'no';
+  }
   const result = await query(querystr, [titleFiltered]);
   return result;
 };

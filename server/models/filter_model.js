@@ -43,6 +43,7 @@ const recommendCompany = async (company, title) => {
       switch (fpCompany.length) {
         case 1:
           companylist[0] = fpCompany[0];
+          console.log(companylist)
           break;
 
         case 2:
@@ -93,7 +94,6 @@ const recommendCompany = async (company, title) => {
   } else {
     companylist = await topSearchCompany(company, companylist);
   }
-
   return companylist;
 };
 
@@ -145,10 +145,7 @@ const filterTitle = async (title) => {
   if (title.indexOf('工程師')) {
     titleSplit = title.split('工程師')[0].toString();
     title = titleSplit;
-  } else (title.indexOf('')); {
-    titleSplit = title.split(' ').toString();
-    title = titleSplit;
-  }
+  } 
 
   const queryTitle = `
   SELECT career ,category
@@ -166,8 +163,18 @@ const filterTitle = async (title) => {
     const titleFiltered = titlelist.join();
 
     return titleFiltered;
-  } else {
-    return title;
+  } 
+  const queryTitleExist = `
+  SELECT title ,MATCH (title) AGAINST (?) AS score 
+  FROM salary 
+  HAVING score >0.2
+  ORDER BY score DESC limit 1`
+  const titleExist = await query(queryTitleExist, [title, title]);
+  if (titleExist.length > 0) {
+   titleResult= titleExist[0].title
+    return titleResult;
+  }else{
+    return 'no'
   }
 };
 module.exports = {
