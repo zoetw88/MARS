@@ -22,6 +22,7 @@ const {
 
 const withTitleCompany = async (company, title, querystr) => {
   const titleFiltered = await filterTitle(title);
+
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no'||titleFiltered=='no') {
     return 'no';

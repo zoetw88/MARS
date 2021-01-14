@@ -1,3 +1,4 @@
+const { ContextExclusionPlugin } = require('webpack');
 const {
   FPGrowth,
 } = require('../algorithm/fpgrowth/fpgrowth');
@@ -142,10 +143,15 @@ const filterCompany = async (company) => {
 };
 
 const filterTitle = async (title) => {
+
   if (title.indexOf('工程師')) {
     titleSplit = title.split('工程師')[0].toString();
     title = titleSplit;
-  } 
+  } else (title.indexOf(' ')); {
+    titleSplit = title.split(' ')[0].toString();
+    title = titleSplit;
+  }
+  
 
   const queryTitle = `
   SELECT career ,category

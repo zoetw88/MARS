@@ -8,7 +8,7 @@ const getSalary = async (req, res) => {
   try {
     const {title} = req.query;
     const {company} = req.query;
-    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    let ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
     if (ip.substr(0, 7) == '::ffff:') {
       ip = ip.substr(7);
     }
