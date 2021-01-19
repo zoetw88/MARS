@@ -67,6 +67,7 @@ const getKeywords = async (req, res) => {
     } = req.query;
     if (!validator.isEmpty(company)) {
       const result=await searchKeywords(company, title);
+      console.log(result)
       res.status(200).send(result);
     } else {
       return 'no';
