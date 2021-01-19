@@ -160,7 +160,6 @@ const addNewMessages = async (data) => {
     await transaction();
 
     const time = moment().format('YYYY-MM-DD HH:mm:ss');
-
     const querystrNewMessage = `INSERT INTO message SET?`;
     const message = {
       sender: data.sender,
@@ -176,6 +175,7 @@ const addNewMessages = async (data) => {
     if (result.length > 0) {
       await commit();
       return result;
+      
     } else {
       return error;
     }

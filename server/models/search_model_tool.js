@@ -22,17 +22,20 @@ const {
 
 const withTitleCompany = async (company, title, querystr) => {
   const titleFiltered = await filterTitle(title);
-
   const companyFiltered = await filterCompany(company);
+
   if (companyFiltered == 'no'||titleFiltered=='no') {
     return 'no';
   }
+
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
   const companylist = [];
   const mainResult=await query(querystr, [titleFiltered, companyFiltered, companyFiltered]);
+
   if (mainResult.length ==0) {
     return 'no';
   }
+  
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
   const result = await query(querystr, [titleFiltered, companylist, companylist]);
   return result;
@@ -63,11 +66,7 @@ const withCompany = async (company, querystr) => {
   return result;
 };
 
-/**
- * reformat salary result for chart format
- * @param {array} salaryResult
- * @return {array} avgSalaryResult
- */
+
 function transInt(salaryResult) {
   const avgSalaryResult = [null, null, null, null, null, null, null, null, null, null];
   salaryResult.map((company)=>{
@@ -77,21 +76,19 @@ function transInt(salaryResult) {
   return avgSalaryResult;
 };
 
-/**
- * organize salary result for chart format
- * @param {array} salaryResult;
- * @return {array}  data fitted for chart ;
- */
+
 function organizeData(salaryResult) {
   const salaryData = [];
   const result=[];
   const company = salaryResult.map((data) => data.company);
   const companys = Array.from(new Set(company));
+
   companys.map((company) => {
     const singleCompany = salaryResult
         .filter((x) => x.company == company);
     salaryData.push(singleCompany);
   });
+
   salaryData.map((data)=>{
     const dataForChart = {};
     dataForChart['y'] = transInt(data);

@@ -175,10 +175,9 @@ const filterTitle = async (title) => {
   FROM salary 
   HAVING score >0.2
   ORDER BY score DESC limit 1`
-  const titleExist = await query(queryTitleExist, [title, title]);
+  const titleExist = await query(queryTitleExist, [title]);
   if (titleExist.length > 0) {
-   titleResult= titleExist[0].title
-    return titleResult;
+    return title;
   }else{
     return 'no'
   }

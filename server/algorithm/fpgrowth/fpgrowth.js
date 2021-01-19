@@ -37,10 +37,6 @@ class FPGrowth extends EventEmitter {
     }, []);
   }
 
-  handleSinglePath(singlePath, prefix) {
-    return [];
-  }
-
   getFrequentItemset(itemset, support) {
     const ret = {
       items: itemset,
