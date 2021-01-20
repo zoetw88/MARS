@@ -1,4 +1,4 @@
-const { ContextExclusionPlugin } = require('webpack');
+const {ContextExclusionPlugin} = require('webpack');
 const {
   FPGrowth,
 } = require('../algorithm/fpgrowth/fpgrowth');
@@ -44,7 +44,7 @@ const recommendCompany = async (company, title) => {
       switch (fpCompany.length) {
         case 1:
           companylist[0] = fpCompany[0];
-          console.log(companylist)
+          console.log(companylist);
           break;
 
         case 2:
@@ -143,7 +143,6 @@ const filterCompany = async (company) => {
 };
 
 const filterTitle = async (title) => {
-
   if (title.indexOf('工程師')) {
     titleSplit = title.split('工程師')[0].toString();
     title = titleSplit;
@@ -151,7 +150,7 @@ const filterTitle = async (title) => {
     titleSplit = title.split(' ')[0].toString();
     title = titleSplit;
   }
-  
+
 
   const queryTitle = `
   SELECT career ,category
@@ -169,17 +168,17 @@ const filterTitle = async (title) => {
     const titleFiltered = titlelist.join();
 
     return titleFiltered;
-  } 
+  }
   const queryTitleExist = `
   SELECT title ,MATCH (title) AGAINST (?) AS score 
   FROM salary 
   HAVING score >0.2
-  ORDER BY score DESC limit 1`
+  ORDER BY score DESC limit 1`;
   const titleExist = await query(queryTitleExist, [title]);
   if (titleExist.length > 0) {
     return title;
-  }else{
-    return 'no'
+  } else {
+    return 'no';
   }
 };
 module.exports = {

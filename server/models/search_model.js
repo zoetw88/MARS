@@ -226,7 +226,7 @@ const extractComments = async (company, title) => {
 const getCounts = async (company) => {
   try {
     if (validator.isEmpty(company)) {
-      let cantCounts=[0,0,0,0]
+      const cantCounts=[0, 0, 0, 0];
       return cantCounts;
     } else {
       const companyFiltered=await filterCompany(company);
@@ -242,8 +242,8 @@ const getCounts = async (company) => {
       const totalCounts = await query(queryCounts, [companyFiltered, companyFiltered, companyFiltered, companyFiltered]);
 
       const result=[];
-      result.push(totalCounts[0].counts,totalCounts[1].counts,totalCounts[2].counts,totalCounts[3].counts)
-      
+      result.push(totalCounts[0].counts, totalCounts[1].counts, totalCounts[2].counts, totalCounts[3].counts);
+
       if (totalCounts.length>0 ) {
         return result;
       } else {

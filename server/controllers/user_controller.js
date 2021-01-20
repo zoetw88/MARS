@@ -20,13 +20,12 @@ const signUp = async (req, res) => {
     res.status(400).send({
       result: '資訊不完全',
     });
-    return;
   }
+
   if (!validator.isEmail(email)) {
     res.status(400).send({
       result: 'Invalid email format',
     });
-    return;
   }
   name = validator.escape(name);
 
@@ -37,7 +36,6 @@ const signUp = async (req, res) => {
     res.status(403).send({
       result,
     });
-    return;
   }
 
   res.status(200).send(
@@ -71,18 +69,17 @@ const signIn = async (req, res) => {
   try {
     const data = req.body;
     let result;
+
     if (!validator.isEmail(data.email)) {
       res.status(400).send({
         result: 'Invalid email format',
       });
-      return;
     }
 
     result = await User.signIn(data.email, data.password);
 
     if (result.error) {
       result=result.error;
-
       res.status(403).send({
         result,
       });

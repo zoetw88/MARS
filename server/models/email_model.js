@@ -1,24 +1,15 @@
 const nodemailer = require('nodemailer');
 const {Email_Address, Email_Password}= process.env;
 const hbs=require('nodemailer-express-handlebars');
-/**
- * sendemails
- * @param {string} userEmail
- * @param {string} subject
- * @param {string} text
- *
- */
+
+
 function sendQuestionMail(userEmail, subject, text) {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
-    auth: {
-      user: Email_Address,
-      pass: Email_Password,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
+    auth: {user: Email_Address, pass: Email_Password},
+    tls: {rejectUnauthorized: false},
   });
+
   transporter.use('compile', hbs({
     viewEngine: 'express-handlebars',
     viewPath: './public/views',

@@ -16,9 +16,7 @@ class FPGrowth extends EventEmitter {
     return new Promise((resolve, reject) => {
       const tree = new FPTree(supports, this.support).fromTransactions(this.transactions);
       const result = this.fpGrowth(tree, this.transactions.length);
-      if (callback) {
-        callback(result);
-      }
+      callback && (callback(result));
       resolve(result);
     });
   }

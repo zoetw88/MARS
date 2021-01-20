@@ -118,9 +118,7 @@ class FPTree {
 
   _getPrefixPaths(node, count, onPushingNewItem, prefixPaths = []) {
     const prefixPath = this.getPrefixPath(node, onPushingNewItem);
-    if (prefixPath) {
-      prefixPaths.push(prefixPath);
-    }
+    prefixPath&&(prefixPaths.push(prefixPath));
     if (!node.nextSameItemNode) {
       return prefixPaths;
     }
@@ -129,9 +127,7 @@ class FPTree {
 
   _getPrefixPath(node, count, onPushingNewItem) {
     if (node.parent && node.parent.parent) {
-      if (onPushingNewItem) {
-        onPushingNewItem(node.parent.item, count);
-      }
+      onPushingNewItem && (onPushingNewItem(node.parent.item, count));
       return [node.parent.item].concat(this._getPrefixPath(node.parent, count, onPushingNewItem));
     }
     return [];
@@ -150,17 +146,13 @@ class FPTree {
 
   updateLastInserted(key, child) {
     const last = this.lastInserted[key];
-    if (last) {
-      last.nextSameItemNode = child;
-    }
+    last &&(last.nextSameItemNode = child);
     this.lastInserted[key] = child;
   }
 
   updateFirstInserted(key, child) {
     const first = this.firstInserted[key];
-    if (!first) {
-      this.firstInserted[key] = child;
-    }
+    first||(this.firstInserted[key] = child);
   }
 
   getHeaderList() {

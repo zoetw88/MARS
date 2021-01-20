@@ -12,11 +12,7 @@ class FPNode {
       child = new FPNode(item, this);
       child.support = support;
       this.children.push(child);
-
-      
-      if (onNewChild) {
-        onNewChild(child);
-      }
+      onNewChild&&(onNewChild(child));
     } else {
       child.support += support;
     }

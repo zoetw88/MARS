@@ -12,43 +12,41 @@ const {
 } = require('./email_model');
 const validator = require('validator');
 const moment = require('moment');
+const {error} = require('jquery');
 
 
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
-    if (!validator.isEmpty(company)) {
-      const companyName = await filterCompany(company);
-      if (companyName.length<1) {
-        await rollback();
-        throw new Error('找不到公司');
-      }
-      const queryMembers = `SELECT nickname,email FROM user WHERE company =? `;
-      const memberslist = await query(queryMembers, [companyName]);
-      memberslist.map((user) => {
-        const subject = '來自火星的詢問';
-        sendQuestionMail(user.email, subject);
-      });
 
-      const time = moment().format('YYYY-MM-DD HH:mm:ss');
-      const queryQuestion = `INSERT INTO message(sender,receiver,message,time)VALUES?`;
-      const askSets = [];
-      memberslist.map((user) => {
-        const askSet = [];
-        askSet.push(nickname, user.nickname, message, time);
-        askSets.push(askSet);
-      });
+    let companyName;
+    validator.isEmpty(company)||(companyName = await filterCompany(company));
 
-      await query(queryQuestion, [askSets]);
-      await commit();
-    } else {
-      throw new Error('沒有公司名稱');
+    if (companyName.length < 1) {
+      return error;
     }
+
+    const queryMembers = `SELECT nickname,email FROM user WHERE company =? `;
+    const memberslist = await query(queryMembers, [companyName]);
+    memberslist.map((user) => {
+      const subject = '來自火星的詢問';
+      sendQuestionMail(user.email, subject);
+    });
+
+    const time = moment().format('YYYY-MM-DD HH:mm:ss');
+    const queryQuestion = `INSERT INTO message(sender,receiver,message,time)VALUES?`;
+    const askSets = [];
+    memberslist.map((user) => {
+      const askSet = [];
+      askSet.push(nickname, user.nickname, message, time);
+      askSets.push(askSet);
+    });
+    await query(queryQuestion, [askSets]);
+
+    await commit();
   } catch (error) {
     await rollback();
-    return {
-      error,
-    };
+    return error;
   }
 };
 
@@ -145,6 +143,7 @@ const getSideMessages = async (username) => {
     )
     ORDER BY id DESC`;
     const result = await query(querySideMessages, [username, username]);
+
     if (result.length > 0) {
       return result;
     } else {
@@ -168,14 +167,11 @@ const addNewMessages = async (data) => {
       time: time,
     };
 
-    await query(querystrNewMessage, message, function(error, results, fields) {
-      if (error) throw error;
-    });
+    await query(querystrNewMessage, message);
 
     if (result.length > 0) {
       await commit();
       return result;
-      
     } else {
       return error;
     }

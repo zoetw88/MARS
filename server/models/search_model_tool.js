@@ -11,31 +11,20 @@ const {
 } = require('./mysql');
 
 
-/**
- *for three type search request:
- *1.have title and company 2.only have title 3.only have company
- * @param {string} title
- * @param {string} company
- * @param {string} querystr
- * @return {object} dataForChart
- */
-
 const withTitleCompany = async (company, title, querystr) => {
   const titleFiltered = await filterTitle(title);
   const companyFiltered = await filterCompany(company);
-
   if (companyFiltered == 'no'||titleFiltered=='no') {
     return 'no';
   }
 
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
   const companylist = [];
-  const mainResult=await query(querystr, [titleFiltered, companyFiltered, companyFiltered]);
-
-  if (mainResult.length ==0) {
+  const mainCompanyResult=await query(querystr, [titleFiltered, companyFiltered, companyFiltered]);
+  if (mainCompanyResult.length ==0) {
     return 'no';
   }
-  
+
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
   const result = await query(querystr, [titleFiltered, companylist, companylist]);
   return result;
@@ -69,6 +58,7 @@ const withCompany = async (company, querystr) => {
 
 function transInt(salaryResult) {
   const avgSalaryResult = [null, null, null, null, null, null, null, null, null, null];
+
   salaryResult.map((company)=>{
     const order=parseInt(company.experience);
     avgSalaryResult[order]=parseInt(company.salary);
