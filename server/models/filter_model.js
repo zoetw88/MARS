@@ -1,32 +1,24 @@
-const {
-  FPGrowth,
-} = require('../algorithm/fpgrowth/fpgrowth');
-const {
-  query,
-} = require('./mysql');
-
+const {FPGrowth} = require('../algorithm/fpgrowth/fpgrowth');
+const {query} = require('./mysql');
 
 const recommendCompany = async (company, title) => {
   let companylist = [];
   let dataset = [];
 
-  if (title != null || title != undefined) {
-    dataset = await organizeSearchHistory(title);
+  (title == null || title == undefined) &&(companylist = await topSearchCompany(company, companylist));
   
-    const fpgrowth = new FPGrowth(.4);
+    dataset = await organizeSearchHistory(title);
 
-    fpgrowth.on('data', function(itemset, error) {
+    const fpgrowth = new FPGrowth(.4);
+    fpgrowth.on('data', function (itemset) {
       const items = itemset.items;
       let fpCompany = Array.from(new Set(items));
-      companylist = extractFPresult(fpCompany,company);
-      if (error) throw error;
+      companylist = extractFPresult(fpCompany, company);
     });
     fpgrowth.exec(dataset);
 
-    selectCompanyByrecommendCounts(title, company, companylist);
-  } else {
-    companylist = await topSearchCompany(company, companylist);
-  }
+    companylist.length<2 &&(selectCompanyByrecommendCounts(title, company, companylist));
+
   return companylist;
 };
 
@@ -35,9 +27,9 @@ const organizeSearchHistory = async (title) => {
   const queryHit = `
   WITH titlelist AS(
     SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
-        FROM recommend 
-        HAVING score >0.0003
-        ORDER BY score 
+    FROM recommend 
+    HAVING score >0.0003
+    ORDER BY score 
        )
   SELECT ip,GROUP_CONCAT(search_company) AS search_company,title
   FROM recommend 
@@ -56,6 +48,7 @@ const extractFPresult = async (fpCompany,company) => {
   (fpCompany.length >= 2 && fpCompany[0] == company) && (fpCompany = fpCompany.filter(function(item) {
     return item !== company;
   }));
+
   switch (fpCompany.length) {
     case 1:
       companylist[0] = fpCompany[0];
@@ -71,7 +64,7 @@ const extractFPresult = async (fpCompany,company) => {
 const selectCompanyByrecommendCounts = async (title, company, companylist) => {
   queryCompany = `
   WITH titlelist AS(
-   SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
+    SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
     FROM recommend 
     HAVING score >0.0003  ORDER BY score 
     )
@@ -110,6 +103,7 @@ const selectCompanyByrecommendCounts = async (title, company, companylist) => {
   }
   return companylist;
 };
+
 const topSearchCompany = async (company, companylist) => {
   queryCompany = `
   SELECT search_company
@@ -154,6 +148,7 @@ const filterCompany = async (company) => {
 };
 
 const filterTitle = async (title) => {
+
   if (title.indexOf('工程師')) {
     titleSplit = title.split('工程師')[0].toString();
     title = titleSplit;
@@ -162,7 +157,7 @@ const filterTitle = async (title) => {
     title = titleSplit;
   }
 
-
+  
   const queryTitle = `
   SELECT career ,category
   FROM career_connection 

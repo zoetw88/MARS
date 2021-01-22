@@ -12,7 +12,6 @@ const {
 } = require('./email_model');
 const validator = require('validator');
 const moment = require('moment');
-const {error} = require('jquery');
 
 
 const sendQuestion = async (company, message, nickname) => {

@@ -1,17 +1,15 @@
 const search = require('../models/search_model');
-const {
-  searchKeywords,
-} = require('../algorithm/ti_idf/ti_idf');
+const {searchKeywords} = require('../algorithm/ti_idf/ti_idf');
 const path = require('path');
 const fs = require('fs');
 const validator = require('validator');
+const assist = require('../models/assistance_model');
 
 const getSalary = async (req, res) => {
   try {
-    const {title, company} = req.query;
-    let ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
-    ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
-    const result = await search.getSalary(company, title, ip);
+    const {title, company,headers,connection} = req.query;
+    insertRecommendation(company,title,headers,connection)
+    const result = await search.getSalary(company, title);
     const salaryChartPath = path.join(__dirname, '../../public/json/salary.json');
     const resultJSON = JSON.stringify(result);
     fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
@@ -25,6 +23,13 @@ const getSalary = async (req, res) => {
     };
   }
 };
+
+
+const insertRecommendation = async(company,title,headers,connection)=>{
+  let ip = headers['x-real-ip'] || connection.remoteAddress;
+  ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
+  await search.insertRecommendation(company, title,ip);
+}
 
 const getWorkingHours = async (req, res) => {
   try {
@@ -89,7 +94,7 @@ const getJob104list = async (req, res) => {
 
 const getCompanylist = async (req, res) => {
   try {
-    const result = await search.getCompanylist();
+    const result = await assist.getCompanylist();
     const companylist = Object.values(result).map((item) => item.company);
 
     res.status(200).send(companylist);
@@ -103,7 +108,7 @@ const getCompanylist = async (req, res) => {
 const getJoblist = async (req, res) => {
   try {
     let joblist = [];
-    const result = await search.getJobslist();
+    const result = await assist.getJobslist();
     Object.values(result).map((item) => {
       const job = item.title.split(' ');
       joblist.push(job[0]);
@@ -124,7 +129,7 @@ const saveCommentLike = async (req, res) => {
     const {id} = req.body;
 
     const number = parseInt(id);
-    await search.saveLike(number);
+    await assist.saveLike(number);
   } catch (error) {
     return {
       error,

@@ -14,7 +14,7 @@ const morgan = require('morgan');
 const http = require('http').createServer(app);
 const {chatroom} = require('./server/controllers/chatroom_controller');
 
-app.set('trust proxy', 'loopback');
+app.set('trust proxy', true);
 app.set('json spaces', 2);
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/public/views');
