@@ -30,13 +30,13 @@ const sendQuestion = async (company, message, nickname) => {
 
     const time = moment().format('YYYY-MM-DD HH:mm:ss');
     const queryQuestion = `INSERT INTO message(sender,receiver,message,time)VALUES?`;
-    const askSets = [];
+    const queryQuestionStr = [];
     memberslist.map((user) => {
       const askSet = [];
       askSet.push(nickname, user.nickname, message, time);
-      askSets.push(askSet);
+      queryQuestionStr.push(askSet);
     });
-    await query(queryQuestion, [askSets]);
+    await query(queryQuestion, [queryQuestionStr]);
 
     await commit();
   } catch (error) {
