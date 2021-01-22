@@ -5,12 +5,12 @@ const {
   rollback,
 } = require('./mysql');
 
-const {
-  recommendCompany,
+const{
   filterTitle,
   filterCompany,
-} = require('./filter_model');
+}=require('./filter_model')
 
+const {recommendCompany} = require('./recommend_model');
 const moment = require('moment');
 const validator = require('validator');
 

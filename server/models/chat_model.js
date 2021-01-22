@@ -6,7 +6,7 @@ const {
 } = require('./mysql');
 const {
   filterCompany,
-} = require('./filter_model');
+} = require('./recommend_model');
 const {
   sendQuestionMail,
 } = require('./email_model');
@@ -41,7 +41,6 @@ const sendQuestion = async (company, message, nickname) => {
       askSets.push(askSet);
     });
     await query(queryQuestion, [askSets]);
-
     await commit();
   } catch (error) {
     await rollback();
@@ -155,7 +154,7 @@ const getSideMessages = async (username) => {
 
 const addNewMessages = async (data) => {
   try {
-    await transaction();
+
 
     const time = moment().format('YYYY-MM-DD HH:mm:ss');
     const querystrNewMessage = `INSERT INTO message SET?`;
@@ -169,13 +168,11 @@ const addNewMessages = async (data) => {
     await query(querystrNewMessage, message);
 
     if (result.length > 0) {
-      await commit();
       return result;
     } else {
       return error;
     }
   } catch (error) {
-    await rollback();
     return error
     ;
   }

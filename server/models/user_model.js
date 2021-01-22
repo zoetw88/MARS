@@ -99,27 +99,7 @@ const signIn = async (email, password) => {
   }
 };
 
-
-const getUserProfile = async (email) => {
-  const results = await query('SELECT * FROM user WHERE email = ?', [email]);
-  if (results.length === 0) {
-    return {
-      error: 'Invalid Access Token',
-    };
-  } else {
-    return {
-      data: {
-        id: results[0].id,
-        provider: results[0].provider,
-        nickname: results[0].nickname,
-        email: results[0].email,
-      },
-    };
-  }
-};
-
 module.exports = {
   signUp,
   signIn,
-  getUserProfile,
 };

@@ -1,14 +1,8 @@
 require('dotenv').config();
-const {
-  sendQuestion,
-} = require('../models/chat_model');
+const {sendQuestion,} = require('../models/chat_model');
+const {getKeyByValue,} = require('../utils/utils');
+const {ACCESS_TOKEN_SECRET,} = process.env;
 const path = require('path');
-const {
-  getKeyByValue,
-} = require('../utils/utils');
-const {
-  ACCESS_TOKEN_SECRET,
-} = process.env;
 const jwt = require('jsonwebtoken');
 const {
   getSelectedMessages,
@@ -125,7 +119,6 @@ const askQuestion = async (req, res) => {
   try {
     const {nickname, company, question} = req.body;
     const result = await sendQuestion(company, question, nickname);
-
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -150,7 +143,6 @@ const editor = async (req, res) => {
 const verifyIdentity = async (req, res) => {
   try {
     const bearerHeader = req.header('authorization');
-
     if (typeof bearerHeader !== 'undefined') {
       const bearerToken = bearerHeader.split(' ')[1];
       const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET);

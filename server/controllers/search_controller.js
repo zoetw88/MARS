@@ -10,38 +10,19 @@ const getSalary = async (req, res) => {
     const {title, company,headers,connection} = req.query;
     insertRecommendation(company,title,headers,connection)
     const result = await search.getSalary(company, title);
-    const salaryChartPath = path.join(__dirname, '../../public/json/salary.json');
-    const resultJSON = JSON.stringify(result);
-    fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
-      if (err) console.log('error', err);
-    });
-
+    await writeToJSON(salary,result)
     res.status(200).send(result);
   } catch (error) {
     return {
       error,
     };
   }
-};
-
-
-const insertRecommendation = async(company,title,headers,connection)=>{
-  let ip = headers['x-real-ip'] || connection.remoteAddress;
-  ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
-  await search.insertRecommendation(company, title,ip);
 }
-
 const getWorkingHours = async (req, res) => {
   try {
     const {title, company} = req.query;
-    let ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
-    ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
-    const result = await search.getWorkinghour(company, title, ip);
-    const workChartPath = path.join(__dirname, '../../public/json/company.json');
-    const resultJSON = JSON.stringify(result);
-    fs.writeFile(workChartPath, resultJSON, function(err, result) {
-      if (err) console.log('error', err);
-    });
+    const result = await search.getWorkinghour(company, title);
+    await writeToJSON(company,result)
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -49,6 +30,7 @@ const getWorkingHours = async (req, res) => {
     };
   }
 };
+
 
 const getComments = async (req, res) => {
   try {
@@ -127,7 +109,6 @@ const getJoblist = async (req, res) => {
 const saveCommentLike = async (req, res) => {
   try {
     const {id} = req.body;
-
     const number = parseInt(id);
     await assist.saveLike(number);
   } catch (error) {
@@ -150,6 +131,21 @@ const getCounts = async (req, res) => {
     };
   }
 };
+
+
+const insertRecommendation = async(company,title,headers,connection)=>{
+  let ip = headers['x-real-ip'] || connection.remoteAddress;
+  ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
+  await search.insertRecommendation(company, title,ip);
+}
+
+const writeToJSON = async(filename,result)=>{
+  const salaryChartPath = path.join(__dirname, `../../public/json/${filename}.json`);
+  const resultJSON = JSON.stringify(result);
+  fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
+    if (err) throw err;
+  });
+}
 module.exports = {
   getSalary,
   getWorkingHours,
