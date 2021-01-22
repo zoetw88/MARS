@@ -56,12 +56,11 @@ const getSalary = async (company, title, ip) => {
       dataForLineChart = await withCompany(company, queryAvgSalary);
     }
 
-    if (dataForLineChart.length>0 && dataForLineChart!='no') {
-      const result = organizeData(dataForLineChart);
-      return result;
-    } else {
+    if (dataForLineChart.length==0 && dataForLineChart=='no') {
       return 'no';
     }
+    const result = organizeData(dataForLineChart);
+    return result;
   } catch (error) {
     return {
       error,
@@ -73,19 +72,19 @@ const insertRecommendation = async (company, title, ip) => {
   await transaction();
   const time = moment().utc().format('YYYY-MM-DD');
   const companyFiltered = await filterCompany(company);
-  if (companyFiltered != 'no') {
-    const queryRecommend = {
-      ip: `${ip}`,
-      search_company: `${companyFiltered}`,
-      title: `${title}`,
-      search_time: `${time}`,
-    };
-    await query('INSERT INTO recommend SET?', queryRecommend);
-    await commit();
-  } else {
+  if (companyFiltered == 'no') {
     await rollback();
-    return error;
-  }
+    return error
+  };
+  const queryRecommend = {
+    ip: `${ip}`,
+    search_company: `${companyFiltered}`,
+    title: `${title}`,
+    search_time: `${time}`,
+  };
+  await query('INSERT INTO recommend SET?', queryRecommend);
+  await commit();
+
 };
 const getWorkinghour = async (company, title) => {
   try {
@@ -101,7 +100,6 @@ const getWorkinghour = async (company, title) => {
       ORDER BY FIELD(company,?)`;
 
       ScatterChart = await withTitleCompany(company, title, queryWorking);
-      console.log(ScatterChart);
     } else if (validator.isEmpty(title)) {
       const queryWorking = `
       SELECT (salary/1000000) AS y,working_hour AS x,company AS label
@@ -124,11 +122,10 @@ const getWorkinghour = async (company, title) => {
 
       ScatterChart = await withTitle(title, queryWorking);
     }
-    if (ScatterChart.length>0 && ScatterChart!='no') {
-      return ScatterChart;
-    } else {
+    if (ScatterChart.length==0 && ScatterChart=='no') {
       return 'no';
     }
+    return ScatterChart;
   } catch (error) {
     return {
       error,
@@ -164,11 +161,10 @@ const get104jobs = async (company, title) => {
       ORDER BY FIELD(company,?) `;
       dataForChart = await withCompany(company, query104Job);
     }
-    if (dataForChart.length>0 && dataForChart!='no') {
-      return dataForChart;
-    } else {
+    if (dataForChart.length==0 && dataForChart=='no') {
       return 'no';
     }
+    return dataForChart;
   } catch (error) {
     return {
       error,
@@ -208,11 +204,10 @@ const extractComments = async (company, title) => {
 
       dataComments = await withCompany(company, queryComments);
     }
-    if (dataComments.length>0 && dataComments!='no') {
-      return dataComments;
-    } else {
+    if (dataComments.lengt==0 && dataComments=='no') {
       return 'no';
     }
+    return dataComments;
   } catch (error) {
     return error;
   }
@@ -222,11 +217,10 @@ const extractAllComments = async () => {
     const queryAllComments = `SELECT * FROM comment `;
     const result = await query(queryAllComments);
 
-    if (result.length > 0) {
-      return result;
-    } else {
+    if (result.length ==0) {
       return 'no';
     }
+    return result;
   } catch (error) {
     return error;
   }
@@ -234,11 +228,13 @@ const extractAllComments = async () => {
 const getCounts = async (company) => {
   try {
     if (validator.isEmpty(company)) {
-      const cantCounts=[0, 0, 0, 0];
+      const cantCounts = [0, 0, 0, 0];
       return cantCounts;
-    } else {
-      const companyFiltered=await filterCompany(company);
-      const queryCounts = `
+    };
+
+    const companyFiltered = await filterCompany(company);
+
+    const queryCounts = `
       (SELECT COUNT(id) as counts FROM user where company=?)
       UNION ALL
       (SELECT COUNT(id) FROM comment where company=?)     
@@ -246,17 +242,14 @@ const getCounts = async (company) => {
       (SELECT COUNT(id) FROM job where company=?) 
       UNION ALL
       (SELECT COUNT(id) FROM recommend where search_company=?) `;
-      const totalCounts = await query(queryCounts, [companyFiltered, companyFiltered, companyFiltered, companyFiltered]);
+    const totalCounts = await query(queryCounts, [companyFiltered, companyFiltered, companyFiltered, companyFiltered]);
+    const result = [];
+    result.push(totalCounts[0].counts, totalCounts[1].counts, totalCounts[2].counts, totalCounts[3].counts);
 
-      const result=[];
-      result.push(totalCounts[0].counts, totalCounts[1].counts, totalCounts[2].counts, totalCounts[3].counts);
-
-      if (totalCounts.length>0 ) {
-        return result;
-      } else {
-        return 'no';
-      }
+    if (totalCounts.length ==0) {
+      return 'no';
     }
+    return result;
   } catch (error) {
     return error;
   }
@@ -347,5 +340,7 @@ module.exports = {
   extractComments,
   extractAllComments,
   getCounts,
+  insertRecommendation,
+
 };
 

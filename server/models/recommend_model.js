@@ -2,26 +2,29 @@ const {FPGrowth} = require('../algorithm/fpgrowth/fpgrowth');
 const {query} = require('./mysql');
 
 const recommendCompany = async (company, title) => {
-  let companylist = [];
-  let dataset = [];
+  try {
+    let companylist = [];
+    let dataset = [];
 
-  (title == null || title == undefined) &&(companylist = await topSearchCompany(company, companylist));
+    (title == null || title == undefined) && (companylist = await topSearchCompany(company, companylist));
 
-  dataset = await organizeSearchHistory(title);
+    dataset = await organizeSearchHistory(title);
 
-  const fpgrowth = new FPGrowth(.4);
-  fpgrowth.on('data', function(itemset) {
-    const items = itemset.items;
-    const fpCompany = Array.from(new Set(items));
-    companylist = extractFPresult(fpCompany, company);
-  });
-  fpgrowth.exec(dataset);
+    const fpgrowth = new FPGrowth(.4);
+    fpgrowth.on('data', function(itemset) {
+      const items = itemset.items;
+      const fpCompany = Array.from(new Set(items));
+      companylist = extractFPresult(fpCompany, company);
+    });
+    fpgrowth.exec(dataset);
 
-  companylist.length<2 &&(selectCompanyByrecommendCounts(title, company, companylist));
+    companylist.length < 2 && (companylist =await selectCompanyByrecommendCounts(title, company, companylist));
 
-  return companylist;
+    return companylist;
+  } catch (error) {
+    return error;
+  }
 };
-
 const organizeSearchHistory = async (title) => {
   const eachHistoryset = [];
   const queryHit = `
@@ -93,8 +96,9 @@ const selectCompanyByrecommendCounts = async (title, company, companylist) => {
 
     case 1:
       let companyCombination = [];
-      companyCombination = companyCombination.concat(company, companylist[0]);
-      companySecond = await query(queryCompany, [title, companyCombination, 1]);
+      companyCombination.push(company, companylist[0]);
+      const companySecond = await query(queryCompany, [title, companyCombination, 1]);
+   
       switch (companySecond.length) {
         case 1:
           companylist[1] = companySecond[0].search_company;

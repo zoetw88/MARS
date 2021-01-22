@@ -7,10 +7,12 @@ const assist = require('../models/assistance_model');
 
 const getSalary = async (req, res) => {
   try {
-    const {title, company, headers, connection} = req.query;
+    const {title, company} = req.query;
+    const {headers, connection}=req;
     insertRecommendation(company, title, headers, connection);
     const result = await search.getSalary(company, title);
-    await writeToJSON(salary, result);
+    writeToJSON('salary', result);
+
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -22,7 +24,8 @@ const getWorkingHours = async (req, res) => {
   try {
     const {title, company} = req.query;
     const result = await search.getWorkinghour(company, title);
-    await writeToJSON(company, result);
+    writeToJSON('company', result);
+
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -48,12 +51,11 @@ const getComments = async (req, res) => {
 const getKeywords = async (req, res) => {
   try {
     const {company, title} = req.query;
-    if (!validator.isEmpty(company)) {
-      const result = await searchKeywords(company, title);
-      res.status(200).send(result);
-    } else {
+    if (validator.isEmpty(company)) {
       return 'no';
     }
+    const result = await searchKeywords(company, title);
+    res.status(200).send(result);
   } catch (error) {
     return {
       error,
@@ -140,10 +142,10 @@ const insertRecommendation = async (company, title, headers, connection)=>{
 };
 
 const writeToJSON = async (filename, result)=>{
-  const salaryChartPath = path.join(__dirname, `../../public/json/${filename}.json`);
+  const chartPath = path.join(__dirname, `../../public/json/${filename}.json`);
   const resultJSON = JSON.stringify(result);
-  fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
-    if (err) throw err;
+  fs.writeFile(chartPath, resultJSON, function(err, result) {
+    if (err) throw err; 
   });
 };
 module.exports = {

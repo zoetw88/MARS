@@ -7,11 +7,10 @@ const getCompanylist = async () => {
     const queryCompany = `SELECT DISTINCT company FROM salary`;
     const companylist = await query(queryCompany);
 
-    if (companylist.length > 0) {
-      return companylist;
-    } else {
+    if (companylist.length == 0) {
       return 'no';
     }
+    return companylist;
   } catch (error) {
     return error;
   }
@@ -21,12 +20,10 @@ const getJobslist = async () => {
   try {
     const queryJob = `SELECT DISTINCT title FROM salary`;
     const joblist = await query(queryJob);
-
-    if (joblist.length > 0) {
+    if (joblist.length ==0) {
+        return 'no';
+      }
       return joblist;
-    } else {
-      return 'no';
-    }
   } catch (error) {
     return error;
   }

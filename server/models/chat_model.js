@@ -4,7 +4,7 @@ const {
   commit,
   rollback,
 } = require('./mysql');
-const {filterCompany,} = require('./recommend_model');
+const {filterCompany} = require('./recommend_model');
 const {sendQuestionMail} = require('./email_model');
 const validator = require('validator');
 const moment = require('moment');
@@ -13,7 +13,7 @@ const moment = require('moment');
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
-    
+
     let companyName;
 
     validator.isEmpty(company)||(companyName = await filterCompany(company));
@@ -37,7 +37,7 @@ const sendQuestion = async (company, message, nickname) => {
       askSets.push(askSet);
     });
     await query(queryQuestion, [askSets]);
-    
+
     await commit();
   } catch (error) {
     await rollback();
@@ -73,11 +73,10 @@ const getMainMessages = async (username, error) => {
     OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`;
     const result = await query(queryMainMessages, [username, username]);
 
-    if (result.length > 0) {
-      return result;
-    } else {
+    if (result.length == 0) {
       return error;
     }
+    return result;
   } catch (error) {
     return error;
   }
@@ -106,11 +105,10 @@ const getSelectedMessages = async (username, chosenName) => {
     inner join user2_info on final_speaker.receiver=user2_info.nickname`;
     const result = await query(querySelectedMessages, [username, chosenName, chosenName, username]);
 
-    if (result.length > 0) {
-      return result;
-    } else {
+    if (result.length == 0) {
       return error;
     }
+    return result;
   } catch (error) {
     return error;
   }
@@ -139,11 +137,10 @@ const getSideMessages = async (username) => {
     ORDER BY id DESC`;
     const result = await query(querySideMessages, [username, username]);
 
-    if (result.length > 0) {
-      return result;
-    } else {
+    if (result.length == 0) {
       return error;
     }
+    return result;
   } catch (error) {
     return error;
   }
@@ -161,12 +158,11 @@ const addNewMessages = async (data) => {
     };
 
     await query(querystrNewMessage, message);
-
-    if (result.length > 0) {
-      return result;
-    } else {
+    
+    if (result.length == 0) {
       return error;
     }
+    return result;
   } catch (error) {
     return error
     ;
