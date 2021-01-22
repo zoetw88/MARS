@@ -5,8 +5,8 @@ const recommendCompany = async (company, title) => {
   try {
     let companylist = [];
     let dataset = [];
-
-    (title == null || title == undefined) && (companylist = await topSearchCompany(company, companylist));
+    
+    (title == null || title == undefined) && (companylist = await searchCompanyWithoutTitle(company, companylist));
 
     dataset = await organizeSearchHistory(title);
 
@@ -18,13 +18,14 @@ const recommendCompany = async (company, title) => {
     });
     fpgrowth.exec(dataset);
 
-    companylist.length < 2 && (companylist =await selectCompanyByrecommendCounts(title, company, companylist));
+    companylist.length < 2 && (companylist =await selectCompanyByAnotherWay(title, company, companylist));
 
     return companylist;
   } catch (error) {
     return error;
   }
 };
+
 const organizeSearchHistory = async (title) => {
   const eachHistoryset = [];
   const queryHit = `
@@ -64,7 +65,7 @@ const extractFPresult = async (fpCompany, company) => {
   return companylist;
 };
 
-const selectCompanyByrecommendCounts = async (title, company, companylist) => {
+const selectCompanyByAnotherWay = async (title, company, companylist) => {
   queryCompany = `
   WITH titlelist AS(
     SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
@@ -112,7 +113,7 @@ const selectCompanyByrecommendCounts = async (title, company, companylist) => {
   return companylist;
 };
 
-const topSearchCompany = async (company, companylist) => {
+const searchCompanyWithoutTitle= async (company, companylist) => {
   queryCompany = `
   SELECT search_company
   FROM recommend 

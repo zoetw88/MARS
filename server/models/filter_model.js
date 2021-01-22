@@ -12,12 +12,11 @@ const filterCompany = async (company) => {
     ORDER BY score DESC limit 1)`;
   const companyResult = await query(queryCompany, [company, company]);
 
-  if (companyResult.length > 0) {
-    companyFiltered = companyResult[0].company;
-    return companyFiltered;
-  } else {
+  if (companyResult.length ==0) {
     return 'no';
   }
+  companyFiltered = companyResult[0].company;
+  return companyFiltered;
 };
 
 const filterTitle = async (title) => {
@@ -57,11 +56,10 @@ const filterTitle = async (title) => {
     HAVING score >0.2
     ORDER BY score DESC limit 1`;
   const titleExist = await query(queryTitleExist, [title]);
-  if (titleExist.length > 0) {
-    return title;
-  } else {
+  if (titleExist.length== 0) {
     return 'no';
   }
+  return title;
 };
 
 
