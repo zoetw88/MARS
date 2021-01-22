@@ -177,9 +177,8 @@ const addNewMessages = async (data) => {
     }
   } catch (error) {
     await rollback();
-    return {
-      error,
-    };
+    return error
+    ;
   }
 };
 

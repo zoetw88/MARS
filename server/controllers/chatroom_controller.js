@@ -138,7 +138,6 @@ const askQuestion = async (req, res) => {
 const editor = async (req, res) => {
   try {
     const {room, id} = req.query;
-
     res.sendFile(path.join(__dirname, '../../public/api/1.0/editor.html'));
   } catch (error) {
     return {
@@ -155,7 +154,6 @@ const verifyIdentity = async (req, res) => {
     if (typeof bearerHeader !== 'undefined') {
       const bearerToken = bearerHeader.split(' ')[1];
       const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET);
-
       res.status(200).send(userInfo);
     } else {
       res.sendStatus(403);

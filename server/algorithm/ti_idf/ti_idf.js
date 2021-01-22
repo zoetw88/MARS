@@ -17,18 +17,17 @@ const searchKeywords = async (company, title, counts = 1) => {
   const result = [];
   const mainComments = await search.extractComments(company, title);
   const comparedComments = await search.extractAllComments();
-  console.log(mainComments);
 
+  // if no comments for main search company, and then stop calculating;
   if (mainComments.length>0) {
-    const commentsCombination = mainComments.map((comment) => {
+    const mainCommentStr = mainComments.map((comment) => {
       let str;
       str += comment.interview_experience.toString();
       return str;
     });
 
-    const afterTokenize = nodeJieba.cut(commentsCombination.toString());
-
-    afterTokenize.map((word) => {
+    const mainCommentsWords = nodeJieba.cut(mainCommentStr.toString());
+    mainCommentsWords.map((word) => {
       if (counter[word] === undefined && stopWord.indexOf(word) < 0) {
         mainWordlist.push(word);
         counter[word] = {
@@ -36,9 +35,7 @@ const searchKeywords = async (company, title, counts = 1) => {
           df: 0,
         };
       }
-      if (counter[word]) {
-        counter[word].tf += 1;
-      }
+      counter[word]&&(counter[word].tf += 1);
       counts = counts + 1;
     });
 
@@ -46,9 +43,7 @@ const searchKeywords = async (company, title, counts = 1) => {
       const comparedWordCounts = {};
       const comparedWords = nodeJieba.cut(comment.interview_experience);
       comparedWords.map((word) => {
-        if (comparedWordCounts[word] === undefined) {
-          comparedWordCounts[word] = true;
-        }
+        comparedWordCounts[word] === undefined&&(comparedWordCounts[word] = true);
       });
       return comparedWordCounts;
     });
@@ -56,11 +51,11 @@ const searchKeywords = async (company, title, counts = 1) => {
     mainWordlist.map((word) => {
       const checkStopWord = stopWordlist.indexOf(word);
       comparedWordlist.map((comparedword) => {
-        if (comparedword[word] && checkStopWord < 0) {
-          counter[word].df++;
-        }
+        comparedword[word] && checkStopWord < 0&&(counter[word].df++);
       });
+
       counter[word].tfidf = counter[word].tf / counts * Math.log(mainComments.length / counter[word].df);
+
       finalWordlist = {};
       if ((counter[word].tfidf) < 1 && 0.001 < (counter[word].tfidf)) {
         finalWordlist = word;

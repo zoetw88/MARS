@@ -9,14 +9,14 @@ const validator = require('validator');
 const getSalary = async (req, res) => {
   try {
     const {title, company} = req.query;
-
     let ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
     ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
-
     const result = await search.getSalary(company, title, ip);
     const salaryChartPath = path.join(__dirname, '../../public/json/salary.json');
     const resultJSON = JSON.stringify(result);
-    fs.writeFile(salaryChartPath, resultJSON);
+    fs.writeFile(salaryChartPath, resultJSON, function(err, result) {
+      if (err) console.log('error', err);
+    });
 
     res.status(200).send(result);
   } catch (error) {
@@ -29,11 +29,14 @@ const getSalary = async (req, res) => {
 const getWorkingHours = async (req, res) => {
   try {
     const {title, company} = req.query;
+    let ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
+    ip.substr(0, 7) == '::ffff:' ? (ip = ip.substr(7)) : '';
     const result = await search.getWorkinghour(company, title, ip);
     const workChartPath = path.join(__dirname, '../../public/json/company.json');
     const resultJSON = JSON.stringify(result);
-    fs.writeFile(workChartPath, resultJSON);
-
+    fs.writeFile(workChartPath, resultJSON, function(err, result) {
+      if (err) console.log('error', err);
+    });
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -58,10 +61,8 @@ const getComments = async (req, res) => {
 const getKeywords = async (req, res) => {
   try {
     const {company, title} = req.query;
-
     if (!validator.isEmpty(company)) {
       const result = await searchKeywords(company, title);
-
       res.status(200).send(result);
     } else {
       return 'no';
@@ -120,9 +121,7 @@ const getJoblist = async (req, res) => {
 
 const saveCommentLike = async (req, res) => {
   try {
-    const {
-      id,
-    } = req.body;
+    const {id} = req.body;
 
     const number = parseInt(id);
     await search.saveLike(number);
@@ -136,10 +135,7 @@ const saveCommentLike = async (req, res) => {
 
 const getCounts = async (req, res) => {
   try {
-    const {
-      company,
-    } = req.query;
-
+    const {company} = req.query;
     const result = await search.getCounts(company);
 
     res.status(200).send(result);

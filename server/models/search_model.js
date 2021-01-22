@@ -107,6 +107,7 @@ const getWorkinghour = async (company, title) => {
           ORDER BY FIELD(company,?)`;
 
       ScatterChart = await withTitleCompany(company, title, queryWorking);
+      console.log(ScatterChart)
     } else if (validator.isEmpty(title)) {
       const queryWorking = `
       SELECT (salary/1000000) AS y,working_hour AS x,company AS label
@@ -279,9 +280,7 @@ const getCompanylist = async () => {
       return 'no';
     }
   } catch (error) {
-    return {
-      error,
-    };
+    return error;
   }
 };
 
@@ -296,9 +295,7 @@ const getJobslist = async () => {
       return 'no';
     }
   } catch (error) {
-    return {
-      error,
-    };
+    return error;
   }
 };
 const saveLike = async (id) => {
@@ -309,9 +306,7 @@ const saveLike = async (id) => {
     WHERE id = ?`;
     await query(querylike, id);
   } catch (error) {
-    return {
-      error,
-    };
+    return error;
   }
 };
 module.exports = {
