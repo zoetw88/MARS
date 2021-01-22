@@ -3,8 +3,8 @@ const {query} = require('./mysql');
 const filterCompany = async (company) => {
   const queryCompany = `
     (SELECT main_company AS company ,another_name
-      FROM company_connection 
-      WHERE another_name= ?)
+    FROM company_connection 
+    WHERE another_name= ?)
     UNION 
     (SELECT company ,MATCH (company) AGAINST (?) AS score 
     FROM salary 

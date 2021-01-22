@@ -43,7 +43,7 @@ const searchKeywords = async (company, title, counts = 1) => {
       const comparedWordCounts = {};
       const comparedWords = nodeJieba.cut(comment.interview_experience);
       comparedWords.map((word) => {
-        comparedWordCounts[word] === undefined&&(comparedWordCounts[word] = true);
+        comparedWordCounts[word] === undefined && (comparedWordCounts[word] = true);
       });
       return comparedWordCounts;
     });

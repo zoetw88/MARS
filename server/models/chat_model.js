@@ -4,12 +4,8 @@ const {
   commit,
   rollback,
 } = require('./mysql');
-const {
-  filterCompany,
-} = require('./recommend_model');
-const {
-  sendQuestionMail,
-} = require('./email_model');
+const {filterCompany,} = require('./recommend_model');
+const {sendQuestionMail} = require('./email_model');
 const validator = require('validator');
 const moment = require('moment');
 
@@ -17,10 +13,10 @@ const moment = require('moment');
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
-
+    
     let companyName;
-    validator.isEmpty(company)||(companyName = await filterCompany(company));
 
+    validator.isEmpty(company)||(companyName = await filterCompany(company));
     if (companyName.length < 1) {
       return error;
     }
@@ -41,6 +37,7 @@ const sendQuestion = async (company, message, nickname) => {
       askSets.push(askSet);
     });
     await query(queryQuestion, [askSets]);
+    
     await commit();
   } catch (error) {
     await rollback();
