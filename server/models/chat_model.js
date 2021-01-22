@@ -154,8 +154,6 @@ const getSideMessages = async (username) => {
 
 const addNewMessages = async (data) => {
   try {
-
-
     const time = moment().format('YYYY-MM-DD HH:mm:ss');
     const querystrNewMessage = `INSERT INTO message SET?`;
     const message = {

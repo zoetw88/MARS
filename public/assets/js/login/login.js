@@ -125,23 +125,7 @@ async function login(event) {
 
 function logout(event) {
   event.preventDefault();
-  try {
-    axios.get('/api/1.0/user/logout', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer' + ' ' + localStorage.getItem('token'),
-      },
-    })
-        .then(() => {
-          goodbody();
-        })
-        .catch((error) => {
-          const error_message = error.response.data.result;
-          console.log(error_message);
-        });
-  } catch (error) {
-    return error;
-  }
+    goodbody();   
 }
 
 function hello(nickname) {

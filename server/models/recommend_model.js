@@ -6,24 +6,24 @@ const recommendCompany = async (company, title) => {
   let dataset = [];
 
   (title == null || title == undefined) &&(companylist = await topSearchCompany(company, companylist));
-  
-    dataset = await organizeSearchHistory(title);
 
-    const fpgrowth = new FPGrowth(.4);
-    fpgrowth.on('data', function (itemset) {
-      const items = itemset.items;
-      let fpCompany = Array.from(new Set(items));
-      companylist = extractFPresult(fpCompany, company);
-    });
-    fpgrowth.exec(dataset);
+  dataset = await organizeSearchHistory(title);
 
-    companylist.length<2 &&(selectCompanyByrecommendCounts(title, company, companylist));
+  const fpgrowth = new FPGrowth(.4);
+  fpgrowth.on('data', function(itemset) {
+    const items = itemset.items;
+    const fpCompany = Array.from(new Set(items));
+    companylist = extractFPresult(fpCompany, company);
+  });
+  fpgrowth.exec(dataset);
+
+  companylist.length<2 &&(selectCompanyByrecommendCounts(title, company, companylist));
 
   return companylist;
 };
 
 const organizeSearchHistory = async (title) => {
-  let eachHistoryset = [];
+  const eachHistoryset = [];
   const queryHit = `
   WITH titlelist AS(
     SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
@@ -43,8 +43,8 @@ const organizeSearchHistory = async (title) => {
   return eachHistoryset;
 };
 
-const extractFPresult = async (fpCompany,company) => {
-  let companylist = [];
+const extractFPresult = async (fpCompany, company) => {
+  const companylist = [];
   (fpCompany.length >= 2 && fpCompany[0] == company) && (fpCompany = fpCompany.filter(function(item) {
     return item !== company;
   }));
@@ -133,5 +133,5 @@ const topSearchCompany = async (company, companylist) => {
 };
 
 module.exports = {
-  recommendCompany
+  recommendCompany,
 };

@@ -1,7 +1,7 @@
 require('dotenv').config();
-const {sendQuestion,} = require('../models/chat_model');
-const {getKeyByValue,} = require('../utils/utils');
-const {ACCESS_TOKEN_SECRET,} = process.env;
+const {sendQuestion} = require('../models/chat_model');
+const {getKeyByValue} = require('../utils/utils');
+const {ACCESS_TOKEN_SECRET} = process.env;
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const {

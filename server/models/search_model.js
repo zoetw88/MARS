@@ -5,10 +5,10 @@ const {
   rollback,
 } = require('./mysql');
 
-const{
+const {
   filterTitle,
   filterCompany,
-}=require('./filter_model')
+}=require('./filter_model');
 
 const {recommendCompany} = require('./recommend_model');
 const moment = require('moment');
@@ -101,7 +101,7 @@ const getWorkinghour = async (company, title) => {
       ORDER BY FIELD(company,?)`;
 
       ScatterChart = await withTitleCompany(company, title, queryWorking);
-      console.log(ScatterChart)
+      console.log(ScatterChart);
     } else if (validator.isEmpty(title)) {
       const queryWorking = `
       SELECT (salary/1000000) AS y,working_hour AS x,company AS label
@@ -233,7 +233,6 @@ const extractAllComments = async () => {
 };
 const getCounts = async (company) => {
   try {
-
     if (validator.isEmpty(company)) {
       const cantCounts=[0, 0, 0, 0];
       return cantCounts;
