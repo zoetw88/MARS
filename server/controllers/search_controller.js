@@ -2,7 +2,6 @@ const search = require('../models/search_model');
 const {searchKeywords} = require('../algorithm/ti_idf/ti_idf');
 const path = require('path');
 const fs = require('fs');
-const validator = require('validator');
 const assist = require('../models/assistance_model');
 
 const getSalary = async (req, res) => {
@@ -51,9 +50,6 @@ const getComments = async (req, res) => {
 const getKeywords = async (req, res) => {
   try {
     const {company, title} = req.query;
-    if (validator.isEmpty(company)) {
-      return 'no';
-    }
     const result = await searchKeywords(company, title);
     res.status(200).send(result);
   } catch (error) {

@@ -91,7 +91,7 @@ const selectCompanyByAnotherWay = async (title, company, companylist) => {
           break;
 
         default:
-          companylist = await topSearchCompany(company, companylist);
+          companylist = await searchCompanyWithoutTitle(company, companylist);
           break;
       }
 
@@ -106,7 +106,7 @@ const selectCompanyByAnotherWay = async (title, company, companylist) => {
           break;
 
         default:
-          companylist = await topSearchCompany(company, companylist);
+          companylist = await searchCompanyWithoutTitle(company, companylist);
           break;
       }
   }

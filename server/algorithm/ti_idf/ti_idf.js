@@ -4,12 +4,15 @@ const fs = require('fs');
 const search = require('../../models/search_model');
 const dictPath = path.join(__dirname, './dict.txt');
 const stopPath = path.join(__dirname, './stop_text');
-
+const validator = require('validator');
 nodeJieba.load({
   dict: dictPath,
 });
 
 const searchKeywords = async (company, title, counts = 1) => {
+  if (validator.isEmpty(company)) {
+    return 'no';
+  }
   const stopWord = fs.readFileSync(stopPath).toString();
   const stopWordlist = Array.from(stopWord);
   const mainWordlist = [];
