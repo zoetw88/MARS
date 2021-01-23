@@ -61,6 +61,26 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
+
+const logout = async (req, res) => {
+  try {
+    const bearerHeader = req.header('authorization');
+
+    if (typeof bearerHeader !== 'undefined') {
+      const bearerToken = bearerHeader.split(' ')[1];
+      const result=jwt.verify(bearerToken, ACCESS_TOKEN_SECRET, (error, data) => {
+        if (error) return error;
+        return data;
+      });
+
+      res.status(200).send(result);
+    } else {
+      res.sendStatus(403);
+    };
+  } catch (error) {
+    return error;
+  }
+};
 const signIn = async (req, res) => {
   try {
     const data = req.body;
@@ -101,4 +121,5 @@ module.exports = {
   signIn,
   getUserProfile,
   verifyToken,
+  logout
 };

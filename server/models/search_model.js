@@ -70,9 +70,6 @@ const getSalary = async (company, title) => {
 };
 
 const insertRecommendation = async (company, title, ip) => {
-  if(!isWord(title)||!isWord(company)){
-    return 'no';
-  }
   await transaction();
   const time = moment().utc().format('YYYY-MM-DD');
   const companyFiltered = await filterCompany(company);
@@ -92,9 +89,6 @@ const insertRecommendation = async (company, title, ip) => {
 };
 const getWorkinghour = async (company, title) => {
   try {
-    if(!isWord(title)||!isWord(company)){
-      return 'no';
-    }
     let ScatterChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const queryWorking = `
