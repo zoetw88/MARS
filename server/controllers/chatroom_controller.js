@@ -119,6 +119,7 @@ const askQuestion = async (req, res) => {
   try {
     const {nickname, company, question} = req.body;
     const result = await sendQuestion(company, question, nickname);
+    console.log(result)
     res.status(200).send(result);
   } catch (error) {
     return {

@@ -17,12 +17,11 @@ const filterCompany = async (company) => {
   }
   companyFiltered = companyResult[0].company;
   return companyFiltered;
-};
+}
 
 const filterTitle = async (title) => {
-  if (typeof title === 'number') {
-    return 'no';
-  }
+  
+
   if (title.indexOf('工程師')) {
     titleSplit = title.split('工程師')[0].toString();
     title = titleSplit;

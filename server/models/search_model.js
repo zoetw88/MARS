@@ -13,9 +13,9 @@ const {
 const {recommendCompany} = require('./recommend_model');
 const moment = require('moment');
 const validator = require('validator');
+const {isWord}=require('../utils/utils')
 
-
-const getSalary = async (company, title, ip) => {
+const getSalary = async (company, title) => {
   try {
     let dataForLineChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
@@ -56,9 +56,10 @@ const getSalary = async (company, title, ip) => {
       dataForLineChart = await withCompany(company, queryAvgSalary);
     }
 
-    if (dataForLineChart.length==0 && dataForLineChart=='no') {
+    if (dataForLineChart.length==0 || dataForLineChart=='no') {
       return 'no';
     }
+   
     const result = organizeData(dataForLineChart);
     return result;
   } catch (error) {
@@ -69,6 +70,9 @@ const getSalary = async (company, title, ip) => {
 };
 
 const insertRecommendation = async (company, title, ip) => {
+  if(!isWord(title)||!isWord(company)){
+    return 'no';
+  }
   await transaction();
   const time = moment().utc().format('YYYY-MM-DD');
   const companyFiltered = await filterCompany(company);
@@ -88,6 +92,9 @@ const insertRecommendation = async (company, title, ip) => {
 };
 const getWorkinghour = async (company, title) => {
   try {
+    if(!isWord(title)||!isWord(company)){
+      return 'no';
+    }
     let ScatterChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const queryWorking = `
@@ -122,7 +129,7 @@ const getWorkinghour = async (company, title) => {
 
       ScatterChart = await withTitle(title, queryWorking);
     }
-    if (ScatterChart.length==0 && ScatterChart=='no') {
+    if (ScatterChart.length==0 || ScatterChart=='no') {
       return 'no';
     }
     return ScatterChart;
@@ -135,6 +142,7 @@ const getWorkinghour = async (company, title) => {
 
 const get104jobs = async (company, title) => {
   try {
+
     let dataForChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const query104Job = `
@@ -161,7 +169,7 @@ const get104jobs = async (company, title) => {
       ORDER BY FIELD(company,?) `;
       dataForChart = await withCompany(company, query104Job);
     }
-    if (dataForChart.length==0 && dataForChart=='no') {
+    if (dataForChart.length==0 || dataForChart=='no') {
       return 'no';
     }
     return dataForChart;
@@ -204,7 +212,7 @@ const extractComments = async (company, title) => {
 
       dataComments = await withCompany(company, queryComments);
     }
-    if (dataComments.lengt==0 && dataComments=='no') {
+    if (dataComments.lengt==0 || dataComments=='no') {
       return 'no';
     }
     return dataComments;
@@ -256,6 +264,9 @@ const getCounts = async (company) => {
 };
 
 const withTitleCompany = async (company, title, querystr) => {
+  if(!isWord(title)||!isWord(company)){
+    return 'no';
+  }
   const titleFiltered = await filterTitle(title);
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no'||titleFiltered=='no') {
@@ -275,6 +286,9 @@ const withTitleCompany = async (company, title, querystr) => {
 };
 
 const withTitle = async (title, querystr) => {
+  if(!isWord(title)){
+    return 'no';
+  }
   const titleFiltered = await filterTitle(title);
   if (titleFiltered=='no') {
     return 'no';
@@ -284,6 +298,9 @@ const withTitle = async (title, querystr) => {
 };
 
 const withCompany = async (company, querystr) => {
+  if(!isWord(company)){
+    return 'no';
+  }
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no') {
     return 'no';
@@ -332,6 +349,8 @@ function organizeData(salaryResult) {
   });
   return result;
 };
+
+
 
 module.exports = {
   getSalary,

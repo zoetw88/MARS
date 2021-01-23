@@ -4,7 +4,7 @@ const {
   commit,
   rollback,
 } = require('./mysql');
-const {filterCompany} = require('./recommend_model');
+const {filterCompany} = require('./filter_model');
 const {sendQuestionMail} = require('./email_model');
 const validator = require('validator');
 const moment = require('moment');
@@ -17,7 +17,7 @@ const sendQuestion = async (company, message, nickname) => {
     let companyName;
 
     validator.isEmpty(company)||(companyName = await filterCompany(company));
-    if (companyName.length < 1) {
+    if (companyName.length ==0) {
       return error;
     }
 
