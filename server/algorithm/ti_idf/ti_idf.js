@@ -16,6 +16,7 @@ const searchKeywords = async (company, title, counts = 1) => {
   const stopWord = fs.readFileSync(stopPath).toString();
   const stopWordlist = Array.from(stopWord);
   const mainWordlist = [];
+  const mainWordlistAfterClean={}
   const counter = {};
   const result = [];
   const mainComments = await search.extractComments(company, title);
@@ -30,6 +31,8 @@ const searchKeywords = async (company, title, counts = 1) => {
     });
 
     const mainCommentsWords = nodeJieba.cut(mainCommentStr.toString());
+  
+    
     mainCommentsWords.map((word) => {
       if (counter[word] === undefined && stopWord.indexOf(word) < 0) {
         mainWordlist.push(word);
@@ -52,11 +55,9 @@ const searchKeywords = async (company, title, counts = 1) => {
     });
 
     mainWordlist.map((word) => {
-      const checkStopWord = stopWordlist.indexOf(word);
       comparedWordlist.map((comparedword) => {
-        (comparedword[word] && checkStopWord < 0) && (counter[word].df++);
+        (comparedword[word]) && (counter[word].df++);
       });
-
       counter[word].tfidf = counter[word].tf / counts * Math.log(mainComments.length / counter[word].df);
 
       finalWordlist = {};
