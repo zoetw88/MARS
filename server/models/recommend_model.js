@@ -1,23 +1,22 @@
 const {FPGrowth} = require('../algorithm/fpgrowth/fpgrowth');
 const {query} = require('./mysql');
-
+const {isWord}=require('../utils/utils')
 const recommendCompany = async (company, title) => {
   try {
     let companylist = [];
     let dataset = [];
     
-    (title == null || title == undefined) && (companylist = await searchCompanyWithoutTitle(company, companylist));
-
+    (!isWord(title)) && (companylist = await searchCompanyWithoutTitle(company, companylist));
     dataset = await organizeSearchHistory(title);
 
     const fpgrowth = new FPGrowth(.4);
-    fpgrowth.on('data', function(itemset) {
+    fpgrowth.on('data', async function(itemset) {
       const items = itemset.items;
       const fpCompany = Array.from(new Set(items));
-      companylist = extractFPresult(fpCompany, company);
+      companylist = await extractFPresult(fpCompany, company);
     });
     fpgrowth.exec(dataset);
-
+    
     companylist.length < 2 && (companylist =await selectCompanyByAnotherWay(title, company, companylist));
 
     return companylist;

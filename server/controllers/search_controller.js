@@ -9,7 +9,6 @@ const getSalary = async (req, res) => {
   try {
     const {title, company} = req.query;
     const {headers, connection}=req;
-    
     insertRecommendation(company, title, headers, connection);
     const result = await search.getSalary(company, title);
     writeToJSON('salary', result);
@@ -25,7 +24,6 @@ const getWorkingHours = async (req, res) => {
     const {title, company} = req.query;
     const result = await search.getWorkinghour(company, title);
     writeToJSON('company', result);
-
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -39,7 +37,6 @@ const getComments = async (req, res) => {
   try {
     const {company, title} = req.query;
     const result = await search.extractComments(company, title);
-
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -64,7 +61,6 @@ const getJob104list = async (req, res) => {
   try {
     const {company, title} = req.query;
     const result = await search.get104jobs(company, title);
-
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -77,7 +73,6 @@ const getCompanylist = async (req, res) => {
   try {
     const result = await assist.getCompanylist();
     const companylist = Object.values(result).map((item) => item.company);
-
     res.status(200).send(companylist);
   } catch (error) {
     return {
@@ -95,7 +90,6 @@ const getJoblist = async (req, res) => {
       joblist.push(job[0]);
     });
     joblist = Array.from(new Set(joblist));
-
     res.status(200).send(joblist);
   } catch (error) {
     return {

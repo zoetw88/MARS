@@ -41,6 +41,7 @@ const wrapAsync = (fn) => {
 };
 const isWord=(word) => {
   const check = /^([a-zA-Z\u4e00-\u9fa5]+)$/; 
+  console.log(check.test(word))
   return (check.test(word));
 }
 const getKeyByValue = (object, value) => {

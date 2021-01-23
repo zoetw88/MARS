@@ -13,9 +13,7 @@ const moment = require('moment');
 const sendQuestion = async (company, message, nickname) => {
   try {
     await transaction();
-
     let companyName;
-
     validator.isEmpty(company)||(companyName = await filterCompany(company));
     if (companyName.length ==0) {
       return error;
