@@ -16,7 +16,6 @@ const searchKeywords = async (company, title, counts = 1) => {
   const stopWord = fs.readFileSync(stopPath).toString();
   const stopWordlist = Array.from(stopWord);
   const mainWordlist = [];
-  const mainWordlistAfterClean={}
   const counter = {};
   const result = [];
   const mainComments = await search.extractComments(company, title);
@@ -34,7 +33,7 @@ const searchKeywords = async (company, title, counts = 1) => {
   
     
     mainCommentsWords.map((word) => {
-      if (counter[word] === undefined && stopWord.indexOf(word) < 0) {
+      if (counter[word] === undefined && stopWordlist.indexOf(word) < 0) {
         mainWordlist.push(word);
         counter[word] = {
           tf: 1,
@@ -59,7 +58,6 @@ const searchKeywords = async (company, title, counts = 1) => {
         (comparedword[word]) && (counter[word].df++);
       });
       counter[word].tfidf = counter[word].tf / counts * Math.log(mainComments.length / counter[word].df);
-
       finalWordlist = {};
       if ((counter[word].tfidf) < 1 && 0.001 < (counter[word].tfidf)) {
         finalWordlist = word;
