@@ -4,8 +4,8 @@ const {
   commit,
   rollback,
 } = require('./mysql');
-const {filterCompany,} = require('./filter_model');
-const {sendQuestionMail,} = require('./email_model');
+const {filterCompany} = require('./filter_model');
+const {sendQuestionMail} = require('./email_model');
 const validator = require('validator');
 const moment = require('moment');
 

@@ -86,6 +86,7 @@ const insertRecommendation = async (company, title, ip) => {
   await query('INSERT INTO recommend SET?', queryRecommend);
   await commit();
 };
+
 const getWorkinghour = async (company, title) => {
   try {
     let ScatterChart;
@@ -206,6 +207,7 @@ const extractComments = async (company, title) => {
     return error;
   }
 };
+
 const extractAllComments = async () => {
   try {
     const queryAllComments = `SELECT * FROM comment `;
@@ -216,6 +218,7 @@ const extractAllComments = async () => {
     return error;
   }
 };
+
 const getCounts = async (company) => {
   try {
     if (validator.isEmpty(company)) {
@@ -224,7 +227,6 @@ const getCounts = async (company) => {
     };
 
     const companyFiltered = await filterCompany(company);
-
     const queryCounts = `
       (SELECT COUNT(id) as counts FROM user where company=?)
       UNION ALL
@@ -291,8 +293,7 @@ const withCompany = async (company, querystr) => {
   return result;
 };
 
-
-function transInt(salaryResult) {
+const transInt=(salaryResult)=>{
   const avgSalaryResult = [null, null, null, null, null, null, null, null, null, null];
   salaryResult.map((company)=>{
     const order=parseInt(company.experience);
@@ -301,8 +302,7 @@ function transInt(salaryResult) {
   return avgSalaryResult;
 };
 
-
-function organizeData(salaryResult) {
+const organizeData=(salaryResult)=> {
   const salaryData = [];
   const result=[];
   const company = salaryResult.map((data) => data.company);
