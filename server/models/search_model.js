@@ -209,7 +209,7 @@ const extractComments = async (company, title) => {
 
 const extractAllComments = async () => {
   try {
-    const queryAllComments = `SELECT * FROM comment `;
+    const queryAllComments = `SELECT * FROM comment`;
     const result = await query(queryAllComments);
 
     return result.length==0 ? 'no' :result;
