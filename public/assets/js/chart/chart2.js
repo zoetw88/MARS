@@ -26,10 +26,13 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
     } else if (data.length <= 5) {
       y_legend = -0.7;
       chart_height = 550;
-    } else if (data.length <= 7) {
-      y_legend = -1;
-      chart_height = 595;
-    } else if (data.length > 7 && data.length < 11) {
+    }else if (data.length == 7) {
+        y_legend = -1;
+        chart_height = 595;
+     } else if (data.length <= 9) {
+        y_legend = -1;
+        chart_height = 640;
+    } else if (data.length > 9 && data.length < 11) {
       y_legend = -1.3;
       chart_height = 665;
     } else if (data.length >= 11 && data.length < 13) {
@@ -42,8 +45,8 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
       y_legend = -1.9;
       chart_height = 800;
     } else if (data.length >= 20) {
-      y_legend = -1.7;
-      chart_height = 880;
+      y_legend = -1.9;
+      chart_height = 920;
     }
     const layout = {
       width: 520,
