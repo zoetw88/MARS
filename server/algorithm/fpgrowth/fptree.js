@@ -134,11 +134,11 @@ class FPTree {
   }
 
   _getSinglePath(node, currentPath = []) {
-    if (node.children.length == 0) {
-      return currentPath;
-    }
-    if (node.children.length > 1) {
-      return null;
+    switch (node.children.length) {
+      case 0:
+        return currentPath;
+      case (node.children.length > 1):
+        return null;
     }
     currentPath.push(node.children[0]);
     return this._getSinglePath(node.children[0], currentPath);

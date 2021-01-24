@@ -75,7 +75,6 @@ const insertRecommendation = async (company, title, ip) => {
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no'||validator.isEmpty(company)) {
     await rollback();
-    return error;
   };
   const queryRecommend = {
     ip: `${ip}`,

@@ -1,6 +1,7 @@
 const {
   FPGrowth,
 } = require('../algorithm/fpgrowth/fpgrowth');
+const {all} = require('../routes/user_route');
 const {
   query,
 } = require('./mysql');
@@ -11,14 +12,12 @@ const recommendCompany = async (company, title) => {
     const allFPresult = [];
     const dataset = await organizeSearchHistory(title);
     const fpgrowth = new FPGrowth(.8);
-
-    fpgrowth.on('data', function(itemset) {
-      const items = itemset.items;
+    fpgrowth.on('data', function(itemsets) {
+      const items = itemsets.items;
       const fpCompany = Array.from(new Set(items));
-      (fpCompany[0] = company) ? allFPresult.push(fpCompany): '';
+      (fpCompany[0] = company&& fpCompany.length>=2) ? allFPresult.push(fpCompany): '';
     });
     fpgrowth.exec(dataset);
-
     companylist = extractFPresult(allFPresult);
     (companylist.length < 2 && title == null) ? (companylist = await searchCompanyWithoutTitle(company, companylist)) : '';
     (companylist.length < 2) ? (companylist = await selectCompanyByAnotherWay(title, company, companylist)) : '';
@@ -40,7 +39,7 @@ const organizeSearchHistory = async (title) => {
       WHERE search_time > DATE_SUB(NOW(), INTERVAL 90 day)
       GROUP BY ip`;
       hitsResult = await query(queryHit);
-
+      break;
     default:
       const queryHitWithTitle = `
       WITH titlelist AS(
@@ -54,9 +53,10 @@ const organizeSearchHistory = async (title) => {
       WHERE title IN (select title from titlelist) AND search_time > DATE_SUB(NOW(), INTERVAL 90 day)
       GROUP BY ip`;
       hitsResult = await query(queryHitWithTitle, [title]);
+      break;
   };
   hitsResult.map((data) => {
-    const array = data.search_company.split(',').map(String);
+    array = data.search_company.split(',').map(String);
     eachHistoryset.push(array);
   });
   return eachHistoryset;

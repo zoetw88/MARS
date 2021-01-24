@@ -5,9 +5,6 @@ document.querySelector('#companyname').innerHTML = company;
 
 axios.get(`/api/1.0/counts?company=${company}`)
   .then((response) => {
-   
-   
-    console.log( response.data[1])
     counters(response);
   });
 
@@ -17,9 +14,7 @@ axios.get(`/api/1.0/comments?company=${company}&title=${title}`)
   });
 
 axios.get(`/api/1.0/keywords?company=${company}&title=${title}`)
-
   .then((response) => {
-
     keyword(response);
   })
   .catch((error) => {

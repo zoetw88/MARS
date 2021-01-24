@@ -47,44 +47,48 @@ const chatroom = (io) => {
       const mainMessages = await getMainMessages(data.username);
       const sideMessages = await getSideMessages(data.username);
       const socketId = users[data.username];
-
-      if (mainMessages) {
-        io.to(socketId).emit('loadMessages', {
-          messages: mainMessages,
-          side_messages: sideMessages,
-          onlineuser: onlineuser,
-        });
-      } else {
-        io.to(socketId).emit('research');
+      switch (true) {
+        case (mainMessages.length>0):
+          io.to(socketId).emit('loadMessages', {
+            messages: mainMessages,
+            side_messages: sideMessages,
+            onlineuser: onlineuser,
+          });
+          break;
+        default:
+          io.to(socketId).emit('research');
+          break;
       }
     });
 
     socket.on('selectMessages', async function(data) {
       socketId = users[data.sender];
       selectMessages = await getSelectedMessages(data.sender, data.chosenName);
-
       io.to(socketId).emit('reloadMessages', {
         messages: selectMessages,
       });
     });
 
     socket.on('ask_to_editor', async function(data) {
-      if (onlineuser.indexOf(data.receiver) == 0) {
-        socketId = users[data.receiver];
-        info = data;
+      switch (onlineuser.indexOf(data.receiver)) {
+        case 0:
+          socketId = users[data.receiver];
+          info = data;
+          io.to(socketId).emit('reply_editor', {
+            info,
+          });
+          break;
 
-        io.to(socketId).emit('reply_editor', {
-          info,
-        });
-      } else {
-        socketId = users[data.sender];
-        info = data;
-
-        io.to(socketId).emit('editor_alone', {
-          info,
-        });
+        default:
+          socketId = users[data.sender];
+          info = data;
+          io.to(socketId).emit('editor_alone', {
+            info,
+          });
+          break;
       }
     });
+
     socket.on('no_collaborate', async function(data) {
       socketId = users[data.sender];
 
@@ -93,6 +97,7 @@ const chatroom = (io) => {
         room: data.room,
       });
     });
+
     socket.on('yes_collaborate', async function(data) {
       socketId = users[data.sender];
 
@@ -102,6 +107,7 @@ const chatroom = (io) => {
         receiver: data.sender,
       });
     });
+
     socket.on('send_message', async function(data) {
       socketId = users[data.receiver];
       addNewMessages(data);
