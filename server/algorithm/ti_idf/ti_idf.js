@@ -30,8 +30,8 @@ const searchKeywords = async (company, title, counts = 1) => {
     });
 
     const mainCommentsWords = nodeJieba.cut(mainCommentStr.toString());
-  
-    
+
+
     mainCommentsWords.map((word) => {
       if (counter[word] === undefined && stopWordlist.indexOf(word) < 0) {
         mainWordlist.push(word);

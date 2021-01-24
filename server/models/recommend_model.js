@@ -1,23 +1,27 @@
-const {FPGrowth} = require('../algorithm/fpgrowth/fpgrowth');
-const {query} = require('./mysql');
-const {isWord}=require('../utils/utils')
+const {
+  FPGrowth,
+} = require('../algorithm/fpgrowth/fpgrowth');
+const {
+  query,
+} = require('./mysql');
+
 const recommendCompany = async (company, title) => {
   try {
-    let companylist = [];
-    let dataset = [];
-    
-    (!isWord(title)) && (companylist = await searchCompanyWithoutTitle(company, companylist));
-    dataset = await organizeSearchHistory(title);
+    let companylist;
+    const allFPresult = [];
+    const dataset = await organizeSearchHistory(title);
+    const fpgrowth = new FPGrowth(.8);
 
-    const fpgrowth = new FPGrowth(.4);
-    fpgrowth.on('data', async function(itemset) {
+    fpgrowth.on('data', function(itemset) {
       const items = itemset.items;
       const fpCompany = Array.from(new Set(items));
-      companylist = await extractFPresult(fpCompany, company);
+      (fpCompany[0] = company) ? allFPresult.push(fpCompany): '';
     });
     fpgrowth.exec(dataset);
-    
-    companylist.length < 2 && (companylist =await selectCompanyByAnotherWay(title, company, companylist));
+
+    companylist = extractFPresult(allFPresult);
+    (companylist.length < 2 && title == null) ? (companylist = await searchCompanyWithoutTitle(company, companylist)) : '';
+    (companylist.length < 2) ? (companylist = await selectCompanyByAnotherWay(title, company, companylist)) : '';
 
     return companylist;
   } catch (error) {
@@ -27,18 +31,30 @@ const recommendCompany = async (company, title) => {
 
 const organizeSearchHistory = async (title) => {
   const eachHistoryset = [];
-  const queryHit = `
-  WITH titlelist AS(
-    SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
-    FROM recommend 
-    HAVING score >0.0003
-    ORDER BY score 
-       )
-  SELECT ip,GROUP_CONCAT(search_company) AS search_company,title
-  FROM recommend 
-  WHERE title IN (select title from titlelist) AND search_time > DATE_SUB(NOW(), INTERVAL 90 day)
-  GROUP BY ip`;
-  const hitsResult = await query(queryHit, [title]);
+  let hitsResult;
+  switch (title) {
+    case null:
+      const queryHit = `
+      SELECT ip,GROUP_CONCAT(search_company) AS search_company
+      FROM recommend 
+      WHERE search_time > DATE_SUB(NOW(), INTERVAL 90 day)
+      GROUP BY ip`;
+      hitsResult = await query(queryHit);
+
+    default:
+      const queryHitWithTitle = `
+      WITH titlelist AS(
+        SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
+        FROM recommend 
+        HAVING score >0.0003
+        ORDER BY score 
+        )
+      SELECT ip,GROUP_CONCAT(search_company) AS search_company,title
+      FROM recommend 
+      WHERE title IN (select title from titlelist) AND search_time > DATE_SUB(NOW(), INTERVAL 90 day)
+      GROUP BY ip`;
+      hitsResult = await query(queryHitWithTitle, [title]);
+  };
   hitsResult.map((data) => {
     const array = data.search_company.split(',').map(String);
     eachHistoryset.push(array);
@@ -46,25 +62,49 @@ const organizeSearchHistory = async (title) => {
   return eachHistoryset;
 };
 
-const extractFPresult = async (fpCompany, company) => {
+const extractFPresult = (allFPresult) => {
   const companylist = [];
-  (fpCompany.length >= 2 && fpCompany[0] == company) && (fpCompany = fpCompany.filter(function(item) {
-    return item !== company;
-  }));
+  for (i = 0; i < allFPresult.length; i++) {
+    switch (allFPresult[i].length) {
+      case 3:
+        companylist[0] = allFPresult[i][1];
+        companylist[1] = allFPresult[i][2];
+        break;
 
-  switch (fpCompany.length) {
-    case 1:
-      companylist[0] = fpCompany[0];
+      case 2:
+        companylist[0] = allFPresult[i][1];
+        break;
+    }
+
+    if (companylist.length >= 2) {
       break;
-    case 2:
-      companylist[0] = fpCompany[0];
-      companylist[1] = fpCompany[1];
-      break;
+    }
   }
   return companylist;
 };
 
 const selectCompanyByAnotherWay = async (title, company, companylist) => {
+  const companySelect = await searchCompany(title, company, companylist);
+  switch (companySelect.length) {
+    case 2:
+      companylist[0] = companySelect[0].search_company;
+      companylist[1] = companySelect[1].search_company;
+      break;
+
+    case 1:
+      companylist[1] = companySelect[0].search_company;
+      break;
+
+    default:
+      companylist = await searchCompanyWithoutTitle(company, companylist);
+      break;
+  }
+
+  return companylist;
+};
+
+const searchCompany = async (title, company, companylist) => {
+  let companySelect;
   queryCompany = `
   WITH titlelist AS(
     SELECT title ,MATCH (title) AGAINST (?) AS score ,ip
@@ -78,41 +118,16 @@ const selectCompanyByAnotherWay = async (title, company, companylist) => {
 
   switch (companylist.length) {
     case 0:
-      const companySelect = await query(queryCompany, [title, company, 2]);
-      switch (companySelect.length) {
-        case 2:
-          companylist[0] = companySelect[0].search_company;
-          companylist[1] = companySelect[1].search_company;
-          break;
-
-        case 1:
-          companylist[0] = companySelect[0].search_company;
-          break;
-
-        default:
-          companylist = await searchCompanyWithoutTitle(company, companylist);
-          break;
-      }
+      companySelect = await query(queryCompany, [title, company, 2]);
 
     case 1:
-      let companyCombination = [];
+      const companyCombination = [];
       companyCombination.push(company, companylist[0]);
-      const companySecond = await query(queryCompany, [title, companyCombination, 1]);
-   
-      switch (companySecond.length) {
-        case 1:
-          companylist[1] = companySecond[0].search_company;
-          break;
-
-        default:
-          companylist = await searchCompanyWithoutTitle(company, companylist);
-          break;
-      }
+      companySelect = await query(queryCompany, [title, companyCombination, 1]);
   }
-  return companylist;
+  return companySelect;
 };
-
-const searchCompanyWithoutTitle= async (company, companylist) => {
+const searchCompanyWithoutTitle = async (company, companylist) => {
   queryCompany = `
   SELECT search_company
   FROM recommend 

@@ -121,5 +121,5 @@ module.exports = {
   signIn,
   getUserProfile,
   verifyToken,
-  logout
+  logout,
 };

@@ -116,7 +116,6 @@ const getCounts = async (req, res) => {
   try {
     const {company} = req.query;
     const result = await search.getCounts(company);
-
     res.status(200).send(result);
   } catch (error) {
     return {
@@ -136,7 +135,7 @@ const writeToJSON = async (filename, result)=>{
   const chartPath = path.join(__dirname, `../../public/json/${filename}.json`);
   const resultJSON = JSON.stringify(result);
   fs.writeFile(chartPath, resultJSON, function(err, result) {
-    if (err) throw err; 
+    if (err) throw err;
   });
 };
 module.exports = {

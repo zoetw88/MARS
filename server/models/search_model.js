@@ -13,7 +13,7 @@ const {
 const {recommendCompany} = require('./recommend_model');
 const moment = require('moment');
 const validator = require('validator');
-const {isWord}=require('../utils/utils')
+const {isWord}=require('../utils/utils');
 
 const getSalary = async (company, title) => {
   try {
@@ -59,7 +59,7 @@ const getSalary = async (company, title) => {
     if (dataForLineChart.length==0 || dataForLineChart=='no') {
       return 'no';
     }
-   
+
     const result = organizeData(dataForLineChart);
     return result;
   } catch (error) {
@@ -73,9 +73,9 @@ const insertRecommendation = async (company, title, ip) => {
   await transaction();
   const time = moment().utc().format('YYYY-MM-DD');
   const companyFiltered = await filterCompany(company);
-  if (companyFiltered == 'no') {
+  if (companyFiltered == 'no'||validator.isEmpty(company)) {
     await rollback();
-    return error
+    return error;
   };
   const queryRecommend = {
     ip: `${ip}`,
@@ -85,7 +85,6 @@ const insertRecommendation = async (company, title, ip) => {
   };
   await query('INSERT INTO recommend SET?', queryRecommend);
   await commit();
-
 };
 const getWorkinghour = async (company, title) => {
   try {
@@ -136,7 +135,6 @@ const getWorkinghour = async (company, title) => {
 
 const get104jobs = async (company, title) => {
   try {
-
     let dataForChart;
     if (!validator.isEmpty(company) && !validator.isEmpty(title)) {
       const query104Job = `
@@ -163,10 +161,7 @@ const get104jobs = async (company, title) => {
       ORDER BY FIELD(company,?) `;
       dataForChart = await withCompany(company, query104Job);
     }
-    if (dataForChart.length==0 || dataForChart=='no') {
-      return 'no';
-    }
-    return dataForChart;
+    return (dataForChart.length==0 || dataForChart=='no') ? 'no' : dataForChart;
   } catch (error) {
     return {
       error,
@@ -206,10 +201,7 @@ const extractComments = async (company, title) => {
 
       dataComments = await withCompany(company, queryComments);
     }
-    if (dataComments.lengt==0 || dataComments=='no') {
-      return 'no';
-    }
-    return dataComments;
+    return (dataComments.length==0 || ddataComments=='no') ? 'no' : dataComments;
   } catch (error) {
     return error;
   }
@@ -219,10 +211,7 @@ const extractAllComments = async () => {
     const queryAllComments = `SELECT * FROM comment `;
     const result = await query(queryAllComments);
 
-    if (result.length ==0) {
-      return 'no';
-    }
-    return result;
+    return result.length==0 ? 'no' :result;
   } catch (error) {
     return error;
   }
@@ -248,17 +237,14 @@ const getCounts = async (company) => {
     const result = [];
     result.push(totalCounts[0].counts, totalCounts[1].counts, totalCounts[2].counts, totalCounts[3].counts);
 
-    if (totalCounts.length ==0) {
-      return 'no';
-    }
-    return result;
+    return totalCounts.length==0 ? 'no' :result;
   } catch (error) {
     return error;
   }
 };
 
 const withTitleCompany = async (company, title, querystr) => {
-  if(!isWord(title)||!isWord(company)){
+  if (!isWord(title)) {
     return 'no';
   }
   const titleFiltered = await filterTitle(title);
@@ -266,21 +252,19 @@ const withTitleCompany = async (company, title, querystr) => {
   if (companyFiltered == 'no'||titleFiltered=='no') {
     return 'no';
   }
-
   const recommendation = await recommendCompany(companyFiltered, titleFiltered);
   const companylist = [];
   const mainCompanyResult=await query(querystr, [titleFiltered, companyFiltered, companyFiltered]);
   if (mainCompanyResult.length ==0) {
     return 'no';
   }
-
   companylist.push(companyFiltered, recommendation[0], recommendation[1]);
   const result = await query(querystr, [titleFiltered, companylist, companylist]);
   return result;
 };
 
 const withTitle = async (title, querystr) => {
-  if(!isWord(title)){
+  if (!isWord(title)) {
     return 'no';
   }
   const titleFiltered = await filterTitle(title);
@@ -292,9 +276,6 @@ const withTitle = async (title, querystr) => {
 };
 
 const withCompany = async (company, querystr) => {
-  if(!isWord(company)){
-    return 'no';
-  }
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no') {
     return 'no';
@@ -313,7 +294,6 @@ const withCompany = async (company, querystr) => {
 
 function transInt(salaryResult) {
   const avgSalaryResult = [null, null, null, null, null, null, null, null, null, null];
-
   salaryResult.map((company)=>{
     const order=parseInt(company.experience);
     avgSalaryResult[order]=parseInt(company.salary);
@@ -327,13 +307,11 @@ function organizeData(salaryResult) {
   const result=[];
   const company = salaryResult.map((data) => data.company);
   const companys = Array.from(new Set(company));
-
   companys.map((company) => {
     const singleCompany = salaryResult
         .filter((x) => x.company == company);
     salaryData.push(singleCompany);
   });
-
   salaryData.map((data)=>{
     const dataForChart = {};
     dataForChart['y'] = transInt(data);
@@ -343,7 +321,6 @@ function organizeData(salaryResult) {
   });
   return result;
 };
-
 
 
 module.exports = {

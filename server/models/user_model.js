@@ -67,7 +67,7 @@ const signIn = async (email, password) => {
     if (result.length == 0) {
       return {
         error: 'email is wrong',
-      }
+      };
     };
 
     const auth = await bcrypt.compare(password, result[0].password);
