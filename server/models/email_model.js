@@ -3,7 +3,7 @@ const {Email_Address, Email_Password}= process.env;
 const hbs=require('nodemailer-express-handlebars');
 
 
-function sendQuestionMail(userEmail, subject, text) {
+const sendQuestionMail=(userEmail, subject, text)=> {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {user: Email_Address, pass: Email_Password},
@@ -25,11 +25,10 @@ function sendQuestionMail(userEmail, subject, text) {
   transporter.sendMail(options, function(error, info) {
     if (error) {
       throw error;
-    } else {
-      console.log('訊息發送: ' + info.response);
-    }
+    };
+    console.log('訊息發送: ' + info.response);
   });
-}
+};
 
 module.exports = {
   sendQuestionMail,

@@ -75,7 +75,6 @@ const extractFPresult = (allFPresult) => {
         companylist[0] = allFPresult[i][1];
         break;
     }
-
     if (companylist.length >= 2) {
       break;
     }
@@ -99,7 +98,6 @@ const selectCompanyByAnotherWay = async (title, company, companylist) => {
       companylist = await searchCompanyWithoutTitle(company, companylist);
       break;
   }
-
   return companylist;
 };
 

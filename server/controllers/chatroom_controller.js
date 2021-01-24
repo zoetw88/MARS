@@ -143,13 +143,12 @@ const editor = async (req, res) => {
 const verifyIdentity = async (req, res) => {
   try {
     const bearerHeader = req.header('authorization');
-    if (typeof bearerHeader !== 'undefined') {
-      const bearerToken = bearerHeader.split(' ')[1];
-      const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET);
-      res.status(200).send(userInfo);
-    } else {
+    if (typeof bearerHeader == 'undefined') {
       res.sendStatus(403);
     };
+    const bearerToken = bearerHeader.split(' ')[1];
+    const userInfo = jwt.verify(bearerToken, ACCESS_TOKEN_SECRET);
+    res.status(200).send(userInfo);
   } catch (error) {
     return {
       error,

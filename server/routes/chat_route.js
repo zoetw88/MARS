@@ -10,10 +10,13 @@ const {
 } = require('../controllers/chatroom_controller');
 
 
-router.route('/chat').get(wrapAsync(verifyIdentity));
+router.route('/chat')
+    .get(wrapAsync(verifyIdentity));
 
-router.route('/editor').get(wrapAsync(editor));
+router.route('/editor')
+    .get(wrapAsync(editor));
 
-router.route('/question').post(wrapAsync(askQuestion));
+router.route('/question')
+    .post(wrapAsync(askQuestion));
 
 module.exports = router;

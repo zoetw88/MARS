@@ -71,6 +71,7 @@ const getMainMessages = async (username, error) => {
     WHERE (sender = (select sender from final_speaker )AND receiver =(select receiver from final_speaker)) 
     OR (sender =(select receiver from final_speaker ) AND receiver = (select sender from final_speaker ))`;
     const result = await query(queryMainMessages, [username, username]);
+
     return result.length == 0 ? error : result;
   } catch (error) {
     return error;
@@ -128,6 +129,7 @@ const getSideMessages = async (username) => {
     )
     ORDER BY id DESC`;
     const result = await query(querySideMessages, [username, username]);
+
     return result.length == 0 ? error : result;
   } catch (error) {
     return error;
@@ -145,6 +147,7 @@ const addNewMessages = async (data) => {
       time: time,
     };
     await query(querystrNewMessage, message);
+
     return result.length == 0 ? error : result;
   } catch (error) {
     return error
