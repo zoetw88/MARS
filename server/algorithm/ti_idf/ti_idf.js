@@ -26,7 +26,7 @@ const searchKeywords = async (company, title, counts = 1) => {
   });
 
   const afterTokenize = nodeJieba.cut(commentsCombination.toString());
-  
+
   afterTokenize.map((word) => {
     if (counter[word] === undefined && stopWord.indexOf(word) < 0) {
       mainWordlist.push(word);

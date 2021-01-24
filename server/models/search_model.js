@@ -13,7 +13,7 @@ const {
 const {recommendCompany} = require('./recommend_model');
 const moment = require('moment');
 const validator = require('validator');
-const {isWord}=require('../utils/utils');
+const {isWord,isWordandNumber}=require('../utils/utils');
 
 const getSalary = async (company, title) => {
   try {
@@ -75,7 +75,7 @@ const insertRecommendation = async (company, title, ip) => {
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no'||validator.isEmpty(company)) {
     await rollback();
-    return ;
+    return;
   };
   const queryRecommend = {
     ip: `${ip}`,
@@ -246,7 +246,7 @@ const getCounts = async (company) => {
 };
 
 const withTitleCompany = async (company, title, querystr) => {
-  if (!isWord(title)) {
+  if (!isWord(title)||isWordandNumber(company)) {
     return 'no';
   }
   const titleFiltered = await filterTitle(title);
@@ -278,6 +278,9 @@ const withTitle = async (title, querystr) => {
 };
 
 const withCompany = async (company, querystr) => {
+  if (isWordandNumber(company)) {
+    return 'no';
+  }
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no') {
     return 'no';

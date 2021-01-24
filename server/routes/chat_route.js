@@ -6,12 +6,13 @@ const {
 const {
   editor,
   askQuestion,
-  verifyIdentity,
 } = require('../controllers/chatroom_controller');
-
+const {
+  verifyToken,
+} = require('../controllers/user_controller');
 
 router.route('/chat')
-    .get(wrapAsync(verifyIdentity));
+    .get(wrapAsync(verifyToken));
 
 router.route('/editor')
     .get(wrapAsync(editor));

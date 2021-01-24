@@ -11,6 +11,10 @@ const isWord=(word) => {
   const check = /^([a-zA-Z\u4e00-\u9fa5]+)$/;
   return (check.test(word));
 };
+const isWordandNumber=(word) => {
+  const check = /^([a-zA-Z0-9\u4e00-\u9fa5]+)$/;
+  return (check.test(word));
+};
 const getKeyByValue = (object, value) => {
   return Object.keys(object).find((key) => object[key] === value);
 };
@@ -18,4 +22,5 @@ module.exports = {
   wrapAsync,
   getKeyByValue,
   isWord,
+  isWordandNumber,
 };

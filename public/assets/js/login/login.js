@@ -75,11 +75,7 @@ async function signup(event) {
             icon: 'error',
             title: 'Oops...',
             text: error_message,
-          }).then(() => {
-            setTimeout(function() {
-              window.location.reload();
-            }, 1500);
-          });
+          })
         });
   } catch (error) {
     return error;

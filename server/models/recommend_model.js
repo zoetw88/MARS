@@ -1,6 +1,6 @@
 const {
   FPGrowth,
-} = require('../algorithm/fpgrowth/fpgrowth');;
+} = require('../algorithm/fpgrowth/fpgrowth'); ;
 const {
   query,
 } = require('./mysql');
@@ -15,12 +15,12 @@ const recommendCompany = async (company, title) => {
     fpgrowth.on('data', function(itemsets) {
       const items = itemsets.items;
       if (items[0]== company && items.length >=2) {
-        let fpCompany = [...(new Set(items))];
+        const fpCompany = [...(new Set(items))];
         allFPresult.push(fpCompany);
       }
     });
     fpgrowth.exec(dataset);
-    
+
     companylist = extractFPresult(allFPresult);
     (companylist.length < 2 && title == null) ? (companylist = await searchCompanyWithoutTitle(company, companylist)) : '';
     (companylist.length < 2) ? (companylist = await selectCompanyByAnotherWay(title, company, companylist)) : '';

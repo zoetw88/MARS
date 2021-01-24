@@ -55,7 +55,7 @@ const chatroom = (io) => {
             onlineuser: onlineuser,
           });
           break;
-        default:
+        case (mainMessages.length==0):
           io.to(socketId).emit('research');
           break;
       }
