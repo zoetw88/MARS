@@ -46,7 +46,7 @@ async function verify_token() {
 
 verify_token();
 
-$('#logout').on('click', function() {
+$('#logout').on('click', function(event) {
   logout(event);
 });
 async function chart() {
