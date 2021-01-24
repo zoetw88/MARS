@@ -36,7 +36,7 @@ const filterTitle = async (inputTitle) => {
 
 const clearTitle = (title) => {
   let titleSplit;
-  title.indexOf('工程師') ? titleSplit = title.split('工程師')[0].toString() : '';
+  title.indexOf('工程師') && title.length>4 ? titleSplit = title.split('工程師')[0].toString() : '';
   title.indexOf(' ') ? titleSplit = title.split(' ')[0].toString() : '';
   return titleSplit;
 };

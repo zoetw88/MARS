@@ -1,23 +1,26 @@
 const {
   FPGrowth,
-} = require('../algorithm/fpgrowth/fpgrowth');
-const {all} = require('../routes/user_route');
+} = require('../algorithm/fpgrowth/fpgrowth');;
 const {
   query,
 } = require('./mysql');
-
+const _ = require('lodash');
 const recommendCompany = async (company, title) => {
   try {
     let companylist;
     const allFPresult = [];
     const dataset = await organizeSearchHistory(title);
-    const fpgrowth = new FPGrowth(.8);
+
+    const fpgrowth = new FPGrowth(.4);
     fpgrowth.on('data', function(itemsets) {
       const items = itemsets.items;
-      const fpCompany = Array.from(new Set(items));
-      (fpCompany[0] = company&& fpCompany.length>=2) ? allFPresult.push(fpCompany): '';
+      if (items[0]== company && items.length >=2) {
+        let fpCompany = [...(new Set(items))];
+        allFPresult.push(fpCompany);
+      }
     });
     fpgrowth.exec(dataset);
+    
     companylist = extractFPresult(allFPresult);
     (companylist.length < 2 && title == null) ? (companylist = await searchCompanyWithoutTitle(company, companylist)) : '';
     (companylist.length < 2) ? (companylist = await selectCompanyByAnotherWay(title, company, companylist)) : '';
@@ -40,6 +43,7 @@ const organizeSearchHistory = async (title) => {
       GROUP BY ip`;
       hitsResult = await query(queryHit);
       break;
+
     default:
       const queryHitWithTitle = `
       WITH titlelist AS(
@@ -141,7 +145,7 @@ const searchCompanyWithoutTitle = async (company, companylist) => {
 
     case 1:
       let companyCombination = [];
-      companyCombination = companyCombination.concat(company, companylist[0]);
+      companyCombination = companyCombination.push(company, companylist[0]);
       companyS = await query(queryCompany, [companyCombination, 1]);
       companylist[1] = companyS[0].search_company;
       break;

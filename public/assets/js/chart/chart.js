@@ -120,8 +120,23 @@ d3.json('../../json/company.json', function(data) {
     const companyQuantity=parseInt(labels.length);
     const legendWidth = 270;
     var legendHeight = companyQuantity*23;
-    if (labels.length<=3) {
+    if (labels.length==3) {
       var legendHeight = companyQuantity*28.5;
+    }else if (labels.length==1){
+      var legendHeight = companyQuantity*40;
+    }else if (labels.length==2){
+      var legendHeight = companyQuantity*34;
+    }else if (labels.length>20){
+      var legendHeight = companyQuantity*21;
+    }else if (labels.length>12){
+      var legendHeight = companyQuantity*23;
+    }else if (labels.length>10){
+      var legendHeight = companyQuantity*24.75;
+    }else if (labels.length>8){
+      var legendHeight = companyQuantity*23;
+    }
+    else if (labels.length>7){
+      var legendHeight = companyQuantity*25.6;
     }
     const legend = d3.select('#legend').append('svg')
         .attr('width', legendWidth)
