@@ -202,7 +202,7 @@ const extractComments = async (company, title) => {
 
       dataComments = await withCompany(company, queryComments);
     }
-    return (dataComments.length==0 || ddataComments=='no') ? 'no' : dataComments;
+    return (dataComments.length ==0|| dataComments=='no') ? 'no' : dataComments;
   } catch (error) {
     return error;
   }
