@@ -14,7 +14,7 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
       data.push(trace);
     }
     let y_legend;
-    if (data.length<6) {
+    if (data.length<6&&data.length>3) {
       y_legend=-0.8;
       chart_height=545;
     } else if (data.length>6&&data.length<11) {
@@ -33,8 +33,8 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
       y_legend=-1.9;
       chart_height=800;
     }else{
-      y_legend=-0.9;
-      chart_height=545;
+      y_legend=-0.8;
+      chart_height=530;
     }
     const layout = {
       width: 520,
