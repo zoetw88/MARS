@@ -118,7 +118,7 @@ d3.json('../../json/company.json', function(data) {
 
 
     const companyQuantity=parseInt(labels.length);
-    const legendWidth = 260;
+    const legendWidth = 280;
     var legendHeight = companyQuantity*23;
     if (labels.length<=3) {
       var legendHeight = companyQuantity*28.5;

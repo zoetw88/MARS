@@ -16,7 +16,7 @@ Plotly.d3.json('../../json/salary.json', function(figure) {
     let y_legend;
     if (data.length<6) {
       y_legend=-0.8;
-      chart_height=520;
+      chart_height=540;
     } else if (data.length>6&&data.length<11) {
       y_legend=-1.3;
       chart_height=670; } 
