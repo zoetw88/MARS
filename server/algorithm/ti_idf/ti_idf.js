@@ -54,8 +54,11 @@ const searchKeywords = async (company, title, counts = 1) => {
     });
 
     mainWordlist.map((word) => {
+      const checkStopWord = stopWordlist.indexOf(word);
       comparedWordlist.map((comparedword) => {
-        (comparedword[word]) && (counter[word].df++);
+        if (comparedword[word] && checkStopWord < 0) {
+          counter[word].df++;
+        }
       });
       counter[word].tfidf = counter[word].tf / counts * Math.log(mainComments.length / counter[word].df);
       finalWordlist = {};
