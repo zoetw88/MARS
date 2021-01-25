@@ -4,27 +4,31 @@ const {
 const {
   query,
 } = require('./mysql');
-const _ = require('lodash');
 const recommendCompany = async (company, title) => {
   try {
     let companylist;
     const allFPresult = [];
     const dataset = await organizeSearchHistory(title);
-
-    const fpgrowth = new FPGrowth(.4);
+   
+    const fpgrowth = new FPGrowth(.6);
+    
     fpgrowth.on('data', function(itemsets) {
-      const items = itemsets.items;
+      let items = itemsets.items;
+      
       if (items[0]== company && items.length >=2) {
-        const fpCompany = [...(new Set(items))];
+        let fpCompany = Array.from(new Set(items));
         allFPresult.push(fpCompany);
       }
+      
     });
+ 
     fpgrowth.exec(dataset);
-
+   
     companylist = extractFPresult(allFPresult);
     (companylist.length < 2 && title == null) ? (companylist = await searchCompanyWithoutTitle(company, companylist)) : '';
     (companylist.length < 2) ? (companylist = await selectCompanyByAnotherWay(title, company, companylist)) : '';
-
+   
+   
     return companylist;
   } catch (error) {
     return error;

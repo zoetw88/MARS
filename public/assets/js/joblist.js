@@ -4,7 +4,6 @@ title = window.localStorage.getItem('title');
 
 axios.get(`/api/1.0/job104list?company=${company}&title=${title}`)
     .then((response) => {
-      console.log(response);
       getJoblist(response);
     });
 

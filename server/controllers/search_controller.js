@@ -9,9 +9,9 @@ const getSalary = async (req, res) => {
   try {
     const {title, company} = req.query;
     const {headers, connection}=req;
-    insertRecommendation(company, title, headers, connection);
     const result = await search.getSalary(company, title);
     writeToJSON('salary', result);
+    insertRecommendation(company, title, headers, connection);
     res.status(200).send(result);
   } catch (error) {
     return {

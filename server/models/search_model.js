@@ -13,7 +13,7 @@ const {
 const {recommendCompany} = require('./recommend_model');
 const moment = require('moment');
 const validator = require('validator');
-const {isWord}=require('../utils/utils');
+const {isWord,isWordandNumber}=require('../utils/utils');
 
 const getSalary = async (company, title) => {
   try {
@@ -278,7 +278,6 @@ const withTitle = async (title, querystr) => {
 };
 
 const withCompany = async (company, querystr) => {
- 
   const companyFiltered = await filterCompany(company);
   if (companyFiltered == 'no') {
     return 'no';

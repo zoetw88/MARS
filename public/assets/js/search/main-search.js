@@ -46,7 +46,7 @@ async function verify_token() {
 
 verify_token();
 
-$('#logout').on('click', function(event) {
+$('#logout').on('click', function() {
   logout(event);
 });
 async function chart() {
@@ -54,6 +54,7 @@ async function chart() {
   const title = document.querySelector('#title').value;
   window.localStorage.setItem('company', company);
   window.localStorage.setItem('title', title);
+  console.time()
   axios.get(`/api/1.0/salary?company=${company}&title=${title}`);
   axios.get(`/api/1.0/workinghour?company=${company}&title=${title}`)
 
@@ -72,6 +73,7 @@ async function chart() {
           console.log(response);
         }
       });
+      console.timeEnd()
 }
 
 function logout(event) {

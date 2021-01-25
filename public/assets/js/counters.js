@@ -1,13 +1,8 @@
 company = window.localStorage.getItem('company');
-
-
 document.querySelector('#companyname').innerHTML = company;
 
 axios.get(`/api/1.0/counts?company=${company}`)
   .then((response) => {
-   
-   
-    console.log( response.data[1])
     counters(response);
   });
 
